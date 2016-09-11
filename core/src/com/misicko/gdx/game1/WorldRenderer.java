@@ -2,6 +2,11 @@ package com.misicko.gdx.game1;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class WorldRenderer {
@@ -9,7 +14,10 @@ public class WorldRenderer {
 	private SpriteBatch batch;
 	private WorldController worldController;
 	
-	public WorldRenderer (WorldController worldController) { }
+	public WorldRenderer (WorldController worldController) { 
+		this.worldController = worldController;
+		init();
+	}
 	private void init () { 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, 
