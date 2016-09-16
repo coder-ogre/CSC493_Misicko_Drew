@@ -24,11 +24,12 @@ public class Assets implements Disposable, AssetErrorListener {
 	
 	private AssetManager assetManager;
 	
-	public AssetBunny bunny;
+	public AssetPusheen pusheen;
 	public AssetRock rock;
-	public AssetGoldCoin goldCoin;
-	public AssetFeather feather;
-	public AssetLevelDecoration levelDecoration;
+	public AssetGenericPowerup genericPowerup;
+	public AssetCloud cloud;
+	public AssetLava lava;
+	public AssetMountain mountain;
 	
 	// singleton: preent instantiation from other classes
 	private Assets () {}
@@ -51,15 +52,16 @@ public class Assets implements Disposable, AssetErrorListener {
 		// enable texture filtering for pixel smoothing
 		for (Texture t : atlas.getTextures()) {
 			t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	}
+		}
 	
 	
-	// create game resource objects
-	bunny = new AssetBunny(atlas);
-	rock = new AssetRock(atlas);
-	goldCoin = new AssetGoldCoin(atlas);
-	feather = new AssetFeather(atlas);
-	levelDecoration = new AssetLevelDecoration(atlas);
+		// create game resource objects
+		pusheen = new AssetPusheen(atlas);
+		rock = new AssetRock(atlas);
+		genericPowerup = new AssetGenericPowerup(atlas);
+		cloud = new AssetCloud(atlas);
+		lava = new AssetLava(atlas);
+		mountain = new AssetMountain(atlas);
 	}
 	
 	@Override
@@ -82,54 +84,72 @@ public class Assets implements Disposable, AssetErrorListener {
 				asset.fileName + "'", (Exception) throwable);
 	}
 	
-	public class AssetBunny {
+	public class AssetPusheen {
 		public final AtlasRegion head;
-		public AssetBunny (TextureAtlas atlas) {
-			head = atlas.findRegion("bunny_head");
+		public AssetPusheen (TextureAtlas atlas) {
+			head = atlas.findRegion("scooter_pusheen");
 		}
 	}
 	
 	public class AssetRock {
-		public final AtlasRegion edge;
-		public final AtlasRegion middle;
+		public final AtlasRegion rock;
 		
 		public AssetRock (TextureAtlas atlas) {
-			edge = atlas.findRegion("rock_edge");
-			middle = atlas.findRegion("rock_middle");
+			rock = atlas.findRegion("rock");
 		}
 	}
 	
-	public class AssetGoldCoin {
-		public final AtlasRegion goldCoin;
+	
+	
+	public class AssetCloud {
+		public final AtlasRegion cloud;
 		
-		public AssetGoldCoin (TextureAtlas atlas) {
-			goldCoin = atlas.findRegion("item_gold_coin");
+		public AssetCloud (TextureAtlas atlas) {
+			cloud = atlas.findRegion("cloud");
 		}
 	}
 	
-	public class AssetFeather {
-		public final AtlasRegion feather;
+	public class AssetMountain {
+		public final AtlasRegion mountain;
 		
-		public AssetFeather (TextureAtlas atlas) {
-			feather = atlas.findRegion("item_feather");
+		public AssetMountain (TextureAtlas atlas) {
+			mountain = atlas.findRegion("mountain");
+		}
+	}
+	
+	public class AssetLava {
+		public final AtlasRegion lava;
+		
+		public AssetLava (TextureAtlas atlas) {
+			lava = atlas.findRegion("lava");
+		}
+	}
+	
+	public class AssetGenericPowerup {
+		public final AtlasRegion genericPowerup;
+		
+		public AssetGenericPowerup (TextureAtlas atlas) {
+			genericPowerup = atlas.findRegion("generic_powerup");
+		}
+	}
+	
+	public class AssetDirt {
+		public final AtlasRegion dirt;
+		
+		public AssetDirt (TextureAtlas atlas) {
+			dirt = atlas.findRegion("dirt");
 		}
 	}
 	
 	public class AssetLevelDecoration {
-		public final AtlasRegion cloud01;
-		public final AtlasRegion cloud02;
-		public final AtlasRegion cloud03;
-		public final AtlasRegion mountainLeft;
-		public final AtlasRegion mountainRight;
-		public final AtlasRegion waterOverlay;
+		public final AtlasRegion cloud;
+		public final AtlasRegion mountain;
+		public final AtlasRegion lava;
 		
 		public AssetLevelDecoration (TextureAtlas atlas) {
-			cloud01 = atlas.findRegion("cloud01");
-			cloud02 = atlas.findRegion("cloud02");
-			cloud03 = atlas.findRegion("cloud03");
-			mountainLeft = atlas.findRegion("mountain_left");
-			mountainRight =	 atlas.findRegion("mountain_right");
-			waterOverlay = atlas.findRegion("water_overlay");
+			cloud = atlas.findRegion("cloud");
+			mountain = atlas.findRegion("mountain");
+			lava =  atlas.findRegion("lava");
 		}
 	}
 	

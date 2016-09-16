@@ -10,8 +10,8 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import com.misicko.gdx.game1.MisickoGdxGame1;
 
 public class DesktopLauncher {
-	private static boolean rebuildAtlas = false;
-	private static boolean drawDebugOutline = true;
+	private static boolean rebuildAtlas = true;
+	private static boolean drawDebugOutline = false;
 	public static void main (String[] arg) {
 		if(rebuildAtlas)
 		{
@@ -20,7 +20,7 @@ public class DesktopLauncher {
 			settings.maxHeight = 1024;
 			settings.duplicatePadding = false;
 			settings.debug = drawDebugOutline;
-			TexturePacker.process(settings, "assetsraw/images", "../core/assets/images", "canyonbunny.pack");
+			TexturePacker.process(settings, "assetsraw/images", "../core/assets/images", "pusheen_world.pack");
 		}
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "canyonBunny";
