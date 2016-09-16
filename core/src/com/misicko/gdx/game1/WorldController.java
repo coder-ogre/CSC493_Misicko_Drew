@@ -1,3 +1,7 @@
+/*
+ * Drew Misicko
+ */
+
 package com.misicko.gdx.game1;
 
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,6 +14,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.misicko.gdx.game1.CameraHelper;
+
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 public class WorldController  extends InputAdapter{
 	public CameraHelper cameraHelper;
@@ -33,19 +40,29 @@ public class WorldController  extends InputAdapter{
 	private void initTestObjects() {
 		// Create new array for 5 sprites
 		testSprites = new Sprite[5];
+		/*
 		// Create empty POT-sized Pixmap with 8 bit RGBA pixel data
 		int width = 32;
 		int height = 32;
 		Pixmap pixmap = createProceduralPixmap(width, height);
 		// Create a new texture from pixmap data
 		Texture texture = new Texture(pixmap);
+		*/
+		
+		//Create a list of texture regions
+		Array<TextureRegion> regions = new Array<TextureRegion>();
+		regions.add(Assets.instance.bunny.head);
+		regions.add(Assets.instance.feather.feather);
+		regions.add(Assets.instance.goldCoin.goldCoin);
+		
 		// Create new sprites using the just created texture
 		for (int i = 0; i < testSprites.length; i++) {
-			Sprite spr = new Sprite(texture);
+			Sprite spr = new Sprite(/*texture*/regions.random());
 			// Define sprite size to be 1m x 1m in game world
 			spr.setSize(1, 1);
 			// Set origin to sprite's center
-			spr.setOrigin(spr.getWidth() / 2.0f, spr.getHeight() / 2.0f);
+			spr.setOrigin(spr.getWidth() / 2.0f, 
+				spr.getHeight() / 2.0f);
 			// Calculate random position for sprite
 			float randomX = MathUtils.random(-2.0f, 2.0f);
 			float randomY = MathUtils.random(-2.0f, 2.0f);

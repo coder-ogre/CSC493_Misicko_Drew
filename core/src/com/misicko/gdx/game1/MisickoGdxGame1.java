@@ -1,3 +1,7 @@
+/*
+ * Drew Misicko
+ */
+
 package com.misicko.gdx.game1;
 
 /*
@@ -11,7 +15,9 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-//import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import com.badlogic.gdx.assets.AssetManager;
+import com.misicko.gdx.game1.Assets;
 
 public class MisickoGdxGame1 extends ApplicationAdapter {
 	private static final String TAG =
@@ -26,6 +32,8 @@ public class MisickoGdxGame1 extends ApplicationAdapter {
 	@Override public void create () {
 		// Set Libgdx log level to DEBUG
 				Gdx.app.setLogLevel(Application.LOG_DEBUG);
+				// Load assets
+				Assets.instance.init(new AssetManager());
 				// Initialize controller and renderer
 				worldController = new WorldController();
 				worldRenderer = new WorldRenderer(worldController);
@@ -59,6 +67,7 @@ public class MisickoGdxGame1 extends ApplicationAdapter {
 	}
 	@Override public void dispose () { 
 		worldRenderer.dispose();
+		Assets.instance.dispose();
 	}
 }
 

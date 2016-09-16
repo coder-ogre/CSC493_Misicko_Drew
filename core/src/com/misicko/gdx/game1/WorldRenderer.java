@@ -1,3 +1,7 @@
+/*
+ * Drew Misicko
+ */
+
 package com.misicko.gdx.game1;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
