@@ -5,6 +5,10 @@
 package com.misicko.gdx.game1;
 
 /*
+ * Test change to Game2 branch
+ */
+
+/*
  * In case access is lost, note that
  * Original name of repository was MisickoGDXGame1
  * but will have been changed to CSC493_Misicko_Drew
