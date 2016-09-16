@@ -23,7 +23,7 @@ public class DesktopLauncher {
 			TexturePacker.process(settings, "assetsraw/images", "../core/assets/images", "pusheen_world.pack");
 		}
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "canyonBunny";
+		config.title = "pusheen_worldCfg";
 		config.width = 800;
 		config.height = 480;
 		new LwjglApplication(new MisickoGdxGame1(), config);
