@@ -30,9 +30,10 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetFeather feather;
 	public AssetLevelDecoration levelDecoration;
 	
-	// singleton: preent instantiation from other classes
+	// singleton: prevent instantiation from other classes
 	private Assets () {}
 	
+	// this method initiates and loads the various assets
 	public void init (AssetManager assetManager) {
 		this.assetManager = assetManager;
 		// set asset manager error handler
@@ -82,8 +83,11 @@ public class Assets implements Disposable, AssetErrorListener {
 				asset.fileName + "'", (Exception) throwable);
 	}
 	
+	// defines the bunny with respect to the atlas
 	public class AssetBunny {
 		public final AtlasRegion head;
+		
+		// constructor. finds region of atlas for the image
 		public AssetBunny (TextureAtlas atlas) {
 			head = atlas.findRegion("bunny_head");
 		}
@@ -115,6 +119,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 	}
 	
+	// these images do not affect gameplay.  they only change the way the world looks
 	public class AssetLevelDecoration {
 		public final AtlasRegion cloud01;
 		public final AtlasRegion cloud02;
@@ -132,5 +137,4 @@ public class Assets implements Disposable, AssetErrorListener {
 			waterOverlay = atlas.findRegion("water_overlay");
 		}
 	}
-	
 }

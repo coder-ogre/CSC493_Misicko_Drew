@@ -14,7 +14,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class WorldRenderer {
+	// moves field of vision around world map to follow player's actions.
+	// orthographic means perspective does not change ostensible relative size
 	private OrthographicCamera camera;
+	// draws the objects
 	private SpriteBatch batch;
 	private WorldController worldController;
 	
