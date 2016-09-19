@@ -18,6 +18,7 @@ import com.misicko.gdx.game1.CameraHelper;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
+//this is one of the classes that deals with assets
 public class WorldController  extends InputAdapter{
 	public CameraHelper cameraHelper;
 	
@@ -51,9 +52,10 @@ public class WorldController  extends InputAdapter{
 		
 		//Create a list of texture regions
 		Array<TextureRegion> regions = new Array<TextureRegion>();
-		regions.add(Assets.instance.bunny.head);
-		regions.add(Assets.instance.feather.feather);
-		regions.add(Assets.instance.goldCoin.goldCoin);
+		regions.add(Assets.instance.pusheen.pusheenRegion);
+		regions.add(Assets.instance.flyCookie.flyCookieRegion);
+		regions.add(Assets.instance.genericPowerup.genericPowerupRegion);
+		regions.add(Assets.instance.instaDeathCookie.instaDeathCookieRegion);
 		
 		// Create new sprites using the just created texture
 		for (int i = 0; i < testSprites.length; i++) {

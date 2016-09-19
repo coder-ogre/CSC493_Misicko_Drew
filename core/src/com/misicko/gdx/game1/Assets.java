@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 
+//this is the main class that deals with assets
 public class Assets implements Disposable, AssetErrorListener {
 	public static final String TAG = Assets.class.getName();
 	
@@ -24,10 +25,11 @@ public class Assets implements Disposable, AssetErrorListener {
 	
 	private AssetManager assetManager;
 	
-	public AssetBunny bunny;
-	public AssetRock rock;
-	public AssetGoldCoin goldCoin;
-	public AssetFeather feather;
+	public AssetPusheen pusheen;
+	//public AssetDirt dirt;
+	public AssetGenericPowerup genericPowerup;
+	public AssetFlyCookie flyCookie;
+	public AssetInstaDeathCookie instaDeathCookie;
 	public AssetLevelDecoration levelDecoration;
 	
 	// singleton: preent instantiation from other classes
@@ -55,10 +57,11 @@ public class Assets implements Disposable, AssetErrorListener {
 	
 	
 	// create game resource objects
-	bunny = new AssetBunny(atlas);
-	rock = new AssetRock(atlas);
-	goldCoin = new AssetGoldCoin(atlas);
-	feather = new AssetFeather(atlas);
+	pusheen = new AssetPusheen(atlas);
+	//dirt = new AssetDirt(atlas);
+	genericPowerup = new AssetGenericPowerup(atlas);
+	flyCookie = new AssetFlyCookie(atlas);
+	instaDeathCookie = new AssetInstaDeathCookie(atlas);
 	levelDecoration = new AssetLevelDecoration(atlas);
 	}
 	
@@ -82,36 +85,42 @@ public class Assets implements Disposable, AssetErrorListener {
 				asset.fileName + "'", (Exception) throwable);
 	}
 	
-	public class AssetBunny {
-		public final AtlasRegion head;
-		public AssetBunny (TextureAtlas atlas) {
-			head = atlas.findRegion("bunny_head");
+	public class AssetPusheen {
+		public final AtlasRegion pusheenRegion;
+		public AssetPusheen (TextureAtlas atlas) {
+			pusheenRegion = atlas.findRegion("scooterPusheen");
 		}
 	}
 	
-	public class AssetRock {
-		public final AtlasRegion edge;
-		public final AtlasRegion middle;
+	/*public class AssetDirt {
+		public final AtlasRegion dirtRegion;
 		
-		public AssetRock (TextureAtlas atlas) {
-			edge = atlas.findRegion("rock_edge");
-			middle = atlas.findRegion("rock_middle");
+		public AssetDirt (TextureAtlas atlas) {
+			dirtRegion = atlas.findRegion("dirt");
+		}
+	}*/
+	
+	public class AssetGenericPowerup {
+		public final AtlasRegion genericPowerupRegion;
+		
+		public AssetGenericPowerup (TextureAtlas atlas) {
+			genericPowerupRegion = atlas.findRegion("genericPowerup");
 		}
 	}
 	
-	public class AssetGoldCoin {
-		public final AtlasRegion goldCoin;
+	public class AssetFlyCookie {
+		public final AtlasRegion flyCookieRegion;
 		
-		public AssetGoldCoin (TextureAtlas atlas) {
-			goldCoin = atlas.findRegion("item_gold_coin");
+		public AssetFlyCookie (TextureAtlas atlas) {
+			flyCookieRegion = atlas.findRegion("fly_cookie");
 		}
 	}
 	
-	public class AssetFeather {
-		public final AtlasRegion feather;
+	public class AssetInstaDeathCookie {
+		public final AtlasRegion instaDeathCookieRegion;
 		
-		public AssetFeather (TextureAtlas atlas) {
-			feather = atlas.findRegion("item_feather");
+		public AssetInstaDeathCookie (TextureAtlas atlas) {
+			instaDeathCookieRegion = atlas.findRegion("instaDeathCookie");
 		}
 	}
 	
