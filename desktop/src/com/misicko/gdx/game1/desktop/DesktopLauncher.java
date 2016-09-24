@@ -20,10 +20,10 @@ public class DesktopLauncher {
 			settings.maxHeight = 1024;
 			settings.duplicatePadding = false;
 			settings.debug = drawDebugOutline;
-			TexturePacker.process(settings, "assetsraw/images", "../core/assets/images", "canyonbunny.pack");
+			TexturePacker.process(settings, "assetsraw/images", "../core/assets/images", "mygame.pack");
 		}
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "canyonBunny";
+		config.title = "myGame";
 		config.width = 800;
 		config.height = 480;
 		new LwjglApplication(new MisickoGdxGame1(), config);

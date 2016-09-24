@@ -24,10 +24,11 @@ public class Assets implements Disposable, AssetErrorListener
 	
 	private AssetManager assetManager;
 	
-	public AssetBunny bunny;
+	public AssetPusheen pusheen;
 	public AssetRock rock;
-	public AssetGoldCoin goldCoin;
-	public AssetFeather feather;
+	public AssetGenericPowerup genericPowerup;
+	public AssetFlyCookie flyCookie;
+	public AssetInstaDeathCookie instaDeathCookie;
 	public AssetLevelDecoration levelDecoration;
 	
 	// singleton: prevent instantiation from other classes
@@ -89,10 +90,11 @@ public class Assets implements Disposable, AssetErrorListener
 			
 		// create game resource objects
 		fonts = new AssetFonts();
-		bunny = new AssetBunny(atlas);
+		pusheen = new AssetPusheen(atlas);
 		rock = new AssetRock(atlas);
-		goldCoin = new AssetGoldCoin(atlas);
-		feather = new AssetFeather(atlas);
+		genericPowerup = new AssetGenericPowerup(atlas);
+		flyCookie = new AssetFlyCookie(atlas);
+		instaDeathCookie = new AssetInstaDeathCookie(atlas);
 		levelDecoration = new AssetLevelDecoration(atlas);
 	}
 	
@@ -121,38 +123,46 @@ public class Assets implements Disposable, AssetErrorListener
 	}
 	
 	// defines the bunny with respect to the atlas
-	public class AssetBunny {
-		public final AtlasRegion head;
+	public class AssetPusheen {
+		public final AtlasRegion pusheenRegion;
 		
 		// constructor. finds region of atlas for the image
-		public AssetBunny (TextureAtlas atlas) {
-			head = atlas.findRegion("bunny_head");
+		public AssetPusheen (TextureAtlas atlas) {
+			pusheenRegion = atlas.findRegion("scooterPusheen");
 		}
 	}
 	
 	public class AssetRock {
-		public final AtlasRegion edge;
-		public final AtlasRegion middle;
+		public final AtlasRegion rockRegion;
 		
 		public AssetRock (TextureAtlas atlas) {
-			edge = atlas.findRegion("rock_edge");
-			middle = atlas.findRegion("rock_middle");
+			rockRegion = atlas.findRegion("rock");
 		}
 	}
 	
-	public class AssetGoldCoin {
-		public final AtlasRegion goldCoin;
+	public class AssetGenericPowerup {
+		public final AtlasRegion genericPowerupRegion;
 		
-		public AssetGoldCoin (TextureAtlas atlas) {
-			goldCoin = atlas.findRegion("item_gold_coin");
+		public AssetGenericPowerup (TextureAtlas atlas) {
+			genericPowerupRegion = atlas.findRegion("genericPowerup");
 		}
 	}
 	
-	public class AssetFeather {
-		public final AtlasRegion feather;
+	
+	
+	public class AssetFlyCookie {
+		public final AtlasRegion flyCookieRegion;
 		
-		public AssetFeather (TextureAtlas atlas) {
-			feather = atlas.findRegion("item_feather");
+		public AssetFlyCookie (TextureAtlas atlas) {
+			flyCookieRegion = atlas.findRegion("flyCookieRegion");
+		}
+	}
+	
+	public class AssetInstaDeathCookie {
+		public final AtlasRegion instaDeathCookieRegion;
+		
+		public AssetInstaDeathCookie (TextureAtlas atlas) {
+			instaDeathCookieRegion = atlas.findRegion("instaDeathCookie");
 		}
 	}
 	
@@ -163,7 +173,7 @@ public class Assets implements Disposable, AssetErrorListener
 		public final AtlasRegion cloud03;
 		public final AtlasRegion mountainLeft;
 		public final AtlasRegion mountainRight;
-		public final AtlasRegion waterOverlay;
+		public final AtlasRegion lavaOverlay;
 		
 		public AssetLevelDecoration (TextureAtlas atlas) {
 			cloud01 = atlas.findRegion("cloud01");
@@ -171,7 +181,7 @@ public class Assets implements Disposable, AssetErrorListener
 			cloud03 = atlas.findRegion("cloud03");
 			mountainLeft = atlas.findRegion("mountain_left");
 			mountainRight =	 atlas.findRegion("mountain_right");
-			waterOverlay = atlas.findRegion("water_overlay");
+			lavaOverlay = atlas.findRegion("lava_overlay");
 		}
 	}
 }

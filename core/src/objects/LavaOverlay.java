@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.misicko.gdx.game1.Assets;
 
-public class WaterOverlay extends AbstractGameObject
+public class LavaOverlay extends AbstractGameObject
 {
 	private TextureRegion regWaterOverlay;
 	private float length;
 	
-	public WaterOverlay(float length)
+	public LavaOverlay(float length)
 	{
 		this.length = length;
 		init();
@@ -23,7 +23,7 @@ public class WaterOverlay extends AbstractGameObject
 	{
 		dimension.set(length * 10, 3);
 		
-		regWaterOverlay = Assets.instance.levelDecoration.waterOverlay;
+		regWaterOverlay = Assets.instance.levelDecoration.lavaOverlay;
 		
 		origin.x = -dimension.x / 2;
 	}

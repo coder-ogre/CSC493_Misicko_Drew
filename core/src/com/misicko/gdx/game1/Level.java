@@ -8,7 +8,7 @@ import objects.AbstractGameObject;
 import objects.Clouds;
 import objects.Mountains;
 import objects.Rock;
-import objects.WaterOverlay;
+import objects.LavaOverlay;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -51,7 +51,7 @@ public class Level
 	// decoration
 	public Clouds clouds;
 	public Mountains mountains;
-	public WaterOverlay waterOverlay;
+	public LavaOverlay waterOverlay;
 	
 	public Level(String filename)
 	{
@@ -136,7 +136,7 @@ public class Level
 		clouds.position.set(0, 2);
 		mountains = new Mountains(pixmap.getWidth());
 		mountains.position.set(-1, -1);
-		waterOverlay = new WaterOverlay(pixmap.getWidth());
+		waterOverlay = new LavaOverlay(pixmap.getWidth());
 		waterOverlay.position.set(0, -3.75f);
 		
 		// free memory

@@ -9,8 +9,7 @@ import com.misicko.gdx.game1.Assets;
 
 public class Rock extends AbstractGameObject
 {
-	private TextureRegion regEdge;
-	private TextureRegion regMiddle;
+	private TextureRegion rockRegion;
 	
 	private int length;
 	
@@ -23,8 +22,7 @@ public class Rock extends AbstractGameObject
 	{
 		dimension.set(1, 1.5f);
 		
-		regEdge = Assets.instance.rock.edge;
-		regMiddle = Assets.instance.rock.middle;
+		rockRegion = Assets.instance.rock.rockRegion;
 		
 		// Start length of this rock
 		setLength(1);
@@ -49,7 +47,7 @@ public class Rock extends AbstractGameObject
 		float relY = 0;
 		
 		// Draw left edge
-		reg = regEdge;
+		reg = rockRegion;
 		relX -= dimension.x / 4;
 		batch.draw(reg.getTexture(), position.x + relX, position.y +
 				relY, origin.x, origin.y, dimension.x / 4, dimension.y,
@@ -58,7 +56,7 @@ public class Rock extends AbstractGameObject
 		
 		// Draw middle
 		relX = 0;
-		reg = regMiddle;
+		reg = rockRegion;
 		for(int i = 0; i < length; i++)
 		{
 			batch.draw(reg.getTexture(), position.x + relX, position.y
@@ -69,7 +67,7 @@ public class Rock extends AbstractGameObject
 		}
 		
 		// Draw right edge
-		reg = regEdge;
+		reg = rockRegion;
 		batch.draw(reg.getTexture(), position.x + relX, position.y +
 			relY, origin.x + dimension.x / 8, origin.y, dimension.x / 4,
 			dimension.y, scale.x, scale.y, rotation, reg.getRegionX(),

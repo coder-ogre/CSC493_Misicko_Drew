@@ -1,83 +1,97 @@
 
-canyonbunny.pack.png
+mygame.pack.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-bunny_head
-  rotate: false
-  xy: 2, 44
-  size: 122, 82
-  orig: 122, 82
-  offset: 0, 0
-  index: -1
 cloud01
   rotate: false
-  xy: 355, 406
+  xy: 529, 433
   size: 178, 78
   orig: 178, 78
   offset: 0, 0
   index: -1
 cloud02
   rotate: false
-  xy: 155, 396
+  xy: 329, 423
   size: 198, 88
   orig: 198, 88
   offset: 0, 0
   index: -1
 cloud03
   rotate: false
-  xy: 155, 309
+  xy: 329, 336
   size: 182, 85
   orig: 182, 85
   offset: 0, 0
   index: -1
-item_feather
+fly_cookie
   rotate: false
-  xy: 2, 2
-  size: 46, 40
-  orig: 46, 40
+  xy: 1004, 957
+  size: 8, 8
+  orig: 8, 8
   offset: 0, 0
   index: -1
-item_gold_coin
+genericPowerup
   rotate: false
-  xy: 535, 428
-  size: 56, 56
-  orig: 56, 56
+  xy: 1014, 957
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+grass
+  rotate: false
+  xy: 2, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+instaDeathCookie
+  rotate: false
+  xy: 513, 413
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+lava
+  rotate: false
+  xy: 529, 423
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+lava_overlay
+  rotate: false
+  xy: 329, 174
+  size: 32, 160
+  orig: 32, 160
   offset: 0, 0
   index: -1
 mountain_left
   rotate: false
-  xy: 2, 713
+  xy: 2, 740
   size: 1000, 225
   orig: 1000, 225
   offset: 0, 0
   index: -1
 mountain_right
   rotate: false
-  xy: 2, 486
+  xy: 2, 513
   size: 1000, 225
   orig: 1000, 225
   offset: 0, 0
   index: -1
-rock_edge
+rock
   rotate: false
-  xy: 90, 128
-  size: 63, 356
-  orig: 63, 356
+  xy: 709, 503
+  size: 8, 8
+  orig: 8, 8
   offset: 0, 0
   index: -1
-rock_middle
+scooterPusheen
   rotate: false
-  xy: 2, 128
-  size: 86, 356
-  orig: 86, 356
-  offset: 0, 0
-  index: -1
-water_overlay
-  rotate: false
-  xy: 155, 147
-  size: 32, 160
-  orig: 32, 160
+  xy: 2, 12
+  size: 325, 499
+  orig: 325, 499
   offset: 0, 0
   index: -1
