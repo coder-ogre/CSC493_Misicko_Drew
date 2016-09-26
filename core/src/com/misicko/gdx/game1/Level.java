@@ -24,8 +24,9 @@ public class Level
 		EMPTY(0, 0, 0), // black
 		ROCK(0, 255, 0), // green
 		PLAYER_SPAWNPOINT(255, 255, 255), // white
-		ITEM_FEATHER(255, 0, 255), // purple
-		ITEM_GOLD_COIN(255, 255, 0); // yellow
+		ITEM_FLY_COOKIE(255, 0, 255), // purple
+		ITEM_GENERIC_POWERUP(255, 255, 0), // yellow
+		LAVA(255, 0, 0);
 		
 		private int color;
 		
@@ -108,12 +109,12 @@ public class Level
 					
 				}
 				// feather
-				else if(BLOCK_TYPE.ITEM_FEATHER.sameColor(currentPixel))
+				else if(BLOCK_TYPE.ITEM_FLY_COOKIE.sameColor(currentPixel))
 				{
 					
 				}
 				// gold coin
-				else if(BLOCK_TYPE.ITEM_GOLD_COIN.sameColor(currentPixel))
+				else if(BLOCK_TYPE.ITEM_GENERIC_POWERUP.sameColor(currentPixel))
 				{
 					
 				}
