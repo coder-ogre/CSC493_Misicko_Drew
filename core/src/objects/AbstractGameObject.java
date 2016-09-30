@@ -2,6 +2,15 @@
  * Drew Misicko
  */
 
+package objects;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector;
+import com.badlogic.gdx.math.Vector2;
+
+//import added in assignment 6
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.MathUtils;
 
 public abstract class AbstractGameObject
 {
