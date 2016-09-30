@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.Align;
 
 public class WorldRenderer 
 {
@@ -78,10 +79,14 @@ public class WorldRenderer
 		// draw collected gold coins icon + text
 		// (anchored to top left edge)
 		renderGuiScore(batch);
+		// draw collected feather icon (anchored to top left edge) from assignment 6
+		renderGuiFeatherPowerup(batch);
 		// draw extra lives icon + text (anchored to top right edge)
 		renderGuiExtraLive(batch);
 		// draw FPS text (anchored to bottom right edge)
 		renderGuiFpsCounter(batch);
+		// draw game over text
+		renderGuiGameOverMessage(batch);
 		batch.end();
 	}
 	
@@ -136,6 +141,47 @@ public class WorldRenderer
 		}
 		fpsFont.draw(batch, "FPS: " + fps, x, y);
 		fpsFont.setColor(1, 1, 1, 1); // white
+	}
+	
+	// renders game over message, from assignment 6
+	private void renderGuiGameOverMessage(SpriteBatch batch)
+	{
+		float x = cameraGUI.viewportWidth / 2;
+		float y = cameraGUI.viewportHeight / 2;
+		if(worldController.isGameOver()) 
+		{
+			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
+			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+			fontGameOver.drawMultiLine(batch, "GAME OVER", x, y, 0,
+				BitmapFont.Align.CENTER);
+			fontGameOver.setColor(1, 1, 1, 1);
+		}
+	}
+	
+	//renders feather powerup HUD changes, from assignment 6
+	private void renderGuiFeatherPowerup(SpriteBatch batch)
+	{
+		float x = -15;
+		float y = 30;
+		float timeLeftFeatherPowerup = worldController.level.bunnyHead.timeLeftFeatherPowerup;
+		if(timeLeftFeatherPowerup > 0)
+		{
+			// Start icon fade in/out if the left power-up time
+			// is less than 4 seconds.  The fade interfal is set
+			// to 5 changes per second.
+			if(timeLeftFeatherPowerup < 4)
+			{
+				if(((int)(timeLeftFeatherPowerup * 5) % 2) != 0)
+				{
+					batch.setColor(1, 1, 1, 0.5f);
+				}
+			}
+			batch.draw(Assets.instance.feather.feather,
+				x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+			batch.setColor(1, 1, 1, 1);
+			Assets.instance.fonts.defaultSmall.draw(batch,
+				"" + (int)timeLeftFeatherPowerup, x + 60, y + 57);
+		}
 	}
 	
 	public void resize (int width, int height)

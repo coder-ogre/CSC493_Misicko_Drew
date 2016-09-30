@@ -33,6 +33,10 @@ public class Rock extends AbstractGameObject
 	public void setLength(int length)
 	{
 		this.length = length;
+		
+		//this part added in assignment 6 to ensure bounding box size is adjusted when rock length is changed
+		bounds.set(0, 0, dimension.x * length, dimension.y);
+		//end of code added from assignment 6
 	}
 	
 	public void increaseLength(int amount)

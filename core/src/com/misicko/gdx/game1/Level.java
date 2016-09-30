@@ -15,9 +15,21 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
+//imports added from assignment 6
+import objects.BunnyHead;
+import objects.Feather;
+import objects.GoldCoin;
+//end of imports from assignment 6
+
 public class Level 
 {
 	public static final String TAG = Level.class.getName();
+	
+	//instance vars from assignment 6
+	public BunnyHead bunnyHead;
+	public Array<GoldCoin> goldCoins;
+	public Array<Feather> feathers;
+	//end of istance vars from assignment 6
 	
 	public enum BLOCK_TYPE
 	{
@@ -60,8 +72,14 @@ public class Level
 	
 	private void init(String filename)
 	{
+		// player character
+		bunnyHead = null; // from assignment 6
+		
 		// objects
 		rocks = new Array<Rock>();
+		
+		goldCoins = new Array<GoldCoin>();//added from assignment 6
+		feathers = new Array<Feather>(); // added from assignment 6
 		
 		// load image file that represents the level data
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
@@ -105,17 +123,32 @@ public class Level
 				// player spawn point
 				else if(BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel))
 				{
-					
+					//code added in assignment 6
+					obj = new BunnyHead();
+					offsetHeight = -3.0f;
+					obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+					bunnyHead = (BunnyHead)obj;
+					//end of code added in assignment 6
 				}
 				// feather
 				else if(BLOCK_TYPE.ITEM_FEATHER.sameColor(currentPixel))
 				{
-					
+					//code added in assignment 6
+					obj = new Feather();
+					offsetHeight = -1.5f;
+					obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+					feathers.add((Feather)obj);
+					//end of code added in assignment 6
 				}
 				// gold coin
 				else if(BLOCK_TYPE.ITEM_GOLD_COIN.sameColor(currentPixel))
 				{
-					
+					//code added in assignment 6
+					obj = new GoldCoin();
+					offsetHeight = -1.5f;
+					obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+					goldCoins.add((GoldCoin)obj);
+					//end of code added in chapter 6
 				}
 				//unknown object/pixel color
 				else
@@ -153,10 +186,34 @@ public class Level
 		for(Rock rock : rocks)
 			rock.render(batch);
 		
+		// code added in assignment 6 for actor rendering
+		//Draw Gold Coins
+		for(GoldCoin goldCoin : goldCoins)
+			goldCoin.render(batch);
+		// Draw Feathers
+		for (Feather feather: feathers)
+			feather.render(batch);
+		// Draw Player Character
+		bunnyHead.render(batch);
+		//end of code added in assignment 6
+		
 		// Draw Water Overlay
 		waterOverlay.render(batch);
 		
 		// Draw Clouds
 		clouds.render(batch);
+	}
+	
+	//updates elements in level, from assignment 6
+	public void update(float deltaTime)
+	{
+		bunnyHead.update(deltaTime);
+		for(Rock rock : rocks)
+			rock.update(deltaTime);
+		for(GoldCoin goldCoin : goldCoins)
+			goldCoin.update(deltaTime);
+		for(Feather feather : feathers)
+			feather.update(deltaTime);
+		clouds.update(deltaTime);
 	}
 }
