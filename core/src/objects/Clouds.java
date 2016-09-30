@@ -90,5 +90,4 @@ public class Clouds extends AbstractGameObject
 		for(Cloud cloud : clouds)
 			cloud.render(batch);
 	}
-
 }

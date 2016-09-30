@@ -25,7 +25,7 @@ cloud03
   orig: 182, 85
   offset: 0, 0
   index: -1
-fly_cookie
+dirt
   rotate: false
   xy: 1004, 957
   size: 8, 8
@@ -60,7 +60,7 @@ lava
   orig: 8, 8
   offset: 0, 0
   index: -1
-lava_overlay
+lavaOverlay
   rotate: false
   xy: 329, 174
   size: 32, 160
@@ -81,17 +81,17 @@ mountain_right
   orig: 1000, 225
   offset: 0, 0
   index: -1
-rock
-  rotate: false
-  xy: 709, 503
-  size: 8, 8
-  orig: 8, 8
-  offset: 0, 0
-  index: -1
 scooterPusheen
   rotate: false
   xy: 2, 12
   size: 325, 499
   orig: 325, 499
+  offset: 0, 0
+  index: -1
+superCookie
+  rotate: false
+  xy: 709, 503
+  size: 8, 8
+  orig: 8, 8
   offset: 0, 0
   index: -1

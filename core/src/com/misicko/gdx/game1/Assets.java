@@ -25,9 +25,9 @@ public class Assets implements Disposable, AssetErrorListener
 	private AssetManager assetManager;
 	
 	public AssetPusheen pusheen;
-	public AssetRock rock;
+	public AssetDirt dirt;
 	public AssetGenericPowerup genericPowerup;
-	public AssetFlyCookie flyCookie;
+	public AssetSuperCookie superCookie;
 	public AssetInstaDeathCookie instaDeathCookie;
 	public AssetLevelDecoration levelDecoration;
 	
@@ -91,9 +91,9 @@ public class Assets implements Disposable, AssetErrorListener
 		// create game resource objects
 		fonts = new AssetFonts();
 		pusheen = new AssetPusheen(atlas);
-		rock = new AssetRock(atlas);
+		dirt = new AssetDirt(atlas);
 		genericPowerup = new AssetGenericPowerup(atlas);
-		flyCookie = new AssetFlyCookie(atlas);
+		superCookie = new AssetSuperCookie(atlas);
 		instaDeathCookie = new AssetInstaDeathCookie(atlas);
 		levelDecoration = new AssetLevelDecoration(atlas);
 	}
@@ -122,7 +122,7 @@ public class Assets implements Disposable, AssetErrorListener
 				asset.fileName + "'", (Exception) throwable);
 	}
 	
-	// defines the bunny with respect to the atlas
+	// defines the pusheen with respect to the atlas
 	public class AssetPusheen {
 		public final AtlasRegion pusheenRegion;
 		
@@ -132,11 +132,11 @@ public class Assets implements Disposable, AssetErrorListener
 		}
 	}
 	
-	public class AssetRock {
-		public final AtlasRegion rockRegion;
+	public class AssetDirt {
+		public final AtlasRegion dirtRegion;
 		
-		public AssetRock (TextureAtlas atlas) {
-			rockRegion = atlas.findRegion("rock");
+		public AssetDirt (TextureAtlas atlas) {
+			dirtRegion = atlas.findRegion("dirt");
 		}
 	}
 	
@@ -150,11 +150,11 @@ public class Assets implements Disposable, AssetErrorListener
 	
 	
 	
-	public class AssetFlyCookie {
-		public final AtlasRegion flyCookieRegion;
+	public class AssetSuperCookie {
+		public final AtlasRegion superCookieRegion;
 		
-		public AssetFlyCookie (TextureAtlas atlas) {
-			flyCookieRegion = atlas.findRegion("flyCookieRegion");
+		public AssetSuperCookie (TextureAtlas atlas) {
+			superCookieRegion = atlas.findRegion("superCookie");
 		}
 	}
 	
@@ -181,7 +181,7 @@ public class Assets implements Disposable, AssetErrorListener
 			cloud03 = atlas.findRegion("cloud03");
 			mountainLeft = atlas.findRegion("mountain_left");
 			mountainRight =	 atlas.findRegion("mountain_right");
-			lavaOverlay = atlas.findRegion("lava_overlay");
+			lavaOverlay = atlas.findRegion("lavaOverlay");
 		}
 	}
 }
