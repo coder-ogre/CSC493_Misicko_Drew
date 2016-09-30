@@ -152,8 +152,8 @@ public class WorldRenderer
 		{
 			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
 			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
-			fontGameOver.drawMultiLine(batch, "GAME OVER", x, y, 0,
-				BitmapFont.Align.CENTER);
+			fontGameOver.draw(batch, "GAME OVER", x, y, 0,
+				Align.center, false);//2compile, had to change this, as mentioned on stackoverflow and d2l
 			fontGameOver.setColor(1, 1, 1, 1);
 		}
 	}
