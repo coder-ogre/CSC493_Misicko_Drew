@@ -18,6 +18,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.misicko.gdx.game1.CameraHelper;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.Game; 
+import screens.MenuScreen;
 
 //imports added in assignment 6
 import com.badlogic.gdx.math.Rectangle;
@@ -29,11 +31,20 @@ import objects.Rock;
 //end of imports from assignment 6
 
 public class WorldController  extends InputAdapter{
+	private Game game;
+	
 	public CameraHelper cameraHelper;
 	
 	public Level level;
 	public int lives;
 	public int score;
+	
+	//switches back to the menu screen
+	private void backToMenu ()
+	{
+		// switch to menu screen
+		game.setScreen(new MenuScreen(game));
+	}
 	
 	//instance vars from assignment 6
 		//Rectangles for collision detection
@@ -105,7 +116,8 @@ public class WorldController  extends InputAdapter{
 	// public Sprite[] testSprites;
 	// public int selectedSprite;
 	
-	public WorldController () {
+	public WorldController (Game game) {
+		this.game = game;
 		init();
 	}
 	
@@ -177,7 +189,8 @@ public class WorldController  extends InputAdapter{
 		{
 			timeLeftGameOverDelay -= deltaTime;
 			if(timeLeftGameOverDelay < 0)
-				init();
+				//init();
+				backToMenu();
 		}
 		else
 		{
@@ -302,6 +315,12 @@ public class WorldController  extends InputAdapter{
 			Gdx.app.debug(TAG, "Camera follow enabled: " +
 				cameraHelper.hasTarget());
 		}*/
+		
+		// Back to Menu
+		else if (keycode == Keys.ESCAPE || keycode == Keys.BACK)
+		{
+			backToMenu();
+		}
 		
 		return false;
 	}

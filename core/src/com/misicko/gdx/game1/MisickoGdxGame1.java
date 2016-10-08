@@ -11,22 +11,24 @@ package com.misicko.gdx.game1;
  * 
  */
 
+import screens.MenuScreen;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.misicko.gdx.game1.Assets;
+import com.badlogic.gdx.Game;
 
-public class MisickoGdxGame1 extends ApplicationAdapter {
-	private static final String TAG =
+public class MisickoGdxGame1 extends /*ApplicationAdapter*/ Game {
+	/*private static final String TAG =
 			MisickoGdxGame1.class.getName();
 	
 	private WorldController worldController;
 	private WorldRenderer worldRenderer;
 	
-	private boolean paused;
+	private boolean paused;*/
 	
 	
 	@Override public void create () {
@@ -34,13 +36,16 @@ public class MisickoGdxGame1 extends ApplicationAdapter {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		// Load assets
 		Assets.instance.init(new AssetManager());
-		// Initialize controller and renderer
-		worldController = new WorldController();
-		worldRenderer = new WorldRenderer(worldController);
-		// Game world is active on start
-		paused = false;
+		///////////// Initialize controller and renderer
+		/////////////worldController = new WorldController(Game game);
+		/////////////worldRenderer = new WorldRenderer(worldController);
+		///////////// Game world is active on start
+		/////////////paused = false;
+		// Start game at menu screen
+		setScreen(new MenuScreen(this));
 	}
-	@Override public void render() {
+	
+	/*@Override public void render() {
 		// Do not update game world when paused.
 		if (!paused) {
 			// Update game world by the time that has passed
@@ -68,5 +73,5 @@ public class MisickoGdxGame1 extends ApplicationAdapter {
 	@Override public void dispose () { 
 		worldRenderer.dispose();
 		Assets.instance.dispose();
-	}
+	}*/
 }
