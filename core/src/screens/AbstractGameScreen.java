@@ -1,0 +1,37 @@
+/*
+ * Drew Misicko
+ */
+
+package screens;
+
+import com.misicko.gdx.game1.Assets;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+
+// provides methods to MenuScren and GameScreen, and ways to toggle between the two
+public abstract class AbstractGameScreen implements Screen
+{
+	protected Game game;
+	
+	public AbstractGameScreen(Game game)
+	{
+		this.game = game;
+	}
+	
+	public abstract void render(float deltaTime);
+	public abstract void resize (int width, int height);
+	public abstract void show();
+	public abstract void hide();
+	public abstract void pause();
+	
+	public void resume()
+	{
+		Assets.instance.init(new AssetManager());
+	}
+	
+	public void dispose() {
+		Assets.instance.dispose();
+	}
+}

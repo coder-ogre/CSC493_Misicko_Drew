@@ -10,24 +10,29 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import com.misicko.gdx.game1.CameraHelper;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 //imports added in assignment 6
 import com.badlogic.gdx.math.Rectangle;
-import objects.Pusheen;
-import objects.Pusheen.JUMP_STATE;
-import objects.SuperCookie;
-import objects.GenericPowerup;
+
 import objects.Dirt;
+import objects.GenericPowerup;
+import objects.Pusheen;
+import objects.SuperCookie;
+import objects.Pusheen.JUMP_STATE;
 //end of imports from assignment 6
+import util.CameraHelper;
+import util.Constants;
 
 public class WorldController  extends InputAdapter{
 	public CameraHelper cameraHelper;
+	
+	private Game game;
 	
 	public Level level;
 	public int lives;
@@ -100,7 +105,8 @@ public class WorldController  extends InputAdapter{
 	private static final String TAG =
 			WorldController.class.getName();
 	
-	public WorldController () {
+	public WorldController (Game game) {
+		this.game = game;
 		init();
 	}
 	

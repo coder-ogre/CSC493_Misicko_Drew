@@ -4,22 +4,22 @@
 
 package com.misicko.gdx.game1;
 
-import objects.AbstractGameObject;
-import objects.Clouds;
-import objects.Mountains;
-import objects.Dirt;
-import objects.LavaOverlay;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 //imports added from assignment 6
+
+
+import objects.AbstractGameObject;
+import objects.Clouds;
+import objects.Dirt;
+import objects.GenericPowerup;
+import objects.LavaOverlay;
+import objects.Mountains;
 import objects.Pusheen;
 import objects.SuperCookie;
-import objects.GenericPowerup;
-//end of imports from assignment 6
 
 public class Level 
 {

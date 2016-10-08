@@ -5,17 +5,19 @@
 package objects;
 
 //beginning of imports added in assignment 6
+import util.Constants;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.misicko.gdx.game1.Assets;
-import com.misicko.gdx.game1.Constants;
-//end of imports added in assignment 6
+import util.CharacterSkin;
+import util.GamePreferences;
 
 //class added in assignment 6 with rest of the actors
 public class Pusheen extends AbstractGameObject
 {
-	//instance vars added in assignment 6
+	//instance vars added in assignment 6S
 	public static final String TAG = Pusheen.class.getName();
 	
 	private final float JUMP_TIME_MAX = 0.6f;// changed from .3f to make pusheen jump twice as high
@@ -121,6 +123,10 @@ public class Pusheen extends AbstractGameObject
 	{
 		// TODO Auto-generated method stub
 		TextureRegion reg = null;
+		
+		// Apply Skin Color
+		batch.setColor(
+			CharacterSkin.values()[GamePreferences.instance.charSkin].getColor());
 		
 		// Set special color when game object has a superCookie
 		if(hasSuperCookie)

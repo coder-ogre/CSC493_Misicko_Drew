@@ -10,7 +10,7 @@ import com.misicko.gdx.game1.Assets;
 
 public class LavaOverlay extends AbstractGameObject
 {
-	private TextureRegion regWaterOverlay;
+	private TextureRegion regLavaOverlay;
 	private float length;
 	
 	public LavaOverlay(float length)
@@ -23,7 +23,7 @@ public class LavaOverlay extends AbstractGameObject
 	{
 		dimension.set(length * 10, 3);
 		
-		regWaterOverlay = Assets.instance.levelDecoration.lavaOverlay;
+		regLavaOverlay = Assets.instance.levelDecoration.lavaOverlay;
 		
 		origin.x = -dimension.x / 2;
 	}
@@ -33,7 +33,7 @@ public class LavaOverlay extends AbstractGameObject
 		// TODO Auto-generated method stub
 		
 		TextureRegion reg = null;
-		reg = regWaterOverlay;
+		reg = regLavaOverlay;
 		batch.draw(reg.getTexture(), position.x + origin.x, position.y
 			+ origin.y, origin.x, origin.y, dimension.x, dimension.y, scale.x,
 			scale.y, rotation, reg.getRegionX(), reg.getRegionY(),

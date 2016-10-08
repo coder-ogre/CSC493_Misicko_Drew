@@ -3,7 +3,7 @@
  */
 
 
-package com.misicko.gdx.game1;
+package util;
 
 public class Constants {
 	// Visible game world is 5 meters wide
@@ -32,4 +32,17 @@ public class Constants {
 	
 	// Delay after game over
 	public static final float TIME_DELAY_GAME_OVER = 3;
+	
+	// Menu UI stuff
+	public static final String TEXTURE_ATLAS_UI = 
+		"images/canyonbunny-ui.pack";
+	public static final String TEXTURE_ATLAS_LIBGDX_UI =
+		"images/uiskin.atlas";
+	// Location of description file for skins
+	public static final String SKIN_LIBGDX_UI =
+		"images/uiskin.json";
+	public static final String SKIN_SCOOTERPUSHEEN_UI =
+		"images/canyonbunny-ui.json";
+	//File location for preferences
+	 public static final String PREFERENCES = "canyonbunny.prefs";
 }
