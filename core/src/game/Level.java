@@ -2,13 +2,7 @@
  * Drew Misicko
  */
 
-package com.misicko.gdx.game1;
-
-import objects.AbstractGameObject;
-import objects.Clouds;
-import objects.Mountains;
-import objects.Rock;
-import objects.WaterOverlay;
+package game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -16,10 +10,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 //imports added from assignment 6
+
+
+import objects.AbstractGameObject;
 import objects.BunnyHead;
+import objects.Clouds;
 import objects.Feather;
 import objects.GoldCoin;
-//end of imports from assignment 6
+import objects.Mountains;
+import objects.Rock;
+import objects.WaterOverlay;
 
 public class Level 
 {

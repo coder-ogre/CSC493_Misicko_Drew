@@ -4,6 +4,9 @@
 
 package screens;
 
+import game.Assets;
+import util.Constants;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -26,8 +29,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.misicko.gdx.game1.Assets;
-import com.misicko.gdx.game1.Constants;
 import com.misicko.gdx.game1.CharacterSkin;
 import com.misicko.gdx.game1.GamePreferences;
 

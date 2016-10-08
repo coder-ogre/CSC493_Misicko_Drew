@@ -2,7 +2,7 @@
  * Drew Misicko
  */
 
-package com.misicko.gdx.game1;
+package util;
 
 public class Constants {
 	// Visible game world is 5 meters wide

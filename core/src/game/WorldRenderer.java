@@ -2,7 +2,9 @@
  * Drew Misicko
  */
 
-package com.misicko.gdx.game1;
+package game;
+
+import util.Constants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;

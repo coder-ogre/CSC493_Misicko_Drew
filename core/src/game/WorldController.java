@@ -2,9 +2,7 @@
  * Drew Misicko
  */
 
-package com.misicko.gdx.game1;
-
-import objects.Rock;
+package game;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -15,20 +13,24 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import com.misicko.gdx.game1.CameraHelper;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.Game; 
+
 import screens.MenuScreen;
+import util.CameraHelper;
+import util.Constants;
+
+
 
 //imports added in assignment 6
 import com.badlogic.gdx.math.Rectangle;
+
 import objects.BunnyHead;
-import objects.BunnyHead.JUMP_STATE;
 import objects.Feather;
 import objects.GoldCoin;
 import objects.Rock;
-//end of imports from assignment 6
+import objects.BunnyHead.JUMP_STATE;
 
 public class WorldController  extends InputAdapter{
 	private Game game;
