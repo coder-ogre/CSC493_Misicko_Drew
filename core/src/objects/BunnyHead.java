@@ -12,6 +12,9 @@ import com.misicko.gdx.game1.Assets;
 import com.misicko.gdx.game1.Constants;
 //end of imports added in assignment 6
 
+import com.misicko.gdx.game1.CharacterSkin;
+import com.misicko.gdx.game1.GamePreferences;
+
 //class added in assignment 6 with rest of the actors
 public class BunnyHead extends AbstractGameObject
 {
@@ -120,6 +123,11 @@ public class BunnyHead extends AbstractGameObject
 	{
 		// TODO Auto-generated method stub
 		TextureRegion reg = null;
+		
+		// Apply Skin Color
+		batch.setColor(
+			CharacterSkin.values()[GamePreferences.instance.charSkin]
+			.getColor());
 		
 		// Set special color when game object has a feather power-up
 		if(hasFeatherPowerup)

@@ -28,6 +28,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.misicko.gdx.game1.Assets;
 import com.misicko.gdx.game1.Constants;
+import com.misicko.gdx.game1.CharacterSkin;
+import com.misicko.gdx.game1.GamePreferences;
 
 //menu screen with different options, and has a picture for background
 public class MenuScreen extends AbstractGameScreen
@@ -36,6 +38,7 @@ public class MenuScreen extends AbstractGameScreen
 	
 	private Stage stage;
 	private Skin skinCanyonBunny;
+	private Skin skinLibgdx;
 	
 	// menu
 	private Image imgBackground;
@@ -95,6 +98,9 @@ public class MenuScreen extends AbstractGameScreen
 		skinCanyonBunny = new Skin(
 			Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI),
 			new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
+		skinLibgdx = new Skin
+			(Gdx.files.internal(Constants.SKIN_LIBGDX_UI),
+				new TextureAtlas(Constants.TEXTURE_ATLAS_LIBGDX_UI));
 		
 		// build all layers
 		Table layerBackground = buildBackgroundLayer();
@@ -208,16 +214,237 @@ public class MenuScreen extends AbstractGameScreen
 		game.setScreen(new GameScreen(game));
 	}
 	
-	// the onOptionsClicked() method is intentionally left empty for the moment
+	// this method allows the Options Window to be opened. The settings are
+	// loaded before the Options window is shown so that the widgets will always
+	// be correctly initialized.
 	private void onOptionsClicked()
 	{
+		loadSettings();
+		btnMenuPlay.setVisible(false);
+		btnMenuOptions.setVisible(false);
+		winOptions.setVisible(true);
 		
 	}
 	
+	// this method builds a table containing the audio settings. first, a label showing
+	// the text Audio in an orange color is added. Then, a checkbox (another label showing
+	// the text Sound) and a slider are added in the next row for the sound settings. This
+	// is also done for th emusic settings in the same way
+	private Table buildOptWinAudioSettings()
+	{
+		Table tbl = new Table();
+		// + Title: "Audio"
+		tbl.pad(10, 10, 0, 10);
+		tbl.add(new Label("Audio", skinLibgdx, "default-font",
+			Color.ORANGE)).colspan(3);
+		tbl.row();
+		tbl.columnDefaults(0).padRight(10);
+		tbl.columnDefaults(1).padRight(10);
+		// + Checkbox, "Sound" label, sound volume slider
+		chkSound = new CheckBox("", skinLibgdx);
+		tbl.add(chkSound);
+		tbl.add(new Label("Sound", skinLibgdx));
+		sldSound = new Slider(0.0f, 1.0f, 0.1f, false, skinLibgdx);
+		tbl.add(sldSound);
+		tbl.row();
+		// + Checkbox, "Music" label, music volume slider
+		chkMusic = new CheckBox("", skinLibgdx);
+		tbl.add(chkMusic);
+		tbl.add(new Label("Music", skinLibgdx));
+		sldMusic = new Slider(0.0f, 1.0f, 0.1f, false, skinLibgdx);
+		tbl.add(sldMusic);
+		tbl.row();
+		return tbl;
+	}
+	
+	// this method builds a table that contains the character skin selection via
+	// a drop-down box and a preview image next to it. A ChangeListener method is 
+	// added to the drop-down widget selCharSkin so that the setting and preview
+	// image is updated by calling onCharSkinSelected() whenever a new selection occurs.
+	private Table buildOptWinSkinSelection()
+	{
+		Table tbl = new Table();
+		// + Title: "Character Skin"
+		tbl.pad(10, 10, 0, 10);
+		tbl.add(new Label("Character Skin", skinLibgdx,
+			"default-font", Color.ORANGE)).colspan(2);
+		tbl.row();
+		// + Drop down box filled with skin items
+		selCharSkin = new SelectBox<CharacterSkin>(skinLibgdx);
+		
+		selCharSkin.setItems(CharacterSkin.values());
+		
+		selCharSkin.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				onCharSkinSelected(((SelectBox<CharacterSkin>)
+					actor).getSelectedIndex());
+			}
+		});
+		tbl.add(selCharSkin).width(120).padRight(20);
+		// + Skin preview image
+		imgCharSkin = new Image(Assets.instance.bunny.head);
+		tbl.add(imgCharSkin).width(50).height(50);
+		return tbl;
+	}
+	
+	// this method builds  table that contains the debug settings. At
+	// the moment, we only have one checkbox here that allows the player
+	// to toggle and checks whether the FPS Counter is shown or not.
+	private Table buildOptWinDebug()
+	{
+		Table tbl = new Table();
+		// + Title: "Debug"
+		tbl.pad(10, 10, 0, 10);
+		tbl.add(new Label("Debug", skinLibgdx, "default-font",
+			Color.RED)).colspan(3);
+		tbl.row();
+		tbl.columnDefaults(0).padRight(10);
+		tbl.columnDefaults(1).padRight(10);
+		// + Checkbox, "Show FPS Counter" label
+		chkShowFpsCounter = new CheckBox("", skinLibgdx);
+		tbl.add(new Label("Show FPS Counter", skinLibgdx));
+		tbl.add(chkShowFpsCounter);
+		tbl.row();
+		return tbl;
+	}
+	
+	// This method builds a table that contains a separator, and the Save and Cancel
+	// buttons at the bottom of the Options Window. The Save and Cancel buttons use
+	// ChangeListener, which will call onSaveClicked() and onCancelClicked() methods,
+	// respectively, whenever a click is detected.
+	private Table buildOptWinButtons()
+	{
+		Table tbl = new Table();
+		
+		// + Separator
+		Label lbl = null;
+		lbl = new Label("", skinLibgdx);
+		lbl.setColor(0.75f, 0.75f, 0.75f, 1);
+		lbl.setStyle(new LabelStyle(lbl.getStyle()));
+		lbl.getStyle().background = skinLibgdx.newDrawable("white");
+		tbl.add(lbl).colspan(2).height(1).width(220).pad(0, 0, 0, 1);
+		tbl.row();
+		lbl = new Label("", skinLibgdx);
+		lbl.setColor(0.5f, 0.5f, 0.5f, 1);
+		lbl.setStyle(new LabelStyle(lbl.getStyle()));
+		lbl.getStyle().background = skinLibgdx.newDrawable("white");
+		tbl.add(lbl).colspan(2).height(1).width(220).pad(0, 1, 5, 0);
+		tbl.row();
+		
+		// + Save Button with event handler
+		btnWinOptSave = new TextButton("Save", skinLibgdx);
+		tbl.add(btnWinOptSave).padRight(30);
+		btnWinOptSave.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				onSaveClicked();
+			}
+		});
+		
+		// + Cancel Button with event handler
+		btnWinOptCancel = new TextButton("Cancel", skinLibgdx);
+		tbl.add(btnWinOptCancel);
+		btnWinOptCancel.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				onCancelClicked();
+			}
+		});
+		
+		return tbl;
+	}
+	
+	// used to translate back and forth between the values stored in the widgets and the instance
+	// of the GamePreferences class.
+	private void loadSettings()
+	{
+		GamePreferences prefs = GamePreferences.instance;
+		prefs.load();
+		chkSound.setChecked(prefs.sound);
+		sldSound.setValue(prefs.volSound);
+		chkMusic.setChecked(prefs.music);
+		sldMusic.setValue(prefs.volMusic);
+		selCharSkin.setSelectedIndex(prefs.charSkin);
+		onCharSkinSelected(prefs.charSkin);
+		chkShowFpsCounter.setChecked(prefs.showFpsCounter);
+	}
+	
+	// used to translate back and forth between the values stored in the widgets and the instance
+	// of the GamePreferences class.
+	private void saveSettings()
+	{
+		GamePreferences prefs = GamePreferences.instance;
+		prefs.sound = chkSound.isChecked();
+		prefs.volSound = sldSound.getValue();
+		prefs.music = chkMusic.isChecked();
+		prefs.volMusic = sldMusic.getValue();
+		prefs.charSkin = selCharSkin.getSelectedIndex();
+		prefs.showFpsCounter = chkShowFpsCounter.isChecked();
+		prefs.save();
+	}
+	
+	// contains code that we want to be exected at certain events. in particular,
+	// it updates the preivew image.
+	private void onCharSkinSelected(int index)
+	{
+		CharacterSkin skin = CharacterSkin.values()[index];
+		imgCharSkin.setColor(skin.getColor());
+	}
+	
+	// contains code that we want to be exected at certain events. in particular,
+	// it saves the current settings of the Options window and swaps the Options
+	// window for the menu controls.
+	private void onSaveClicked()
+	{
+		saveSettings();
+		onCancelClicked();
+	}
+	
+	// contains code that we want to be expected at certain events. in particular,
+	// it swaps the widgets, which also means that any changed settings will be discarded.
+	// The visibility of the menu controls and the Options window is simply toggled by calling
+	// setVisible() on the respective widgets.
+	private void onCancelClicked()
+	{
+		btnMenuPlay.setVisible(true);
+		btnMenuOptions.setVisible(true);
+		winOptions.setVisible(false);
+	}
+	
+	// This method contains the code that initializes the Options window. It builds each
+	// part of the menu using the build methods that we just implemented before this one.
+	// The Options window is set to an opacity value of 80 percent. This makes the window
+	// appear slightly transparent, which adds a nice visual detail to it. The call of the
+	// pack() method of the Window widget makes sure that TableLayout recalculates the
+	// widget sizes and positions them so that all added widgets will correctly fit into the
+	// window. After this, the window is moved to the bottom-right corner of the screen.
 	private Table buildOptionsWindowLayer()
 	{
-		Table layer = new Table();
-		return layer;
+		//Table layer = new Table();
+		//return layer;
+		winOptions = new Window("Options", skinLibgdx);
+		// + Audio settings: Sound/Music CheckBox and Volume Slider
+		winOptions.add(buildOptWinAudioSettings()).row();
+		// + Character Skin: Selection Box ( White, Gray, Brown)
+		winOptions.add(buildOptWinSkinSelection()).row();
+		// + Debug: Show FPS Counter
+		winOptions.add(buildOptWinDebug()).row();
+		// + Separator and Buttons (Save, Cancel)
+		winOptions.add(buildOptWinButtons()).pad(10, 0, 10, 0);
+		
+		// Make options window slightly transparent
+		winOptions.setColor(1, 1, 1, 0.8f);
+		// Hide options window by default
+		winOptions.setVisible(false);
+		if(debugEnabled) winOptions.debug();
+		// Let TableLayout recalculate widget sizes and positions
+		winOptions.pack();
+		// Move options window to bottom right corner
+		winOptions.setPosition
+			(Constants.VIEWPORT_GUI_WIDTH - winOptions.getWidth() - 50,
+				50);
+		return winOptions;
 	}
 	
 	// sets the viewport size of the stage
@@ -241,6 +468,7 @@ public class MenuScreen extends AbstractGameScreen
 	{
 		stage.dispose();
 		skinCanyonBunny.dispose();
+		skinLibgdx.dispose();
 	}
 	
 	@Override public void pause()

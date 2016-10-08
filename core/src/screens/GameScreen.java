@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.misicko.gdx.game1.WorldController;
 import com.misicko.gdx.game1.WorldRenderer;
+import com.misicko.gdx.game1.GamePreferences;
 
 // renders the game world
 public class GameScreen extends AbstractGameScreen
@@ -55,6 +56,7 @@ public class GameScreen extends AbstractGameScreen
 	// loads preferences and initializes game world according to those preferences
 	@Override public void show () 
 	{
+		GamePreferences.instance.load();
 		worldController = new WorldController(game);
 		worldRenderer = new WorldRenderer(worldController);
 		Gdx.input.setCatchBackKey(true);

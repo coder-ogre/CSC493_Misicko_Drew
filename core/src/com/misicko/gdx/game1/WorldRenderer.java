@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
+import com.misicko.gdx.game1.GamePreferences;
 
 public class WorldRenderer 
 {
@@ -84,7 +85,8 @@ public class WorldRenderer
 		// draw extra lives icon + text (anchored to top right edge)
 		renderGuiExtraLive(batch);
 		// draw FPS text (anchored to bottom right edge)
-		renderGuiFpsCounter(batch);
+		if(GamePreferences.instance.showFpsCounter)
+			renderGuiFpsCounter(batch);
 		// draw game over text
 		renderGuiGameOverMessage(batch);
 		batch.end();
