@@ -4,6 +4,8 @@
 
 package com.misicko.gdx.game1;
 
+import util.Constants;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;

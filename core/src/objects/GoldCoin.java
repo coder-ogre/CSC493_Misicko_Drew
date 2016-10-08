@@ -4,9 +4,10 @@
 
 package objects;
 
+import game.Assets;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.misicko.gdx.game1.Assets;
 
 //class added in assignment 6 with the rest of the actors
 public class GoldCoin extends AbstractGameObject

@@ -5,9 +5,10 @@
 package objects;
 
 //imports added in assignment 6
+import game.Assets;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.misicko.gdx.game1.Assets;
 
 //class added in assignment 6 with rest of actors
 public class Feather extends AbstractGameObject

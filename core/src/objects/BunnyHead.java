@@ -5,11 +5,12 @@
 package objects;
 
 //beginning of imports added in assignment 6
+import game.Assets;
+import util.Constants;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.misicko.gdx.game1.Assets;
-import com.misicko.gdx.game1.Constants;
 //end of imports added in assignment 6
 
 import com.misicko.gdx.game1.CharacterSkin;

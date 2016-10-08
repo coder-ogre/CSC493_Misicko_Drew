@@ -4,12 +4,13 @@
 
 package objects;
 
+import game.Assets;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.misicko.gdx.game1.Assets;
 
 public class Clouds extends AbstractGameObject
 {

@@ -3,9 +3,10 @@
  */
 package objects;
 
+import game.Assets;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.misicko.gdx.game1.Assets;
 
 public class Rock extends AbstractGameObject
 {

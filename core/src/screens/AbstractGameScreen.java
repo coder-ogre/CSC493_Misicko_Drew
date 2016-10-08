@@ -4,10 +4,11 @@
 
 package screens;
 
+import game.Assets;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.misicko.gdx.game1.Assets;
 
 // provides methods to MenuScren and GameScreen, and ways to toggle between the two
 public abstract class AbstractGameScreen implements Screen

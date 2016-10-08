@@ -4,10 +4,11 @@
 
 package objects;
 
+import game.Assets;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.misicko.gdx.game1.Assets;
 
 public class Mountains extends AbstractGameObject
 {
