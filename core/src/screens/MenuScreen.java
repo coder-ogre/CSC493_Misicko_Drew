@@ -88,10 +88,10 @@ public class MenuScreen extends AbstractGameScreen
 				debugRebuildStage = DEBUG_REBUILD_INTERVAL;
 				rebuildStage();
 			}
-			stage.act(deltaTime);
-			stage.draw();
-			stage.setDebugAll(true); // may show debug lines.. may have to be disabled in future
 		}
+		stage.act(deltaTime);
+		stage.draw();
+		stage.setDebugAll(true); // may show debug lines.. may have to be disabled in future
 	}
 	
 	private void rebuildStage()
