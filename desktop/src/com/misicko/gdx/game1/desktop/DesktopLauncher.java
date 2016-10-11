@@ -22,7 +22,7 @@ public class DesktopLauncher {
 			settings.debug = drawDebugOutline;
 			TexturePacker.process(settings, "assetsraw/images", "../core/assets/images", "mygame.pack");
 			TexturePacker.process(settings, "assetsraw/images-ui",
-				".CanyonBunny-android/assets/images",
+				".CanyonBunny-android/assets/images-ui",
 				"canyonbunny-ui.pack");
 				
 		}

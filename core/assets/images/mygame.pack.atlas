@@ -32,35 +32,63 @@ dirt
   orig: 8, 8
   offset: 0, 0
   index: -1
-genericPowerup
+rock
+  rotate: false
+  xy: 1004, 957
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+fly_cookie
   rotate: false
   xy: 1014, 957
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-grass
+superCookie
+  rotate: false
+  xy: 1014, 957
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+genericPowerup
   rotate: false
   xy: 2, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-instaDeathCookie
+grass
   rotate: false
   xy: 513, 413
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-lava
+instaDeathCookie
   rotate: false
   xy: 529, 423
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
+lava
+  rotate: false
+  xy: 709, 503
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
 lavaOverlay
+  rotate: false
+  xy: 329, 174
+  size: 32, 160
+  orig: 32, 160
+  offset: 0, 0
+  index: -1
+lava_overlay
   rotate: false
   xy: 329, 174
   size: 32, 160
@@ -86,12 +114,5 @@ scooterPusheen
   xy: 2, 12
   size: 325, 499
   orig: 325, 499
-  offset: 0, 0
-  index: -1
-superCookie
-  rotate: false
-  xy: 709, 503
-  size: 8, 8
-  orig: 8, 8
   offset: 0, 0
   index: -1

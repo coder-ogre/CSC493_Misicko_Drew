@@ -35,14 +35,14 @@ public class Constants {
 	
 	// Menu UI stuff
 	public static final String TEXTURE_ATLAS_UI = 
-		"images/canyonbunny-ui.pack";
+		"images-ui/canyonbunny-ui.pack.atlas";
 	public static final String TEXTURE_ATLAS_LIBGDX_UI =
-		"images/uiskin.atlas";
+		"images-ui/uiskin.atlas";
 	// Location of description file for skins
 	public static final String SKIN_LIBGDX_UI =
-		"images/uiskin.json";
+		"images-ui/uiskin.json";
 	public static final String SKIN_SCOOTERPUSHEEN_UI =
-		"images/canyonbunny-ui.json";
+		"images-ui/canyonbunny-ui.json";
 	//File location for preferences
 	 public static final String PREFERENCES = "canyonbunny.prefs";
 }

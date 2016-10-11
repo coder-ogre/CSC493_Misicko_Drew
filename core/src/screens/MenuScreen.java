@@ -46,8 +46,8 @@ public class MenuScreen extends AbstractGameScreen
 	private Image imgBackground;
 	private Image imgLogo;
 	private Image imgInfo;
-	private Image imgGenericPowerups;
-	private Image imgPusheen;
+	private Image imgCoins;
+	private Image imgCanyonBunny;
 	private Button btnMenuPlay;
 	private Button btnMenuOptions;
 	
@@ -143,13 +143,13 @@ public class MenuScreen extends AbstractGameScreen
 	{
 		Table layer = new Table();
 		// + genericPowerups
-		imgGenericPowerups = new Image(skinPusheen, "genericPowerups");
-		layer.addActor(imgGenericPowerups);
-		imgGenericPowerups.setPosition(135, 80);
+		imgCoins = new Image(skinPusheen, "genericPowerups");
+		layer.addActor(imgCoins);
+		imgCoins.setPosition(135, 80);
 		// + Bunny
-		imgPusheen = new Image(skinPusheen, "pusheen");
-		layer.addActor(imgPusheen);
-		imgPusheen.setPosition(355, 40);
+		imgCanyonBunny = new Image(skinPusheen, "pusheen");
+		layer.addActor(imgCanyonBunny);
+		imgCanyonBunny.setPosition(355, 40);
 		return layer;
 	}
 	
