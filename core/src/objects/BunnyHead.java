@@ -16,6 +16,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.misicko.gdx.game1.CharacterSkin;
 import com.misicko.gdx.game1.GamePreferences;
 
+// for particles
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+
 //class added in assignment 6 with rest of the actors
 public class BunnyHead extends AbstractGameObject
 {
@@ -27,6 +30,8 @@ public class BunnyHead extends AbstractGameObject
 	private final float JUMP_TIME_OFFSET_FLYING = JUMP_TIME_MAX - 0.018f;
 	
 	public enum VIEW_DIRECTION { LEFT, RIGHT }
+	
+	public ParticleEffect dustParticles = new ParticleEffect();
 	
 	public enum JUMP_STATE
 	{
@@ -69,6 +74,9 @@ public class BunnyHead extends AbstractGameObject
 		// Power-ups
 		hasFeatherPowerup = false;
 		timeLeftFeatherPowerup = 0;
+		// Particles
+		dustParticles.load(Gdx.files.internal("particles/dust.pfx"),
+			Gdx.files.internal("particles"));
 	};
 	
 	//sets the jumping state, from assignment 6
@@ -125,6 +133,9 @@ public class BunnyHead extends AbstractGameObject
 		// TODO Auto-generated method stub
 		TextureRegion reg = null;
 		
+		// Draw Particles
+		dustParticles.draw(batch);
+		
 		// Apply Skin Color
 		batch.setColor(
 			CharacterSkin.values()[GamePreferences.instance.charSkin]
@@ -167,6 +178,8 @@ public class BunnyHead extends AbstractGameObject
 				setFeatherPowerup(false);
 			}
 		}
+		// updates status of dust particles (shows dust if bunny runs
+		dustParticles.update(deltaTime);
 	}
 	
 	//overrides the updateMotionY method to handle elevation changes, from assignment 6
@@ -201,6 +214,10 @@ public class BunnyHead extends AbstractGameObject
 				}
 		}
 		if(jumpState != JUMP_STATE.GROUNDED)
+		{
+			// allows dust particle to become invisible if not touching ground
+			dustParticles.allowCompletion();
 			super.updateMotionY(deltaTime);
+		}
 	}
 }

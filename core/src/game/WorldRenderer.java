@@ -18,6 +18,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.misicko.gdx.game1.GamePreferences;
 
+// added in chapter 8 for keeping track of lives
+import com.badlogic.gdx.math.MathUtils;
+
 public class WorldRenderer 
 {
 	// moves field of vision around world map to follow player's actions.
@@ -99,10 +102,28 @@ public class WorldRenderer
 	{
 		float x = -15;
 		float y = -15;
+		
+		// added in chapter 8
+		float offsetX = 50;
+		float offsetY = 50;
+		if(worldController.scoreVisual < worldController.score)
+		{
+			long shakeAlpha = System.currentTimeMillis() % 360;
+			float shakeDist = 1.5f;
+			offsetX += MathUtils.sinDeg(shakeAlpha * 2.2f) * shakeDist;
+			offsetY += MathUtils.sinDeg(shakeAlpha * 2.9f) * shakeDist;
+		}
+		
+		/* the value in score visual is cast to an integer value to cut off the fraction.
+		 * the resulting intermediate value will be the score that is shown in the GUI for the
+		 * counting-up animation. To let the coin icon shake, we use a sine function with different
+		 * factors as input angles to find the offset for the temporary displacement of the icon.
+		 */
 		batch.draw(Assets.instance.goldCoin.goldCoin,
-			x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+			//x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+			x, y, offsetX, offsetY, 100, 100, 0.35f, -0.35f, 0);
 		Assets.instance.fonts.defaultBig.draw(batch,
-			"" + worldController.score,
+			"" + worldController.scoreVisual,
 			x + 75, y + 37);
 	}
 	
@@ -118,6 +139,22 @@ public class WorldRenderer
 				batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
 			batch.draw(Assets.instance.bunny.head,
 				x + i * 50, y, 50, 50, 120, 100, 0.35f, -0.35f, 0);
+			batch.setColor(1, 1, 1, 1);
+		}
+		//this part added in chapter 8 for parallax mountains...
+		if(worldController.lives >= 0
+			&& worldController.livesVisual > worldController.lives)
+		{
+			int i = worldController.lives;
+			float alphaColor = Math.max(0, worldController.livesVisual
+				- worldController.lives - 0.5f);
+			float alphaScale = 0.35f * (2 + worldController.lives
+				- worldController.livesVisual) * 2;
+			float alphaRotate = -45 * alphaColor;
+			batch.setColor(1.0f, 0.7f, 0.7f, alphaColor);
+			batch.draw(Assets.instance.bunny.head,
+				x + i * 50, y, 50, 50, 120, 100, alphaScale, -alphaScale,
+				alphaRotate);
 			batch.setColor(1, 1, 1, 1);
 		}
 	}

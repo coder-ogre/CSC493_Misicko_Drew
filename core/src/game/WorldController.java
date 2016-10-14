@@ -41,6 +41,11 @@ public class WorldController  extends InputAdapter{
 	public int lives;
 	public int score;
 	
+	//added in chapter 8 to show that a player has lost any lives or not
+	public float livesVisual;
+	//added in chapter 8 to show that a player's score
+	public float scoreVisual;
+	
 	//switches back to the menu screen
 	private void backToMenu ()
 	{
@@ -108,6 +113,11 @@ public class WorldController  extends InputAdapter{
 	private void initLevel()
 	{
 		score = 0;
+		
+		// added in chapter 8 to keep track of score
+		scoreVisual = score;
+		
+		
 		level = new Level(Constants.LEVEL_01);
 		cameraHelper.setTarget(level.bunnyHead);//added in assignment 6 to follow bunny head actor
 	}
@@ -130,6 +140,11 @@ public class WorldController  extends InputAdapter{
 		cameraHelper = new CameraHelper();
 		//initTestObjects();
 		lives = Constants.LIVES_START;
+		
+		// updated in chapter 8 to keep track of lost lives
+		livesVisual = lives;
+		timeLeftGameOverDelay = 0;
+		
 		initLevel();
 	}
 	
@@ -211,6 +226,14 @@ public class WorldController  extends InputAdapter{
 			else
 				initLevel();
 		}
+		//added in chapter 8 to allow for parallax scrolling of mountains
+		level.mountains.updateScrollPosition
+			(cameraHelper.getPosition());
+		//added in chapter 8 to keep track of lives
+		if(livesVisual > lives)
+			livesVisual = Math.max(lives,  livesVisual - 1 * deltaTime);
+		//added in chapter 8 to keep track of score
+		scoreVisual = Math.min(score,  scoreVisual + 250 * deltaTime);
 	}
 	
 	private void handleDebugInput (float deltaTime) {
