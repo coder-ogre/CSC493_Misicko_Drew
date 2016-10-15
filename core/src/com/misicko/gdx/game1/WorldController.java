@@ -36,7 +36,10 @@ public class WorldController  extends InputAdapter{
 	
 	public Level level;
 	public int lives;
+	//code in chapter 8 to have visual on lives GUI
+	public float livesVisual;
 	public int score;
+	public float scoreVisual;
 	
 	//instance vars from assignment 6
 		//Rectangles for collision detection
@@ -98,6 +101,7 @@ public class WorldController  extends InputAdapter{
 	private void initLevel()
 	{
 		score = 0;
+		scoreVisual = score;// from chapter 8
 		level = new Level(Constants.LEVEL_01);
 		cameraHelper.setTarget(level.pusheen);//added in assignment 6 to follow Pusheen actor
 	}
@@ -116,6 +120,9 @@ public class WorldController  extends InputAdapter{
 		cameraHelper = new CameraHelper();
 		//initTestObjects();
 		lives = Constants.LIVES_START;
+		// from chapter 8, for initialization to lives GUI
+		livesVisual = lives;
+		timeLeftGameOverDelay = 0;
 		initLevel();
 	}
 	
@@ -159,6 +166,15 @@ public class WorldController  extends InputAdapter{
 			else
 				initLevel();
 		}
+		//added in chapter 8 to have parallax mountains
+		level.mountains.updateScrollPOsition(
+			cameraHelper.getPosition());
+		//added in chapter 8 to update lives GUI
+		if(livesVisual > lives)
+			livesVisual = Math.max(lives, livesVisual - 1 * deltaTime);
+		// from chapter 8 to update visual score
+		scoreVisual = Math.min(scoreVisual, scoreVisual
+			+ 250 * deltaTime);
 	}
 	
 	private void handleDebugInput (float deltaTime) {

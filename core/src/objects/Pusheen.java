@@ -8,11 +8,18 @@ package objects;
 import util.Constants;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.misicko.gdx.game1.Assets;
+
 import util.CharacterSkin;
 import util.GamePreferences;
+
+
+// from chapter 8, to add particle effects
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
 //class added in assignment 6 with rest of the actors
 public class Pusheen extends AbstractGameObject
@@ -39,6 +46,9 @@ public class Pusheen extends AbstractGameObject
 	public boolean hasSuperCookie;
 	public float timeLeftForSuperCookie;
 	//end of instance vars from assignment 6
+	
+	// from chapter 8, for particles
+	public ParticleEffect dustParticles = new ParticleEffect();
 	
 	//constructor
 	public Pusheen()
@@ -67,6 +77,9 @@ public class Pusheen extends AbstractGameObject
 		// Power-ups
 		hasSuperCookie = false;
 		timeLeftForSuperCookie = 0;
+		// Particles
+		dustParticles.load(Gdx.files.internal("particles/dust.pfx"),
+			Gdx.files.internal("particles"));
 	};
 	
 	//sets the jumping state, from assignment 6
@@ -144,6 +157,8 @@ public class Pusheen extends AbstractGameObject
 		// Reset color to white
 		batch.setColor(1, 1, 1, 1);
 		
+		// Draw Particles, from chapter 8
+		dustParticles.draw(batch);
 	};
 	
 	//overrides the update method to take care of jumps and superCookie status, from assignment 6
@@ -166,6 +181,8 @@ public class Pusheen extends AbstractGameObject
 				terminalVelocity.set(3.0f, 4.0f);
 			}
 		}
+		// added from chapter 8 to update particles
+		dustParticles.update(deltaTime);
 	}
 	
 	//overrides the updateMotionY method to handle elevation changes, from assignment 6
@@ -200,6 +217,9 @@ public class Pusheen extends AbstractGameObject
 				}
 		}
 		if(jumpState != JUMP_STATE.GROUNDED)
+		{
+			dustParticles.allowCompletion(); // added in chapt 8 to allow dust to become invisible
 			super.updateMotionY(deltaTime);
+		}
 	}
 }
