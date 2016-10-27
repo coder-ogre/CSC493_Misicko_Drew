@@ -18,8 +18,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.Game; 
 
 import screens.MenuScreen;
+import util.AudioManager;
 import util.CameraHelper;
 import util.Constants;
+
 
 
 
@@ -96,6 +98,8 @@ public class WorldController  extends InputAdapter{
 		private void onCollisionBunnyWithGoldCoin(GoldCoin goldCoin) 
 		{
 			goldCoin.collected = true;
+			// added in chapter 10 to make coin collecting sound
+			AudioManager.instance.play(Assets.instance.sounds.pickupCoin);
 			score += goldCoin.getScore();
 			Gdx.app.log(TAG, "Gold coin collected");
 		};
@@ -104,11 +108,12 @@ public class WorldController  extends InputAdapter{
 		private void onCollisionBunnyWithFeather(Feather feather) 
 		{
 			feather.collected = true;
+			// added in chapter 10 to make feather collecting sound
+			AudioManager.instance.play(Assets.instance.sounds.pickupFeather);
 			score += feather.getScore();
 			level.bunnyHead.setFeatherPowerup(true);
 			Gdx.app.log(TAG,  "Feather collected");
 		};
-	//end of instance vars from assignment 6
 	
 	private void initLevel()
 	{
@@ -220,6 +225,7 @@ public class WorldController  extends InputAdapter{
 		cameraHelper.update(deltaTime);
 		if(!isGameOver() && isPlayerInWater())
 		{
+			AudioManager.instance.play(Assets.instance.sounds.liveLost);
 			lives--;
 			if(isGameOver())
 				timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
@@ -233,7 +239,8 @@ public class WorldController  extends InputAdapter{
 		if(livesVisual > lives)
 			livesVisual = Math.max(lives,  livesVisual - 1 * deltaTime);
 		//added in chapter 8 to keep track of score
-		scoreVisual = Math.min(score,  scoreVisual + 250 * deltaTime);
+		if(scoreVisual < score)
+			scoreVisual = Math.min(score,  scoreVisual + 250 * deltaTime);
 	}
 	
 	private void handleDebugInput (float deltaTime) {

@@ -4,13 +4,13 @@
 
 package screens;
 
+import util.GamePreferences;
 import game.WorldController;
 import game.WorldRenderer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.misicko.gdx.game1.GamePreferences;
 
 // renders the game world
 public class GameScreen extends AbstractGameScreen

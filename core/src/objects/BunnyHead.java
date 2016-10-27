@@ -7,6 +7,7 @@ package objects;
 //beginning of imports added in assignment 6
 import game.Assets;
 import util.Constants;
+import util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,10 +15,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 //end of imports added in assignment 6
 
 import com.misicko.gdx.game1.CharacterSkin;
-import com.misicko.gdx.game1.GamePreferences;
 
 // for particles
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+
+import com.badlogic.gdx.math.MathUtils;
+import util.AudioManager;
 
 //class added in assignment 6 with rest of the actors
 public class BunnyHead extends AbstractGameObject
@@ -87,6 +90,8 @@ public class BunnyHead extends AbstractGameObject
 		case GROUNDED: // Character is standing on a platform
 			if(jumpKeyPressed)
 			{
+				// added in chapter 10 to make a jumping sound
+				AudioManager.instance.play(Assets.instance.sounds.jump);
 				// Start counting jump time from the beginning
 				timeJumping = 0;
 				jumpState = JUMP_STATE.JUMP_RISING;
@@ -102,6 +107,9 @@ public class BunnyHead extends AbstractGameObject
 		case JUMP_FALLING: // Falling down after jump
 			if(jumpKeyPressed && hasFeatherPowerup)
 			{
+				// code added in chapter 10 to make feather-jumping sound
+				AudioManager.instance.play(Assets.instance.sounds.jumpWithFeather, 1,
+					MathUtils.random(1.0f, 1.1f));
 				timeJumping = JUMP_TIME_OFFSET_FLYING;
 				jumpState = JUMP_STATE.JUMP_RISING;
 			}

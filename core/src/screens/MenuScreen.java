@@ -6,6 +6,7 @@ package screens;
 
 import game.Assets;
 import util.Constants;
+import util.GamePreferences;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -30,7 +31,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.misicko.gdx.game1.CharacterSkin;
-import com.misicko.gdx.game1.GamePreferences;
+
+
+// added in chapter 10 for audio settings
+import util.AudioManager;
 
 //menu screen with different options, and has a picture for background
 public class MenuScreen extends AbstractGameScreen
@@ -400,6 +404,7 @@ public class MenuScreen extends AbstractGameScreen
 	{
 		saveSettings();
 		onCancelClicked();
+		AudioManager.instance.onSettingsUpdated();
 	}
 	
 	// contains code that we want to be expected at certain events. in particular,
@@ -411,6 +416,7 @@ public class MenuScreen extends AbstractGameScreen
 		btnMenuPlay.setVisible(true);
 		btnMenuOptions.setVisible(true);
 		winOptions.setVisible(false);
+		AudioManager.instance.onSettingsUpdated();
 	}
 	
 	// This method contains the code that initializes the Options window. It builds each

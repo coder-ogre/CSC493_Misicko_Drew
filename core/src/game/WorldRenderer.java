@@ -5,6 +5,7 @@
 package game;
 
 import util.Constants;
+import util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
-import com.misicko.gdx.game1.GamePreferences;
 
 // added in chapter 8 for keeping track of lives
 import com.badlogic.gdx.math.MathUtils;
