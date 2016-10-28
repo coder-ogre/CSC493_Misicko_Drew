@@ -20,6 +20,9 @@ import com.badlogic.gdx.utils.Array;
 //imports added in assignment 6
 import com.badlogic.gdx.math.Rectangle;
 
+// import added in chapter 10 for audio
+import util.AudioManager;
+
 import objects.Dirt;
 import objects.GenericPowerup;
 import objects.Pusheen;
@@ -160,6 +163,7 @@ public class WorldController  extends InputAdapter{
 		cameraHelper.update(deltaTime);
 		if(!isGameOver() && isPlayerInLava())
 		{
+			AudioManager.instance.play(Assets.instance.sounds.liveLost);
 			lives--;
 			if(isGameOver())
 				timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
@@ -173,8 +177,9 @@ public class WorldController  extends InputAdapter{
 		if(livesVisual > lives)
 			livesVisual = Math.max(lives, livesVisual - 1 * deltaTime);
 		// from chapter 8 to update visual score
-		scoreVisual = Math.min(scoreVisual, scoreVisual
-			+ 250 * deltaTime);
+		if(scoreVisual < score)
+			scoreVisual = Math.min(scoreVisual, scoreVisual
+				+ 250 * deltaTime);
 	}
 	
 	private void handleDebugInput (float deltaTime) {

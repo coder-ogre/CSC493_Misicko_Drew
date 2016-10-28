@@ -36,6 +36,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import util.CharacterSkin;
 import util.GamePreferences;
 
+// code for audio
+import util.AudioManager;
+
 //menu screen with different options, and has a picture for background
 public class MenuScreen extends AbstractGameScreen
 {
@@ -404,6 +407,7 @@ public class MenuScreen extends AbstractGameScreen
 	{
 		saveSettings();
 		onCancelClicked();
+		AudioManager.instance.onSettingsUpdated();
 	}
 	
 	// contains code that we want to be expected at certain events. in particular,
@@ -415,6 +419,7 @@ public class MenuScreen extends AbstractGameScreen
 		btnMenuPlay.setVisible(true);
 		btnMenuOptions.setVisible(true);
 		winOptions.setVisible(false);
+		AudioManager.instance.onSettingsUpdated();
 	}
 	
 	// This method contains the code that initializes the Options window. It builds each

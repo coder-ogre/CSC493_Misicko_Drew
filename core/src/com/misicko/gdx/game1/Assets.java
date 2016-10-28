@@ -17,6 +17,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 
+// code added in chapter 10 for sounds and music
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+
+
 public class Assets implements Disposable, AssetErrorListener 
 {
 	public static final String TAG = Assets.class.getName();
@@ -31,6 +36,40 @@ public class Assets implements Disposable, AssetErrorListener
 	public AssetSuperCookie superCookie;
 	public AssetInstaDeathCookie instaDeathCookie;
 	public AssetLevelDecoration levelDecoration;
+	
+	public AssetSounds sounds;
+	public AssetMusic music;
+	
+	// code added in chapter 10 to provide assets for sounds
+	public class AssetSounds
+	{
+		public final Sound jump;
+		public final Sound jumpWithSuperCookie;
+		public final Sound pickupGenericPowerup;
+		public final Sound pickupSuperCookie;
+		public final Sound liveLost;
+		public AssetSounds(AssetManager am)
+		{
+			jump = am.get("sounds/myjump.wav", Sound.class);
+			jumpWithSuperCookie = am.get("sounds/myjump_with_superCookie.wav",
+				Sound.class);
+			pickupGenericPowerup = am.get("sounds/mypickup_genericPowerup.wav", Sound.class);
+			pickupSuperCookie = am.get("sounds/mypickup_superCookie.wav", Sound.class);
+			liveLost = am.get("sounds/mylive_lost.wav", Sound.class);
+		}
+	}
+	
+	// code added in chapter 10 to provide assets for music
+	public class AssetMusic
+	{
+		public final Music song01;
+		
+		public AssetMusic(AssetManager am)
+		{
+			song01 = am.get("music/keith303_-_brand_new_highscore.mp3",
+				Music.class);
+		}
+	}
 	
 	// singleton: prevent instantiation from other classes
 	private Assets () 
@@ -76,6 +115,15 @@ public class Assets implements Disposable, AssetErrorListener
 		assetManager.setErrorListener(this);
 		// load texture atlas
 		assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
+		// load sounds
+		assetManager.load("sounds/myjump.wav", Sound.class);
+		assetManager.load("sounds/myjump_with_superCookie.wav", Sound.class);
+		assetManager.load("sounds/mypickup_genericPowerup.wav", Sound.class);
+		assetManager.load("sounds/mypickup_superCookie.wav", Sound.class);
+		assetManager.load("sounds/mylive_lost.wav", Sound.class);
+		// load music
+		assetManager.load("music/keith303_-_brand_new_highscore.mp3",
+			Music.class);
 		// start loading assets and wait until finished
 		assetManager.finishLoading();
 		Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
@@ -97,6 +145,9 @@ public class Assets implements Disposable, AssetErrorListener
 		superCookie = new AssetSuperCookie(atlas);
 		instaDeathCookie = new AssetInstaDeathCookie(atlas);
 		levelDecoration = new AssetLevelDecoration(atlas);
+		// code added in chapter 10 to instantiate sounds and music
+		sounds = new AssetSounds(assetManager);
+		music = new AssetMusic(assetManager);
 	}
 	
 	@Override

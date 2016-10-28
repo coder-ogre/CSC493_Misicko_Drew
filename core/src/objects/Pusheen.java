@@ -21,6 +21,10 @@ import util.GamePreferences;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
+// imports added in chapter 10 for audio
+import com.badlogic.gdx.math.MathUtils;
+import util.AudioManager;
+
 //class added in assignment 6 with rest of the actors
 public class Pusheen extends AbstractGameObject
 {
@@ -90,6 +94,8 @@ public class Pusheen extends AbstractGameObject
 		case GROUNDED: // Character is standing on a platform
 			if(jumpKeyPressed)
 			{
+				// make jumping sound
+				AudioManager.instance.play(Assets.instance.sounds.jump);
 				// Start counting jump time from the beginning
 				timeJumping = 0;
 				jumpState = JUMP_STATE.JUMP_RISING;
@@ -105,6 +111,10 @@ public class Pusheen extends AbstractGameObject
 		case JUMP_FALLING: // Falling down after jump
 			if(jumpKeyPressed && hasSuperCookie)
 			{
+				// plays enhanced jump sound
+				AudioManager.instance.play(
+					Assets.instance.sounds.jumpWithSuperCookie, 1,
+					MathUtils.random(1.0f, 1.1f));
 				timeJumping = JUMP_TIME_OFFSET_FLYING;
 				jumpState = JUMP_STATE.JUMP_RISING;
 			}
