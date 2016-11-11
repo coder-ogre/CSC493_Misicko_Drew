@@ -21,6 +21,10 @@ import objects.Mountains;
 import objects.Rock;
 import objects.WaterOverlay;
 
+/* added in chapter 11 to add goal and carrots to level */
+import objects.Carrot;
+import objects.Goal;
+
 public class Level 
 {
 	public static final String TAG = Level.class.getName();
@@ -31,13 +35,18 @@ public class Level
 	public Array<Feather> feathers;
 	//end of istance vars from assignment 6
 	
+	/* instance variables added in chapter 11 to add goal and carrot */
+	public Array<Carrot> carrots;
+	public Goal goal;
+	
 	public enum BLOCK_TYPE
 	{
 		EMPTY(0, 0, 0), // black
 		ROCK(0, 255, 0), // green
 		PLAYER_SPAWNPOINT(255, 255, 255), // white
 		ITEM_FEATHER(255, 0, 255), // purple
-		ITEM_GOLD_COIN(255, 255, 0); // yellow
+		ITEM_GOLD_COIN(255, 255, 0), // yellow
+		GOAL(255, 0, 0); // red // added in chapter 11 to add goal
 		
 		private int color;
 		
@@ -81,10 +90,13 @@ public class Level
 		goldCoins = new Array<GoldCoin>();//added from assignment 6
 		feathers = new Array<Feather>(); // added from assignment 6
 		
+		carrots = new Array<Carrot>(); // added in chapter 11.
+		
 		// load image file that represents the level data
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
 		// scan pixels from top-left to bottom-right
-		int lastPixel = -1;for(int pixelY = 0; pixelY < pixmap.getHeight(); pixelY++)
+		int lastPixel = -1;
+		for(int pixelY = 0; pixelY < pixmap.getHeight(); pixelY++)
 		{
 			for(int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++)
 			{
@@ -150,6 +162,14 @@ public class Level
 					goldCoins.add((GoldCoin)obj);
 					//end of code added in chapter 6
 				}
+				// goal (added in chapter 11)
+				else if (BLOCK_TYPE.GOAL.sameColor(currentPixel))
+				{
+					obj = new Goal();
+					offsetHeight = -3.0f;
+					obj.position.set(pixelX, baseHeight  + offsetHeight);
+					goal = (Goal)obj;
+				}
 				//unknown object/pixel color
 				else
 				{
@@ -182,6 +202,9 @@ public class Level
 		// Draw Mountains
 		mountains.render(batch);
 		
+		// Draws the Goal (from chapter 11)
+		goal.render(batch);
+		
 		// Draw Rocks
 		for(Rock rock : rocks)
 			rock.render(batch);
@@ -193,6 +216,9 @@ public class Level
 		// Draw Feathers
 		for (Feather feather: feathers)
 			feather.render(batch);
+		// Draws the carrots
+		for(Carrot carrot : carrots)
+			carrot.render(batch);
 		// Draw Player Character
 		bunnyHead.render(batch);
 		//end of code added in assignment 6
@@ -214,6 +240,8 @@ public class Level
 			goldCoin.update(deltaTime);
 		for(Feather feather : feathers)
 			feather.update(deltaTime);
+		for(Carrot carrot : carrots)
+			carrot.update(deltaTime);
 		clouds.update(deltaTime);
 	}
 }

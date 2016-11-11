@@ -21,6 +21,9 @@ import com.badlogic.gdx.utils.Align;
 // added in chapter 8 for keeping track of lives
 import com.badlogic.gdx.math.MathUtils;
 
+// added in chapter 11 for box2d collision physics
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+
 public class WorldRenderer 
 {
 	// moves field of vision around world map to follow player's actions.
@@ -31,6 +34,10 @@ public class WorldRenderer
 	private WorldController worldController;
 	
 	private OrthographicCamera cameraGUI;
+	
+	// instance vars added in chapter 11 to do box2d physics
+	private static final boolean DEBUG_DRAW_BOX2D_WORLD = false;
+	private Box2DDebugRenderer b2debugRenderer;
 	
 	public WorldRenderer (WorldController worldController) { 
 		this.worldController = worldController;
@@ -48,6 +55,8 @@ public class WorldRenderer
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true); // flip y-axis
 		cameraGUI.update();
+		// added in chapter 11 for box2d physics
+		b2debugRenderer = new Box2DDebugRenderer();
 	}
 	
 	public void render () 
@@ -75,6 +84,12 @@ public class WorldRenderer
 		batch.begin();
 		worldController.level.render(batch);
 		batch.end();
+		//added in chapter 11 for box2d physics
+		if(DEBUG_DRAW_BOX2D_WORLD)
+		{
+			b2debugRenderer.render(worldController.b2world,
+				camera.combined);
+		}
 	}
 	
 	// renders the gui

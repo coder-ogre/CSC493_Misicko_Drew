@@ -32,6 +32,16 @@ public class Constants {
 	// Delay after game over
 	public static final float TIME_DELAY_GAME_OVER = 3;
 	
+	// code in chapter 11
+	// Number of carrots to spawn
+	public static final int CARROTS_SPAWN_MAX = 100;
+	
+	// Spawn radius for carrots
+	public static final float CARROTS_SPAWN_RADIUS= 3.5f;
+	
+	// Delay after game finished
+	public static final float TIME_DELAY_GAME_FINISHED = 6;
+	
 	// Menu UI stuff
 		//File location for preferences
 		public static final String PREFERENCES =
