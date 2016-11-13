@@ -13,8 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Dirt extends AbstractGameObject
 {
 
-	private TextureRegion regEdge;
-	private TextureRegion regMiddle;
+	private TextureRegion dirtRegion;
 	private int length;
 	private final float FLOAT_CYCLE_TIME = 2.0f;
 	private final float FLOAT_AMPLITUDE = 0.25f;
@@ -30,7 +29,7 @@ public class Dirt extends AbstractGameObject
 	private void init () 
 	{
 		dimension.set(1, 1.5f);
-		regEdge = Assets.instance.dirt.dirtRegion;
+		dirtRegion = Assets.instance.dirt.dirtRegion;
 
 		// Start length of this rock
 		setLength(1);
@@ -64,7 +63,7 @@ public class Dirt extends AbstractGameObject
 		float relY = 0;
 
 		// Draw left edge
-		reg = regEdge;
+		reg = dirtRegion;
 		relX -= dimension.x / 4;
 		batch.draw(reg.getTexture(), position.x + relX, position.y +
 				relY, origin.x, origin.y, dimension.x / 4, dimension.y,
@@ -73,7 +72,7 @@ public class Dirt extends AbstractGameObject
 
 		// Draw middle
 		relX = 0;
-		reg = regMiddle;
+		reg = dirtRegion;
 		for (int i = 0; i < length; i++) 
 		{
 			batch.draw(reg.getTexture(), position.x + relX, position.y +
@@ -81,7 +80,7 @@ public class Dirt extends AbstractGameObject
 			relX += dimension.x;
 		}
 		// Draw right edge
-		reg = regEdge;
+		reg = dirtRegion;
 		batch.draw(reg.getTexture(),position.x + relX, position.y +
 				relY, origin.x + dimension.x / 8, origin.y, dimension.x / 4,
 				dimension.y, scale.x, scale.y, rotation, reg.getRegionX(),

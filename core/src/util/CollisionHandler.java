@@ -1,3 +1,5 @@
+// Drew Misicko
+
 package util;
 
 import com.misicko.gdx.game1.WorldController;
@@ -40,10 +42,6 @@ public class CollisionHandler implements ContactListener
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        //Gdx.app.log("CollisionHandler-begin A", "begin");
-
-       // processContact(contact);
-
         ContactListener listener = getListener(fixtureA.getFilterData().categoryBits, fixtureB.getFilterData().categoryBits);
         if (listener != null)
         {
@@ -57,11 +55,8 @@ public class CollisionHandler implements ContactListener
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-       // Gdx.app.log("CollisionHandler-end A", "end");
         processContact(contact);
 
-        // Gdx.app.log("CollisionHandler-end A", fixtureA.getBody().getLinearVelocity().x+" : "+fixtureA.getBody().getLinearVelocity().y);
-        // Gdx.app.log("CollisionHandler-end B", fixtureB.getBody().getLinearVelocity().x+" : "+fixtureB.getBody().getLinearVelocity().y);
         ContactListener listener = getListener(fixtureA.getFilterData().categoryBits, fixtureB.getFilterData().categoryBits);
         if (listener != null)
         {
@@ -143,13 +138,10 @@ public class CollisionHandler implements ContactListener
     	}
     	else if (objFixture.getBody().getUserData() instanceof GenericPowerup)
     	{
-    		// Remove the block update the player's score by 1.
     		world.score++;
-    	
 
     		GenericPowerup genericPowerup = (GenericPowerup)objFixture.getBody().getUserData();
     		world.flagForRemoval(genericPowerup);
     	}
     }
-
 }

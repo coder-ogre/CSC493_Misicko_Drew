@@ -175,11 +175,20 @@ public class Pusheen extends AbstractGameObject
 	@Override
 	public void update(float deltaTime)
 	{
-		super.update(deltaTime);
+		/*super.update(deltaTime);
 		if(velocity.x != 0)
 		{
 			viewDirection = velocity.x < 0 ? VIEW_DIRECTION.LEFT : VIEW_DIRECTION.RIGHT;
+		}*/
+		updateMotionX(deltaTime);
+		updateMotionY(deltaTime);
+		
+		if(body != null)
+		{
+			body.setLinearVelocity(velocity);
+			position.set(body.getPosition());
 		}
+		
 		if(timeLeftForSuperCookie > 0)
 		{
 			timeLeftForSuperCookie -= deltaTime;

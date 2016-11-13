@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.MathUtils;
 
+import com.badlogic.gdx.physics.box2d.Body;
+
 public abstract class AbstractGameObject
 {
 	public Vector2 position;
@@ -28,6 +30,9 @@ public abstract class AbstractGameObject
 	public Vector2 acceleration;
 	public Rectangle bounds;
 	//end of instance variables from assignment 6 chapter 6
+	
+	// for box2d physics
+	public Body body;
 	
 	public AbstractGameObject()
 	{
@@ -91,13 +96,21 @@ public abstract class AbstractGameObject
 	
 	public void update(float deltaTime)
 	{
-		//code to update game actor status added in assignment 6
-		updateMotionX(deltaTime);
-		updateMotionY(deltaTime);
-		// Move to new postion
-		position.x += velocity.x * deltaTime;
-		position.y += velocity.y * deltaTime;		
-		//end of code added in assignment 6
+		if(body == null)
+		{
+			//code to update game actor status added in assignment 6
+			updateMotionX(deltaTime);
+			updateMotionY(deltaTime);
+			// Move to new postion
+			position.x += velocity.x * deltaTime;
+			position.y += velocity.y * deltaTime;		
+			//end of code added in assignment 6
+		}
+		else
+		{
+			position.set(body.getPosition());
+			rotation = body.getAngle() * MathUtils.radiansToDegrees;
+		}
 	}
 	
 	public abstract void render(SpriteBatch batch);

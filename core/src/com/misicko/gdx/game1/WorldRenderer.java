@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.Align;
 //from chapter 8 to keep lives score in GUI
 import com.badlogic.gdx.math.MathUtils;
 
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+
 public class WorldRenderer 
 {
 	// moves field of vision around world map to follow player's actions.
@@ -29,6 +31,9 @@ public class WorldRenderer
 	private WorldController worldController;
 	
 	private OrthographicCamera cameraGUI;
+	
+	private static final boolean DEBUG_DRAW_BOX2D_WORLD = true;
+	private Box2DDebugRenderer b2DebugRenderer = new Box2DDebugRenderer();
 	
 	public WorldRenderer (WorldController worldController) { 
 		this.worldController = worldController;
@@ -53,6 +58,10 @@ public class WorldRenderer
 		//renderTestObjects();
 		renderWorld(batch);
 		renderGui(batch);
+		if(DEBUG_DRAW_BOX2D_WORLD)
+		{
+			b2DebugRenderer.render(worldController.myWorld, camera.combined);
+		}
 	}
 	
    //passing in SpriteBatch here is optional, since it is a global variable

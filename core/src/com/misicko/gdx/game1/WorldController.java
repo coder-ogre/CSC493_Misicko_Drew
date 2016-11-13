@@ -134,27 +134,87 @@ public class WorldController  extends InputAdapter implements Disposable
 		if (myWorld != null)
 			myWorld.dispose();
 		myWorld = new World(new Vector2(0, -9.81f), true);
-		myWorld.setContactListener(new CollisionHandler(this));  // Not in the book
+		myWorld.setContactListener(new CollisionHandler(this));
 		Vector2 origin = new Vector2();
 		
-		//for rocks 
+		// when pusheen collides with dirt
 		for (Dirt dirt : level.dirts)
 		{
 			BodyDef bodyDef = new BodyDef();
 			bodyDef.position.set(dirt.position);
 			bodyDef.type = BodyType.KinematicBody;
 			Body body = myWorld.createBody(bodyDef);
-			//body.setType(BodyType.DynamicBody);
 			body.setUserData(dirt);
 			dirt.body = body;
 			PolygonShape polygonShape = new PolygonShape();
 			origin.x = dirt.bounds.width / 2.0f;
-			origin.y = rock.bounds.height / 2.0f;
-			polygonShape.setAsBox(rock.bounds.width / 2.0f, (rock.bounds.height-0.04f) / 4.0f, origin, 0);
+			origin.y = dirt.bounds.height / 2.0f;
+			polygonShape.setAsBox(dirt.bounds.width / 2.0f, (dirt.bounds.height-0.04f) / 4.0f, origin, 0);
 			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = polygonShape;
 			body.createFixture(fixtureDef);
 			polygonShape.dispose();
+		}
+		
+		// when pusheen collides with genericPowerup
+		for (GenericPowerup genericPowerup : level.genericPowerups)
+		{
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.position.set(genericPowerup.position);
+			bodyDef.type = BodyType.KinematicBody;
+			Body body = myWorld.createBody(bodyDef);
+			body.setUserData(genericPowerup);
+			genericPowerup.body = body;
+			PolygonShape polygonShape = new PolygonShape();
+			origin.x = genericPowerup.bounds.width / 2.0f;
+			origin.y = genericPowerup.bounds.height / 2.0f;
+			polygonShape.setAsBox(genericPowerup.bounds.width / 2.0f, (genericPowerup.bounds.height-0.04f) / 4.0f, origin, 0);
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.shape = polygonShape;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
+		}
+		
+		// when pusheen collides with superCookies
+		for (SuperCookie superCookie : level.superCookies)
+		{
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.position.set(superCookie.position);
+			bodyDef.type = BodyType.KinematicBody;
+			Body body = myWorld.createBody(bodyDef);
+			body.setUserData(superCookie);
+			superCookie.body = body;
+			PolygonShape polygonShape = new PolygonShape();
+			origin.x = superCookie.bounds.width / 2.0f;
+			origin.y = superCookie.bounds.height / 2.0f;
+			polygonShape.setAsBox(superCookie.bounds.width / 2.0f, (superCookie.bounds.height-0.04f) / 4.0f, origin, 0);
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.shape = polygonShape;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
+		}
+
+		// pusheen's physics
+		Pusheen pusheen = level.pusheen;
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.position.set(pusheen.position);
+		bodyDef.fixedRotation = true;
+
+		Body body = myWorld.createBody(bodyDef);
+		body.setType(BodyType.DynamicBody);
+		body.setGravityScale(9.8f);
+		body.setUserData(pusheen);
+		pusheen.body = body;
+
+		PolygonShape polygonShape = new PolygonShape();
+		origin.x = (pusheen.bounds.width) / 2.0f;
+		origin.y = (pusheen.bounds.height) / 2.0f;
+		polygonShape.setAsBox((pusheen.bounds.width-0.7f) / 2.0f, (pusheen.bounds.height-0.15f) / 2.0f, origin, 0);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = polygonShape;
+		body.createFixture(fixtureDef);
+		polygonShape.dispose();
 	}
 	
 	private static final String TAG =
@@ -196,6 +256,22 @@ public class WorldController  extends InputAdapter implements Disposable
 	
 	public void update (float deltaTime) { 
 		handleDebugInput(deltaTime);
+		if(objectsToRemove.size > 0)
+		{
+			for(AbstractGameObject obj : objectsToRemove)
+			{
+				if(obj instanceof GenericPowerup)
+				{
+					int index = level.genericPowerups.indexOf((GenericPowerup) obj, true);
+					if(index != -1)
+					{
+						level.genericPowerups.removeIndex(index);
+						myWorld.destroyBody(obj.body);
+					}
+				}
+			}
+			objectsToRemove.removeRange(0,  objectsToRemove.size - 1);
+		}
 		if(isGameOver())
 		{
 			timeLeftGameOverDelay -= deltaTime;
@@ -206,6 +282,14 @@ public class WorldController  extends InputAdapter implements Disposable
 		{
 			handleInputGame(deltaTime); //invokes the handleInputGame method to update positions, from assingment 6
 		}
+		
+		if(MathUtils.random(0.0f, 2.0f) < deltaTime)
+		{
+			Vector2 centerPos = new Vector2(level.pusheen.position);
+			centerPos.x += level.pusheen.bounds.width;
+		}
+		
+		myWorld.step(deltaTime,  8, 3); // tells box2d world to update
 		
 		//updateTestObjects(deltaTime);
 		level.update(deltaTime);// added from assignment 6 to invoke level update
@@ -295,6 +379,7 @@ public class WorldController  extends InputAdapter implements Disposable
 		if (Gdx.input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
 	}
 	
+	
 	public void moveCamera(float x, float y) {
 		x += cameraHelper.getPosition().x;
 		y += cameraHelper.getPosition().y;
@@ -378,7 +463,7 @@ public class WorldController  extends InputAdapter implements Disposable
 				}
 			}
 			
-			// Pusheen
+			// Pusheen jumping
 			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)) {
 				level.pusheen.setJumping(true);
 			}
@@ -387,6 +472,12 @@ public class WorldController  extends InputAdapter implements Disposable
 				level.pusheen.setJumping(false);
 			}
 		}
+	}
+	
+	// gets things ready to be removed
+	public void flagForRemoval(AbstractGameObject obj)
+	{
+		objectsToRemove.add(obj);
 	}
 	
 	//decides whether the game is over or not, from assignment 6
@@ -401,4 +492,11 @@ public class WorldController  extends InputAdapter implements Disposable
 		return level.pusheen.position.y < -5;
 	}
 	
+	// garbage collection
+	@Override
+	public void dispose()
+	{
+		if(myWorld != null)
+			myWorld.dispose();
+	}
 }
