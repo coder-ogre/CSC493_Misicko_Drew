@@ -9,6 +9,9 @@ import game.Assets;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+// added in chapter 12 for animation
+import com.badlogic.gdx.math.MathUtils;
+
 //class added in assignment 6 with the rest of the actors
 public class GoldCoin extends AbstractGameObject
 {
@@ -29,6 +32,11 @@ public class GoldCoin extends AbstractGameObject
 	{
 		dimension.set(0.5f, 0.5f);
 		
+		// added in chapter 12 for animation
+		setAnimation(Assets.instance.goldCoin.animGoldCoin);
+		stateTime = MathUtils.random(0.0f, 1.0f);
+		//
+		
 		regGoldCoin = Assets.instance.goldCoin.goldCoin;
 		
 		// Set bounding box for collision detection
@@ -43,8 +51,9 @@ public class GoldCoin extends AbstractGameObject
 		if(collected) return;
 		
 		TextureRegion reg = null;
-		reg = regGoldCoin;
-		batch.draw(reg.getTexture(), position.x, position.x,
+		//reg = regGoldCoin;
+		reg = animation.getKeyFrame(stateTime, true);
+		batch.draw(reg.getTexture(), position.x, position.y,
 			origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 			rotation, reg.getRegionX(), reg.getRegionY(),
 			reg.getRegionWidth(), reg.getRegionHeight(), false, false);

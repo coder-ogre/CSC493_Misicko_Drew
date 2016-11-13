@@ -32,9 +32,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.misicko.gdx.game1.CharacterSkin;
 
-
 // added in chapter 10 for audio settings
 import util.AudioManager;
+
+// added in chapter 12 for menu animation
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 //menu screen with different options, and has a picture for background
 public class MenuScreen extends AbstractGameScreen
@@ -98,6 +103,47 @@ public class MenuScreen extends AbstractGameScreen
 		stage.setDebugAll(true); // may show debug lines.. may have to be disabled in future
 	}
 	
+	/* code added in chapter 12 for menu animation */
+	private void showMenuButtons(boolean visible)
+	{
+		float moveDuration = 1.0f;
+		Interpolation moveEasing = Interpolation.swing;
+		float delayOptionsButton = 0.25f;
+		
+		float moveX = 300 * (visible ? -1 : 1);
+		float moveY = 0 * (visible ? -1 : 1);
+		final Touchable touchEnabled = visible ? Touchable.enabled
+			: Touchable.disabled;
+		btnMenuPlay.addAction(
+			moveBy(moveX, moveY, moveDuration, moveEasing));
+		
+		btnMenuOptions.addAction(sequence(
+			delay(delayOptionsButton),
+			moveBy(moveX, moveY, moveDuration, moveEasing)));
+		
+		SequenceAction seq = sequence();
+		if(visible)
+			seq.addAction(delay(delayOptionsButton + moveDuration));
+			seq.addAction(run(new Runnable()
+			{
+				public void run()
+				{
+					btnMenuPlay.setTouchable(touchEnabled);
+					btnMenuOptions.setTouchable(touchEnabled);
+				}
+			}));
+			stage.addAction(seq);
+	}
+	
+	/* code added in chapter 12 for menu animation */
+	private void showOptionsWindow(boolean visible, boolean animated)
+	{
+		float alphaTo = visible ? 0.8f : 0.0f;
+		float duration = animated ? 1.0f : 0.0f;
+		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+		winOptions.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
+	}
+	
 	private void rebuildStage()
 	{
 		skinCanyonBunny = new Skin(
@@ -148,11 +194,29 @@ public class MenuScreen extends AbstractGameScreen
 		// + Coins
 		imgCoins = new Image(skinCanyonBunny, "coins");
 		layer.addActor(imgCoins);
-		imgCoins.setPosition(135, 80);
+		// stuff added in chapter 12
+		imgCoins.setOrigin((imgCoins.getWidth() / 2),
+			imgCoins.getHeight() / 2);
+		imgCoins.addAction(sequence(
+			moveTo(135, -20),
+			scaleTo(0, 0),
+			fadeOut(0),
+			delay(2.5f),
+			parallel(moveBy(0, 100, 0.5f, Interpolation.swingOut),
+				scaleTo(1.0f, 1.0f, 0.25f, Interpolation.linear),
+				alpha(1.0f, 0.5f))));
+		// end of stuff added in chapter 12
+		//imgCoins.setPosition(135, 80); taken out
 		// + Bunny
 		imgBunny = new Image(skinCanyonBunny, "bunny");
 		layer.addActor(imgBunny);
-		imgBunny.setPosition(355, 40);
+		//imgBunny.setPosition(355, 40);
+		imgBunny.addAction(sequence(
+			moveTo(655, 510),
+			delay(4.0f),
+			moveBy(-70, -100, 0.5f, Interpolation.fade),
+			moveBy(-100, -50, 0.5f, Interpolation.fade),
+			moveBy(-150, -300, 1.0f, Interpolation.elasticIn)));
 		return layer;
 	}
 	
@@ -225,10 +289,11 @@ public class MenuScreen extends AbstractGameScreen
 	private void onOptionsClicked()
 	{
 		loadSettings();
-		btnMenuPlay.setVisible(false);
-		btnMenuOptions.setVisible(false);
-		winOptions.setVisible(true);
-		
+		//btnMenuPlay.setVisible(false);
+		//btnMenuOptions.setVisible(false);
+		//winOptions.setVisible(true);
+		showMenuButtons(false);
+		showOptionsWindow(true, true);
 	}
 	
 	// this method builds a table containing the audio settings. first, a label showing
@@ -413,9 +478,12 @@ public class MenuScreen extends AbstractGameScreen
 	// setVisible() on the respective widgets.
 	private void onCancelClicked()
 	{
-		btnMenuPlay.setVisible(true);
-		btnMenuOptions.setVisible(true);
-		winOptions.setVisible(false);
+		//btnMenuPlay.setVisible(true);
+		//btnMenuOptions.setVisible(true);
+		//winOptions.setVisible(false);
+		showMenuButtons(true);
+		showOptionsWindow(false, true);
+		
 		AudioManager.instance.onSettingsUpdated();
 	}
 	
@@ -443,7 +511,8 @@ public class MenuScreen extends AbstractGameScreen
 		// Make options window slightly transparent
 		winOptions.setColor(1, 1, 1, 0.8f);
 		// Hide options window by default
-		winOptions.setVisible(false);
+		//winOptions.setVisible(false, false);
+		showOptionsWindow(false, false);
 		if(debugEnabled) winOptions.debug();
 		// Let TableLayout recalculate widget sizes and positions
 		winOptions.pack();

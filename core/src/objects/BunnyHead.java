@@ -22,6 +22,9 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import util.AudioManager;
 
+// added in chapter 12 for animation
+import com.badlogic.gdx.graphics.g2d.Animation;
+
 //class added in assignment 6 with rest of the actors
 public class BunnyHead extends AbstractGameObject
 {
@@ -35,6 +38,13 @@ public class BunnyHead extends AbstractGameObject
 	public enum VIEW_DIRECTION { LEFT, RIGHT }
 	
 	public ParticleEffect dustParticles = new ParticleEffect();
+	
+	// added in chapter 12 for animation
+	private Animation animNormal;
+	private Animation animCopterTransform;
+	private Animation animCopterTransformBack;
+	private Animation animCopterRotate;
+	//
 	
 	public enum JUMP_STATE
 	{
@@ -60,7 +70,18 @@ public class BunnyHead extends AbstractGameObject
 	public void init() 
 	{
 		dimension.set(1, 1);
-		regHead = Assets.instance.bunny.head;
+		
+		// added in chapter 12 for animation
+		animNormal = Assets.instance.bunny.animNormal;
+		animCopterTransform = Assets.instance.bunny.animCopterTransform;
+		animCopterTransformBack = 
+			Assets.instance.bunny.animCopterTransformBack;
+		animCopterRotate = Assets.instance.bunny.animCopterRotate;
+		setAnimation(animNormal);
+		//
+		
+		regHead = Assets.instance.bunny.head;// not sure whether to delete this or not
+		
 		// Center image on game object
 		origin.set(dimension.x / 2, dimension.y / 2);
 		// Bounding box for collision detection
@@ -149,22 +170,36 @@ public class BunnyHead extends AbstractGameObject
 			CharacterSkin.values()[GamePreferences.instance.charSkin]
 			.getColor());
 		
+		// for anaimtion
+		float dimCorrectionX = 0;
+		float dimCorrectionY = 0;
+		if(animation != animNormal)
+		{
+			dimCorrectionX = 0.05f;
+			dimCorrectionY = 0.2f;
+		}
+		
+		// Draw image
+		reg = animation.getKeyFrame(stateTime, true);
+		//
+		
 		// Set special color when game object has a feather power-up
 		if(hasFeatherPowerup)
 		{
 			batch.setColor(1.0f, 0.8f, 0.0f, 1.0f);
 		}
 		// Draw image
-		reg = regHead;
+		//reg = regHead;
+		reg = animation.getKeyFrame(stateTime, true);
+		
 		batch.draw(reg.getTexture(), position.x, position.y, origin.x,
-			origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation,
-			reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(),
+			origin.y, dimension.x + dimCorrectionX, dimension.y + dimCorrectionY, scale.x,
+			scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(),
 			reg.getRegionHeight(), viewDirection == VIEW_DIRECTION.LEFT,
 			false);
 		
 		// Reset color to white
 		batch.setColor(1, 1, 1, 1);
-		
 	};
 	
 	//overrides the update method to take care of jumps and feather status, from assignment 6
@@ -178,16 +213,53 @@ public class BunnyHead extends AbstractGameObject
 		}
 		if(timeLeftFeatherPowerup > 0)
 		{
+			// for animations
+			if(animation == animCopterTransformBack)
+			{
+				// Restart "Transform" animation if another feather power-up
+				// was picked up during "TransformBack" animation. Otherwise,
+				// the "TransformBack" animation would be stuck while the
+				// power-up is still active.
+				setAnimation(animCopterTransform);
+			}
+			//
 			timeLeftFeatherPowerup -= deltaTime;
 			if(timeLeftFeatherPowerup < 0)
 			{
 				// disable powerup
 				timeLeftFeatherPowerup = 0;
 				setFeatherPowerup(false);
+				//animation
+				setAnimation(animCopterTransformBack);
 			}
 		}
 		// updates status of dust particles (shows dust if bunny runs
 		dustParticles.update(deltaTime);
+		//animation
+		// Change animation state according to feather power-up
+		if(hasFeatherPowerup)
+		{
+			if(animation == animNormal)
+			{
+				setAnimation(animCopterTransform);
+			}
+			else if(animation == animCopterTransform)
+			{
+				if(animation.isAnimationFinished(stateTime))
+					setAnimation(animCopterRotate);
+			}
+			else
+			{
+				if(animation == animCopterRotate)
+				{
+					if(animation.isAnimationFinished(stateTime))
+						setAnimation(animCopterTransformBack);
+					else if(animation.isAnimationFinished(stateTime))
+						setAnimation(animNormal);
+				}
+			}
+		}
+		//
 	}
 	
 	//overrides the updateMotionY method to handle elevation changes, from assignment 6

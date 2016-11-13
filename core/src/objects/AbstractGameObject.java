@@ -15,6 +15,9 @@ import com.badlogic.gdx.math.MathUtils;
 // added in chapter 11 to make it rain carrots
 import com.badlogic.gdx.physics.box2d.Body;
 
+// added in chapter 12 for animation
+import com.badlogic.gdx.graphics.g2d.Animation;
+
 public abstract class AbstractGameObject
 {
 	public Vector2 position;
@@ -35,6 +38,16 @@ public abstract class AbstractGameObject
 	// added in chapter 11 to make it rain carrots
 	public Body body;
 	
+	// for animations...
+	public float stateTime;
+	public Animation animation;
+	
+	public void setAnimation(Animation animation)
+	{
+		this.animation = animation;
+		stateTime = 0;
+	}
+	//
 	public AbstractGameObject()
 	{
 		position = new Vector2();
@@ -97,6 +110,7 @@ public abstract class AbstractGameObject
 	
 	public void update(float deltaTime)
 	{
+		stateTime += deltaTime; // added for animation in chapter 12
 		//if statement added in chapter 11
 		if(body == null)
 		{
