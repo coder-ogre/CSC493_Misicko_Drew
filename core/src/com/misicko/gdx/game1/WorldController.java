@@ -32,7 +32,21 @@ import objects.Pusheen.JUMP_STATE;
 import util.CameraHelper;
 import util.Constants;
 
-public class WorldController  extends InputAdapter{
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
+import objects.AbstractGameObject;
+import util.CollisionHandler;
+
+public class WorldController  extends InputAdapter implements Disposable
+{
 	public CameraHelper cameraHelper;
 	
 	private Game game;
@@ -50,6 +64,10 @@ public class WorldController  extends InputAdapter{
 		private Rectangle r2 = new Rectangle();
 		private float timeLeftGameOverDelay; // time system waits after game ends
 	//end of instance vars for assignment 6
+		
+		// box2d
+		public World myWorld;
+		public Array<AbstractGameObject> objectsToRemove;
 		
 		//specifies what happens when Pusheen collides with the ground, from assignment 6
 		private void onCollisionPusheenWithGround(Dirt dirt)
@@ -107,6 +125,36 @@ public class WorldController  extends InputAdapter{
 		scoreVisual = score;// from chapter 8
 		level = new Level(Constants.LEVEL_01);
 		cameraHelper.setTarget(level.pusheen);//added in assignment 6 to follow Pusheen actor
+		initPhysics();
+	}
+	
+	// initiates physics
+	private void initPhysics()
+	{
+		if (myWorld != null)
+			myWorld.dispose();
+		myWorld = new World(new Vector2(0, -9.81f), true);
+		myWorld.setContactListener(new CollisionHandler(this));  // Not in the book
+		Vector2 origin = new Vector2();
+		
+		//for rocks 
+		for (Dirt dirt : level.dirts)
+		{
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.position.set(dirt.position);
+			bodyDef.type = BodyType.KinematicBody;
+			Body body = myWorld.createBody(bodyDef);
+			//body.setType(BodyType.DynamicBody);
+			body.setUserData(dirt);
+			dirt.body = body;
+			PolygonShape polygonShape = new PolygonShape();
+			origin.x = dirt.bounds.width / 2.0f;
+			origin.y = rock.bounds.height / 2.0f;
+			polygonShape.setAsBox(rock.bounds.width / 2.0f, (rock.bounds.height-0.04f) / 4.0f, origin, 0);
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.shape = polygonShape;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
 	}
 	
 	private static final String TAG =
@@ -118,7 +166,9 @@ public class WorldController  extends InputAdapter{
 	}
 	
 	// initiates control of objects
-	private void init () { 
+	private void init () 
+	{ 
+		objectsToRemove = new Array<AbstractGameObject>();
 		Gdx.input.setInputProcessor(this);
 		cameraHelper = new CameraHelper();
 		//initTestObjects();
