@@ -8,6 +8,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import com.misicko.gdx.game1.MisickoGdxGame1;
+
 //test changes
 public class DesktopLauncher {
 	private static boolean rebuildAtlas = false;

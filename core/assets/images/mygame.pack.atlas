@@ -53,6 +53,13 @@ superCookie
   orig: 8, 8
   offset: 0, 0
   index: -1
+superCookie
+  rotate: false
+  xy: 1014, 957
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
 genericPowerup
   rotate: false
   xy: 2, 2
@@ -116,3 +123,10 @@ scooterPusheen
   orig: 325, 499
   offset: 0, 0
   index: -1
+superCookie
+  rotate: false
+  xy: 329, 164
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 2

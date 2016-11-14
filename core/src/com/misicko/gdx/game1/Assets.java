@@ -21,6 +21,9 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
+//added in chapter 12 for animation
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.utils.Array;
 
 public class Assets implements Disposable, AssetErrorListener 
 {
@@ -39,6 +42,8 @@ public class Assets implements Disposable, AssetErrorListener
 	
 	public AssetSounds sounds;
 	public AssetMusic music;
+	
+	//public Animation animSuperCookie;// to animate superCookie
 	
 	// code added in chapter 10 to provide assets for sounds
 	public class AssetSounds
@@ -148,6 +153,8 @@ public class Assets implements Disposable, AssetErrorListener
 		// code added in chapter 10 to instantiate sounds and music
 		sounds = new AssetSounds(assetManager);
 		music = new AssetMusic(assetManager);
+		//animSuperCookie = new Animation(1.0f / 20.0f, atlas.findRegions("superCookie"),
+		//	Animation.PlayMode.LOOP_PINGPONG);
 	}
 	
 	@Override
@@ -204,9 +211,19 @@ public class Assets implements Disposable, AssetErrorListener
 	
 	public class AssetSuperCookie {
 		public final AtlasRegion superCookieRegion;
+		public final Animation animSuperCookie;
 		
 		public AssetSuperCookie (TextureAtlas atlas) {
 			superCookieRegion = atlas.findRegion("superCookie");
+			
+			// Animation: Super Cookie
+			Array<AtlasRegion> regions = 
+				atlas.findRegions("superCookie");
+			AtlasRegion region = regions.first();
+			for(int i = 0; i < 10; i++)
+				regions.insert(0, region);
+			animSuperCookie = new Animation(1.0f / 20.0f, regions,
+				Animation.PlayMode.LOOP_PINGPONG);
 		}
 	}
 	

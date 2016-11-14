@@ -14,6 +14,9 @@ import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
+// for animation 
+import com.badlogic.gdx.graphics.g2d.Animation;
+
 public abstract class AbstractGameObject
 {
 	public Vector2 position;
@@ -33,6 +36,16 @@ public abstract class AbstractGameObject
 	
 	// for box2d physics
 	public Body body;
+	
+	// for animation
+	public float stateTime;
+	public Animation animation;
+	
+	public void setAnimation(Animation animation)
+	{
+		this.animation = animation;
+		stateTime = 0;
+	}
 	
 	public AbstractGameObject()
 	{
@@ -96,6 +109,7 @@ public abstract class AbstractGameObject
 	
 	public void update(float deltaTime)
 	{
+		stateTime += deltaTime;
 		if(body == null)
 		{
 			//code to update game actor status added in assignment 6

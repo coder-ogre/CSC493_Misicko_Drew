@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.misicko.gdx.game1.Assets;
 
+// for animation
+import com.badlogic.gdx.math.MathUtils;
+
 //class added in assignment 6 with rest of actors
 public class SuperCookie extends AbstractGameObject
 {
@@ -29,6 +32,10 @@ public class SuperCookie extends AbstractGameObject
 	{
 		dimension.set(0.5f, 0.5f);
 		
+		// for animation
+		setAnimation(Assets.instance.superCookie.animSuperCookie);
+		stateTime = MathUtils.random(0.0f, 1.0f);
+		
 		superCookieRegion = Assets.instance.superCookie.superCookieRegion;
 		
 		// Set bounding box for collision detection
@@ -44,7 +51,8 @@ public class SuperCookie extends AbstractGameObject
 		if(collected) return;
 		
 		TextureRegion reg = null;
-		reg = superCookieRegion;
+		//reg = superCookieRegion;
+		reg = animation.getKeyFrame(stateTime, true);
 		batch.draw(reg.getTexture(), position.x, position.y,
 			origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 			rotation, reg.getRegionX(), reg.getRegionY(),
