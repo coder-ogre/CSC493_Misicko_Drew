@@ -43,7 +43,7 @@ public class GenericPowerup extends AbstractGameObject
 		
 		TextureRegion reg = null;
 		reg = regGoldCoin;
-		batch.draw(reg.getTexture(), position.x, position.x,
+		batch.draw(reg.getTexture(), position.x, position.y,
 			origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 			rotation, reg.getRegionX(), reg.getRegionY(),
 			reg.getRegionWidth(), reg.getRegionHeight(), false, false);

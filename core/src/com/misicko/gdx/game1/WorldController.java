@@ -20,14 +20,15 @@ import com.badlogic.gdx.utils.Array;
 //imports added in assignment 6
 import com.badlogic.gdx.math.Rectangle;
 
+
 // import added in chapter 10 for audio
 import util.AudioManager;
-
 import objects.Dirt;
 import objects.GenericPowerup;
 import objects.Pusheen;
 import objects.SuperCookie;
 import objects.Pusheen.JUMP_STATE;
+import objects.Pusheen.VIEW_DIRECTION;
 //end of imports from assignment 6
 import util.CameraHelper;
 import util.Constants;
@@ -42,6 +43,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+
 import objects.AbstractGameObject;
 import util.CollisionHandler;
 
@@ -68,6 +70,8 @@ public class WorldController  extends InputAdapter implements Disposable
 		// box2d
 		public World myWorld;
 		public Array<AbstractGameObject> objectsToRemove;
+		public boolean canJump = true;
+		public double airTime;
 		
 		//specifies what happens when Pusheen collides with the ground, from assignment 6
 		private void onCollisionPusheenWithGround(Dirt dirt)
@@ -78,11 +82,11 @@ public class WorldController  extends InputAdapter implements Disposable
 				boolean hitRightEdge = pusheen.position.x > (
 					dirt.position.x + dirt.bounds.width / 2.0f);
 				if(hitRightEdge) {
-					pusheen.position.x = dirt.position.x + dirt.bounds.width;
+					//pusheen.position.x = dirt.position.x + dirt.bounds.width;
 				}
 				else
 				{
-					pusheen.position.x = dirt.position.x - pusheen.bounds.width;
+					//pusheen.position.x = dirt.position.x - pusheen.bounds.width;
 				}
 				return;
 			}
@@ -154,6 +158,8 @@ public class WorldController  extends InputAdapter implements Disposable
 			fixtureDef.shape = polygonShape;
 			body.createFixture(fixtureDef);
 			polygonShape.dispose();
+			canJump = true;
+			airTime = 0;
 		}
 		
 		// when pusheen collides with genericPowerup
@@ -448,11 +454,15 @@ public class WorldController  extends InputAdapter implements Disposable
 			// Player Movement
 			if(Gdx.input.isKeyPressed(Keys.LEFT))
 			{
-				level.pusheen.velocity.x = -level.pusheen.terminalVelocity.x;
+				//level.pusheen.velocity.x = -level.pusheen.terminalVelocity.x;
+				level.pusheen.body.setLinearVelocity(-level.pusheen.terminalVelocity.x, level.pusheen.velocity.y);
+				level.pusheen.viewDirection = VIEW_DIRECTION.LEFT;
 			}
 			else if(Gdx.input.isKeyPressed(Keys.RIGHT))
 			{
-				level.pusheen.velocity.x = level.pusheen.terminalVelocity.x;
+				//level.pusheen.velocity.x = level.pusheen.terminalVelocity.x;
+				level.pusheen.body.setLinearVelocity(level.pusheen.terminalVelocity.x, level.pusheen.velocity.y);
+				level.pusheen.viewDirection = VIEW_DIRECTION.RIGHT;
 			}
 			else
 			{
@@ -460,16 +470,47 @@ public class WorldController  extends InputAdapter implements Disposable
 				if(Gdx.app.getType() != ApplicationType.Desktop)
 				{
 					level.pusheen.velocity.x = level.pusheen.terminalVelocity.x;
+					level.pusheen.body.setLinearVelocity(level.pusheen.body.getLinearVelocity().x, level.pusheen.terminalVelocity.y);
 				}
 			}
 			
 			// Pusheen jumping
 			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)) {
-				level.pusheen.setJumping(true);
+				//level.pusheen.setJumping(true);
+				//level.pusheen.body.setLinearVelocity(level.pusheen.body.getLinearVelocity().x, level.pusheen.terminalVelocity.y);
+				if(level.pusheen.jumpState == JUMP_STATE.GROUNDED)
+				{
+					canJump = true;
+					airTime = 0;
+				}
+				
+				Vector2 vel = level.pusheen.body.getLinearVelocity() ;
+
+				if(level.pusheen.hasSuperCookie() && airTime < 0.75)
+				{
+					level.pusheen.body.setLinearVelocity(vel.x, level.pusheen.terminalVelocity.y) ;
+
+					airTime += deltaTime ;
+				}
+				else if(airTime < .5)
+				{
+					if(canJump)
+					{
+						AudioManager.instance.play(Assets.instance.sounds.jump) ;
+						canJump = false ;
+					}
+
+					level.pusheen.body.setLinearVelocity(vel.x, level.pusheen.terminalVelocity.y) ;
+
+					level.pusheen.position.set(level.pusheen.body.getPosition()) ;
+
+					airTime += deltaTime ;
+				}
 			}
 			else
 			{
-				level.pusheen.setJumping(false);
+				//level.pusheen.setJumping(false);
+				
 			}
 		}
 	}

@@ -109,7 +109,7 @@ public class Level
 					if(lastPixel != currentPixel)
 					{
 						obj = new Dirt();
-						float heightIncreaseFactor = 0.25f;
+						float heightIncreaseFactor = 0.25f;/* 0.25f;*/
 						offsetHeight = -2.5f;
 						obj.position.set(pixelX, baseHeight * obj.dimension.y
 						* heightIncreaseFactor + offsetHeight);

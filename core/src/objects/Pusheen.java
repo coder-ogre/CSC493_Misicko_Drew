@@ -175,11 +175,11 @@ public class Pusheen extends AbstractGameObject
 	@Override
 	public void update(float deltaTime)
 	{
-		/*super.update(deltaTime);
-		if(velocity.x != 0)
-		{
-			viewDirection = velocity.x < 0 ? VIEW_DIRECTION.LEFT : VIEW_DIRECTION.RIGHT;
-		}*/
+		super.update(deltaTime);
+		//if(velocity.x != 0)
+		//{
+		//	viewDirection = velocity.x < 0 ? VIEW_DIRECTION.LEFT : VIEW_DIRECTION.RIGHT;
+		//}
 		updateMotionX(deltaTime);
 		updateMotionY(deltaTime);
 		
@@ -227,6 +227,11 @@ public class Pusheen extends AbstractGameObject
 				{
 					// Still jumping
 					velocity.y = terminalVelocity.y;
+					this.body.setLinearVelocity(this.velocity.x, this.terminalVelocity.y);
+				}
+				else
+				{
+					this.body.setLinearVelocity(this.velocity.x, this.terminalVelocity.y);
 				}
 				break;
 			case FALLING:
@@ -239,6 +244,11 @@ public class Pusheen extends AbstractGameObject
 				{
 					// Still jumping
 					velocity.y = terminalVelocity.y;
+					this.body.setLinearVelocity(this.velocity.x, this.terminalVelocity.y);
+				}
+				else
+				{
+					this.body.setLinearVelocity(this.velocity.x, this.terminalVelocity.y);
 				}
 		}
 		if(jumpState != JUMP_STATE.GROUNDED)
