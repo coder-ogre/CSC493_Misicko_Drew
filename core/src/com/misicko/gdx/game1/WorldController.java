@@ -176,6 +176,7 @@ public class WorldController  extends InputAdapter implements Disposable
 			origin.y = genericPowerup.bounds.height / 2.0f;
 			polygonShape.setAsBox(genericPowerup.bounds.width / 2.0f, (genericPowerup.bounds.height-0.04f) / 4.0f, origin, 0);
 			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.isSensor = true;
 			fixtureDef.shape = polygonShape;
 			body.createFixture(fixtureDef);
 			polygonShape.dispose();
@@ -195,6 +196,7 @@ public class WorldController  extends InputAdapter implements Disposable
 			origin.y = superCookie.bounds.height / 2.0f;
 			polygonShape.setAsBox(superCookie.bounds.width / 2.0f, (superCookie.bounds.height-0.04f) / 4.0f, origin, 0);
 			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.isSensor = true;
 			fixtureDef.shape = polygonShape;
 			body.createFixture(fixtureDef);
 			polygonShape.dispose();
