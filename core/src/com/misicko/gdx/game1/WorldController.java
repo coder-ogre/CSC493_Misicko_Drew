@@ -153,11 +153,12 @@ public class WorldController  extends InputAdapter implements Disposable
 			PolygonShape polygonShape = new PolygonShape();
 			origin.x = dirt.bounds.width / 2.0f;
 			origin.y = dirt.bounds.height / 2.0f;
-			polygonShape.setAsBox(dirt.bounds.width / 2.0f, (dirt.bounds.height-0.04f) / 4.0f, origin, 0);
+			polygonShape.setAsBox(dirt.bounds.width / 1.9f, (dirt.bounds.height-0.04f) / 1.95f, origin, 0);
 			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = polygonShape;
 			body.createFixture(fixtureDef);
 			polygonShape.dispose();
+			onCollisionPusheenWithGround(dirt);
 			canJump = true;
 			airTime = 0;
 		}
