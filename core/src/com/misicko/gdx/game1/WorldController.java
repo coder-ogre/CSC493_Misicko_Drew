@@ -21,13 +21,15 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.math.Rectangle;
 
 
+
 // import added in chapter 10 for audio
 import util.AudioManager;
 import objects.Dirt;
 import objects.GenericPowerup;
 import objects.Pusheen;
-import objects.SuperCookie;
 import objects.Pusheen.JUMP_STATE;
+import objects.SuperCookie;
+//import objects.Pusheen.JUMP_STATE;
 import objects.Pusheen.VIEW_DIRECTION;
 //end of imports from assignment 6
 import util.CameraHelper;
@@ -60,6 +62,8 @@ public class WorldController  extends InputAdapter implements Disposable
 	public int score;
 	public float scoreVisual;
 	
+	public float timeHeld;
+	
 	//instance vars from assignment 6
 		//Rectangles for collision detection
 		private Rectangle r1 = new Rectangle();
@@ -81,27 +85,7 @@ public class WorldController  extends InputAdapter implements Disposable
 			if ( heightDifference > 0.25f) {
 				boolean hitRightEdge = pusheen.position.x > (
 					dirt.position.x + dirt.bounds.width / 2.0f);
-				if(hitRightEdge) {
-					//pusheen.position.x = dirt.position.x + dirt.bounds.width;
-				}
-				else
-				{
-					//pusheen.position.x = dirt.position.x - pusheen.bounds.width;
-				}
 				return;
-			}
-			
-			switch(pusheen.jumpState)
-			{
-			case GROUNDED:
-				break;
-			case FALLING:
-			case JUMP_FALLING:pusheen.position.y = dirt.position.y + dirt.bounds.height + dirt.origin.y;
-			pusheen.jumpState = JUMP_STATE.GROUNDED;
-			break;
-			case JUMP_RISING:
-				pusheen.position.y = dirt.position.y + pusheen.bounds.height + pusheen.origin.y;
-				break;
 			}
 		}
 		
@@ -159,8 +143,8 @@ public class WorldController  extends InputAdapter implements Disposable
 			body.createFixture(fixtureDef);
 			polygonShape.dispose();
 			onCollisionPusheenWithGround(dirt);
-			canJump = true;
-			airTime = 0;
+			//level.pusheen.grounded = true;
+			level.pusheen.jumpState = JUMP_STATE.GROUNDED;
 		}
 		
 		// when pusheen collides with genericPowerup
@@ -263,6 +247,11 @@ public class WorldController  extends InputAdapter implements Disposable
 		return pixmap;
 	}
 	
+	public void resetJump()
+	{
+		timeHeld = 0.0f;
+	}
+	
 	public void update (float deltaTime) { 
 		handleDebugInput(deltaTime);
 		if(objectsToRemove.size > 0)
@@ -289,7 +278,7 @@ public class WorldController  extends InputAdapter implements Disposable
 		}
 		else
 		{
-			handleInputGame(deltaTime); //invokes the handleInputGame method to update positions, from assingment 6
+			handleInputGame(deltaTime); //invokes the handleInputGame method to update positions, from assignment 6
 		}
 		
 		if(MathUtils.random(0.0f, 2.0f) < deltaTime)
@@ -366,10 +355,8 @@ public class WorldController  extends InputAdapter implements Disposable
 		float camMoveSpeedAccelerationFactor = 5;
 		if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) camMoveSpeed *=
 				camMoveSpeedAccelerationFactor;
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) moveCamera(-camMoveSpeed,
-				0);
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) moveCamera(camMoveSpeed,
-				0);
+		if (Gdx.input.isKeyPressed(Keys.LEFT)) moveCamera(-camMoveSpeed, 0);
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) moveCamera(camMoveSpeed, 0);
 		if (Gdx.input.isKeyPressed(Keys.UP)) moveCamera(0, camMoveSpeed);
 		if (Gdx.input.isKeyPressed(Keys.UP)) moveCamera(0, 
 				-camMoveSpeed);
@@ -402,7 +389,7 @@ public class WorldController  extends InputAdapter implements Disposable
 			init();
 			Gdx.app.debug(TAG, "Game world resetted");
 		}
-		//code added to toggle the camerafollow from assignment 6
+		//code added to toggle the camera follow from assignment 6
 		//Toggle camera follow
 		else if (keycode == Keys.ENTER)
 		{
@@ -424,8 +411,7 @@ public class WorldController  extends InputAdapter implements Disposable
 				dirt.bounds.height);
 			if(!r1.overlaps(r2)) continue;
 			onCollisionPusheenWithGround(dirt);
-			// IMPORTANT: must do all collisions for valid
-			// edge testing on dirt.
+			// IMPORTANT: must do all collisions for valid edge testing on dirt
 		}
 		
 		// Test collision: Pusheen <-> genericPowerup
@@ -457,14 +443,27 @@ public class WorldController  extends InputAdapter implements Disposable
 			// Player Movement
 			if(Gdx.input.isKeyPressed(Keys.LEFT))
 			{
-				//level.pusheen.velocity.x = -level.pusheen.terminalVelocity.x;
-				level.pusheen.body.setLinearVelocity(-level.pusheen.terminalVelocity.x, level.pusheen.velocity.y);
+				if(level.pusheen.hasSuperCookie())
+				{
+					level.pusheen.body.setLinearVelocity(-level.pusheen.terminalVelocity.x*2, level.pusheen.velocity.y);
+				}
+				else
+				{
+					level.pusheen.body.setLinearVelocity(-level.pusheen.terminalVelocity.x, level.pusheen.velocity.y);
+				}
+				
 				level.pusheen.viewDirection = VIEW_DIRECTION.LEFT;
 			}
 			else if(Gdx.input.isKeyPressed(Keys.RIGHT))
 			{
-				//level.pusheen.velocity.x = level.pusheen.terminalVelocity.x;
-				level.pusheen.body.setLinearVelocity(level.pusheen.terminalVelocity.x, level.pusheen.velocity.y);
+				if(level.pusheen.hasSuperCookie())
+				{
+					level.pusheen.body.setLinearVelocity(level.pusheen.terminalVelocity.x*2, level.pusheen.velocity.y);
+				}
+				else
+				{
+					level.pusheen.body.setLinearVelocity(level.pusheen.terminalVelocity.x, level.pusheen.velocity.y);
+				}
 				level.pusheen.viewDirection = VIEW_DIRECTION.RIGHT;
 			}
 			else
@@ -478,42 +477,30 @@ public class WorldController  extends InputAdapter implements Disposable
 			}
 			
 			// Pusheen jumping
-			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)) {
-				//level.pusheen.setJumping(true);
-				//level.pusheen.body.setLinearVelocity(level.pusheen.body.getLinearVelocity().x, level.pusheen.terminalVelocity.y);
-				if(level.pusheen.jumpState == JUMP_STATE.GROUNDED)
-				{
-					canJump = true;
-					airTime = 0;
-				}
-				
-				Vector2 vel = level.pusheen.body.getLinearVelocity() ;
-
-				if(level.pusheen.hasSuperCookie() && airTime < 0.75)
-				{
-					level.pusheen.body.setLinearVelocity(vel.x, level.pusheen.terminalVelocity.y) ;
-
-					airTime += deltaTime ;
-				}
-				else if(airTime < .5)
-				{
-					if(canJump)
-					{
-						AudioManager.instance.play(Assets.instance.sounds.jump) ;
-						canJump = false ;
-					}
-
-					level.pusheen.body.setLinearVelocity(vel.x, level.pusheen.terminalVelocity.y) ;
-
-					level.pusheen.position.set(level.pusheen.body.getPosition()) ;
-
-					airTime += deltaTime ;
-				}
-			}
-			else
+			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)) 
 			{
-				//level.pusheen.setJumping(false);
-				
+				if (!(level.pusheen.grounded == false && level.pusheen.jumping == false) && (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)))
+				{
+					Vector2 vec = level.pusheen.body.getLinearVelocity();
+					if (timeHeld < 0.5)
+					{		
+						if(level.pusheen.hasSuperCookie())
+						{
+							level.pusheen.body.applyLinearImpulse(0.0f, 1000.0f, level.pusheen.body.getPosition().x, level.pusheen.body.getPosition().y, true);
+							level.pusheen.body.setLinearVelocity(vec.x, level.pusheen.terminalVelocity.y);
+						}
+						else
+						{
+							level.pusheen.body.setLinearVelocity(vec.x, level.pusheen.terminalVelocity.y);
+						}
+						level.pusheen.position.set(level.pusheen.body.getPosition());
+						timeHeld += deltaTime;
+					}
+					else
+					{
+						level.pusheen.jumping = false;
+					}
+				}
 			}
 		}
 	}
@@ -530,7 +517,7 @@ public class WorldController  extends InputAdapter implements Disposable
 		return lives < 0;
 	}
 	
-	//decides whether player is in water or not, from assignemtn 6
+	//decides whether player is in water or not, from assignment 6
 	public boolean isPlayerInLava()
 	{
 		return level.pusheen.position.y < -5;
@@ -544,3 +531,4 @@ public class WorldController  extends InputAdapter implements Disposable
 			myWorld.dispose();
 	}
 }
+

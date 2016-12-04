@@ -49,9 +49,10 @@ public class Mountains extends AbstractGameObject
 		int mountainLength = 0;
 		//added in chapter 8 for parallax
 		mountainLength += MathUtils.ceil(
-			length / (2 * dimension.x) * (1 - parallaxSpeedX));
-		mountainLength += MathUtils.ceil(length / (2 * dimension.x));
+			length / (1 * dimension.x) * (1 - parallaxSpeedX));
+		mountainLength += MathUtils.ceil(length / (1 * dimension.x));
 		mountainLength += MathUtils.ceil(0.5f + offsetX);
+		mountainLength += 100;
 		for(int i = 0; i < mountainLength; i++)
 		{
 			// mountainLeft

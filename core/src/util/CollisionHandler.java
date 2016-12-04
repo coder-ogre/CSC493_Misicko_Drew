@@ -2,7 +2,6 @@
 
 package util;
 
-import com.misicko.gdx.game1.WorldController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -10,13 +9,15 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.ObjectMap;
-
+import com.misicko.gdx.game1.WorldController;
+import com.misicko.gdx.game1.Assets;
 import objects.AbstractGameObject;
 import objects.Dirt;
-import objects.GenericPowerup;
 import objects.Pusheen;
+import objects.GenericPowerup;
 import objects.Pusheen.JUMP_STATE;
 
+import com.misicko.gdx.game1.Level;
 
 public class CollisionHandler implements ContactListener
 {
@@ -29,18 +30,22 @@ public class CollisionHandler implements ContactListener
     	world = w;
         listeners = new ObjectMap<Short, ObjectMap<Short, ContactListener>>();
     }
-
+    
     public void addListener(short categoryA, short categoryB, ContactListener listener)
     {
         addListenerInternal(categoryA, categoryB, listener);
         addListenerInternal(categoryB, categoryA, listener);
     }
-
+    
     @Override
     public void beginContact(Contact contact)
     {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
+
+
+       // processContact(contact);
+        processContact(contact);
 
         ContactListener listener = getListener(fixtureA.getFilterData().categoryBits, fixtureB.getFilterData().categoryBits);
         if (listener != null)
@@ -49,13 +54,12 @@ public class CollisionHandler implements ContactListener
         }
     }
 
+    
     @Override
     public void endContact(Contact contact)
     {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-
-        processContact(contact);
 
         ContactListener listener = getListener(fixtureA.getFilterData().categoryBits, fixtureB.getFilterData().categoryBits);
         if (listener != null)
@@ -109,6 +113,7 @@ public class CollisionHandler implements ContactListener
         return listenerCollection.get(categoryB);
     }
 
+    
     private void processContact(Contact contact)
     {
     	Fixture fixtureA = contact.getFixtureA();
@@ -125,23 +130,26 @@ public class CollisionHandler implements ContactListener
         	processPlayerContact(fixtureB, fixtureA);
         }
     }
-
+    
     private void processPlayerContact(Fixture playerFixture, Fixture objFixture)
     {
-    	if (objFixture.getBody().getUserData() instanceof Dirt)
-    	{
-    		Pusheen pusheen = (Pusheen)playerFixture.getBody().getUserData();
-    	    pusheen.acceleration.y = 0;
-    	    pusheen.velocity.y = 0;
-    	    pusheen.jumpState = JUMP_STATE.GROUNDED;
-    	    playerFixture.getBody().setLinearVelocity(pusheen.velocity);
-    	}
-    	else if (objFixture.getBody().getUserData() instanceof GenericPowerup)
-    	{
-    		world.score++;
+        if (objFixture.getBody().getUserData() instanceof Dirt)
+        {
+        	world.resetJump();
+        	world.level.pusheen.grounded = true;
+        	world.level.pusheen.jumping = false;
+        	world.level.pusheen.jumpState = JUMP_STATE.GROUNDED;
+        }
 
-    		GenericPowerup genericPowerup = (GenericPowerup)objFixture.getBody().getUserData();
-    		world.flagForRemoval(genericPowerup);
-    	}
+    	else if (objFixture.getBody().getUserData() instanceof GenericPowerup)
+        {
+            AudioManager.instance.play(Assets.instance.sounds.pickupGenericPowerup);
+            AudioManager.instance.play(Assets.instance.sounds.jump);
+            AudioManager.instance.play(Assets.instance.sounds.liveLost);
+
+            GenericPowerup book = (GenericPowerup) objFixture.getBody().getUserData();
+            world.score = +book.getScore();
+            world.flagForRemoval(book);
+        }
     }
 }
