@@ -7,6 +7,8 @@ package objects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.misicko.gdx.game1.Assets;
+// added in chapter 12 for animating genericPowerup, for extra animation in final project
+import com.badlogic.gdx.math.MathUtils;
 
 //class added in assignment 6 with the rest of the actors
 public class GenericPowerup extends AbstractGameObject
@@ -28,6 +30,9 @@ public class GenericPowerup extends AbstractGameObject
 	{
 		dimension.set(0.5f, 0.5f);
 		
+		setAnimation(Assets.instance.genericPowerup.animGenericPowerup);
+		stateTime = MathUtils.random(0.0f, 1.0f);
+		
 		regGoldCoin = Assets.instance.genericPowerup.genericPowerupRegion;
 		
 		// Set bounding box for collision detection
@@ -42,7 +47,8 @@ public class GenericPowerup extends AbstractGameObject
 		if(collected) return;
 		
 		TextureRegion reg = null;
-		reg = regGoldCoin;
+		//reg = regGoldCoin;
+		reg = animation.getKeyFrame(stateTime, true);
 		batch.draw(reg.getTexture(), position.x, position.y,
 			origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 			rotation, reg.getRegionX(), reg.getRegionY(),

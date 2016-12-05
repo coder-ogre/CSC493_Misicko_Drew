@@ -43,7 +43,8 @@ public class Assets implements Disposable, AssetErrorListener
 	public AssetSounds sounds;
 	public AssetMusic music;
 	
-	//public Animation animSuperCookie;// to animate superCookie
+	public Animation animSuperCookie;// to animate superCookie
+	public Animation animGenericPowerup;// to animate genericPowerups
 	
 	// code added in chapter 10 to provide assets for sounds
 	public class AssetSounds
@@ -153,8 +154,8 @@ public class Assets implements Disposable, AssetErrorListener
 		// code added in chapter 10 to instantiate sounds and music
 		sounds = new AssetSounds(assetManager);
 		music = new AssetMusic(assetManager);
-		//animSuperCookie = new Animation(1.0f / 20.0f, atlas.findRegions("superCookie"),
-		//	Animation.PlayMode.LOOP_PINGPONG);
+		animSuperCookie = new Animation(1.0f / 20.0f, atlas.findRegions("superCookie"),
+		Animation.PlayMode.LOOP_PINGPONG);
 	}
 	
 	@Override
@@ -201,9 +202,19 @@ public class Assets implements Disposable, AssetErrorListener
 	
 	public class AssetGenericPowerup {
 		public final AtlasRegion genericPowerupRegion;
+		public final Animation animGenericPowerup;
 		
 		public AssetGenericPowerup (TextureAtlas atlas) {
 			genericPowerupRegion = atlas.findRegion("genericPowerup");
+			
+			Array<AtlasRegion> regions = 
+				atlas.findRegions("genericPowerup");
+			AtlasRegion region = regions.first();
+			for(int i = 0; i < 10; i++)
+				regions.insert(0, region);
+			animGenericPowerup = new Animation(1.0f / 100.0f, regions,
+				Animation.PlayMode.LOOP_PINGPONG);
+			
 		}
 	}
 	
@@ -222,7 +233,7 @@ public class Assets implements Disposable, AssetErrorListener
 			AtlasRegion region = regions.first();
 			for(int i = 0; i < 10; i++)
 				regions.insert(0, region);
-			animSuperCookie = new Animation(1.0f / 20.0f, regions,
+			animSuperCookie = new Animation(1.0f / 100.0f, regions,
 				Animation.PlayMode.LOOP_PINGPONG);
 		}
 	}

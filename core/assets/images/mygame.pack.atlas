@@ -67,23 +67,37 @@ genericPowerup
   orig: 8, 8
   offset: 0, 0
   index: -1
-grass
+genericPowerup
+  rotate: false
+  xy: 2, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
+genericPowerup
   rotate: false
   xy: 513, 413
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
-  index: -1
-instaDeathCookie
+  index: 2
+grass
   rotate: false
   xy: 529, 423
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-lava
+instaDeathCookie
   rotate: false
   xy: 709, 503
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+lava
+  rotate: false
+  xy: 329, 164
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -125,7 +139,7 @@ scooterPusheen
   index: -1
 superCookie
   rotate: false
-  xy: 329, 164
+  xy: 363, 326
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
