@@ -81,6 +81,7 @@ public class WorldController  extends InputAdapter implements Disposable
 		private void onCollisionPusheenWithGround(Dirt dirt)
 		{
 			Pusheen pusheen = level.pusheen;
+			level.pusheen.stopFinalParticles();
 			float heightDifference = Math.abs(pusheen.position.y - ( dirt.position.y + dirt.bounds.height));
 			if ( heightDifference > 0.25f) {
 				boolean hitRightEdge = pusheen.position.x > (
@@ -446,10 +447,12 @@ public class WorldController  extends InputAdapter implements Disposable
 				if(level.pusheen.hasSuperCookie())
 				{
 					level.pusheen.body.setLinearVelocity(-level.pusheen.terminalVelocity.x*2, level.pusheen.velocity.y);
+					level.pusheen.startDustParticles();
 				}
 				else
 				{
 					level.pusheen.body.setLinearVelocity(-level.pusheen.terminalVelocity.x, level.pusheen.velocity.y);
+					level.pusheen.startDustParticles();
 				}
 				
 				level.pusheen.viewDirection = VIEW_DIRECTION.LEFT;
@@ -459,10 +462,12 @@ public class WorldController  extends InputAdapter implements Disposable
 				if(level.pusheen.hasSuperCookie())
 				{
 					level.pusheen.body.setLinearVelocity(level.pusheen.terminalVelocity.x*2, level.pusheen.velocity.y);
+					level.pusheen.startDustParticles();
 				}
 				else
 				{
 					level.pusheen.body.setLinearVelocity(level.pusheen.terminalVelocity.x, level.pusheen.velocity.y);
+					level.pusheen.startDustParticles();
 				}
 				level.pusheen.viewDirection = VIEW_DIRECTION.RIGHT;
 			}
@@ -488,10 +493,12 @@ public class WorldController  extends InputAdapter implements Disposable
 						{
 							level.pusheen.body.applyLinearImpulse(0.0f, 1000.0f, level.pusheen.body.getPosition().x, level.pusheen.body.getPosition().y, true);
 							level.pusheen.body.setLinearVelocity(vec.x, level.pusheen.terminalVelocity.y);
+							level.pusheen.startFinalParticles();
 						}
 						else
 						{
 							level.pusheen.body.setLinearVelocity(vec.x, level.pusheen.terminalVelocity.y);
+							level.pusheen.startFinalParticles();
 						}
 						level.pusheen.position.set(level.pusheen.body.getPosition());
 						timeHeld += deltaTime;

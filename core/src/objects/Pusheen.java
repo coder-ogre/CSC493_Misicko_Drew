@@ -34,6 +34,7 @@ public class Pusheen extends AbstractGameObject
 	private final float JUMP_TIME_MAX = 0.6f;// changed from .3f to make pusheen jump twice as high
 	private final float JUMP_TIME_MIN = 0.2f;//changed from .1f to make pusheen jump twice as high
 	private final float JUMP_TIME_OFFSET_FLYING = JUMP_TIME_MAX - 0.018f;
+	public ParticleEffect finalParticle = new ParticleEffect();
 	
 	public enum VIEW_DIRECTION { LEFT, RIGHT }
 	
@@ -86,6 +87,8 @@ public class Pusheen extends AbstractGameObject
 		// Particles
 		dustParticles.load(Gdx.files.internal("particles/dust.pfx"),
 			Gdx.files.internal("particles"));
+		finalParticle.load(Gdx.files.internal("particles/finalParticles.pfx"),
+			Gdx.files.internal("particles"));
 	};
 	
 	
@@ -122,41 +125,7 @@ public class Pusheen extends AbstractGameObject
 //		dustParticles.load(Gdx.files.internal("particles/dust.pfx"), Gdx.files.internal("particles"));
 //	}
 	
-	//sets the jumping state, from assignment 6
-	/*public void setJumping(boolean jumpKeyPressed)
-	{
-		switch(jumpState)
-		{
-		case GROUNDED: // Character is standing on a platform
-			if(jumpKeyPressed)
-			{
-				// make jumping sound
-				AudioManager.instance.play(Assets.instance.sounds.jump);
-				// Start counting jump time from the beginning
-				timeJumping = 0;
-				jumpState = JUMP_STATE.JUMP_RISING;
-			}
-			break;
-		case JUMP_RISING: // Rising in the air
-			if(!jumpKeyPressed)
-			{
-				jumpState = JUMP_STATE.JUMP_FALLING;
-			}
-			break;
-		case FALLING: //Falling down
-		case JUMP_FALLING: // Falling down after jump
-			if(jumpKeyPressed && hasSuperCookie)
-			{
-				// plays enhanced jump sound
-				AudioManager.instance.play(
-					Assets.instance.sounds.jumpWithSuperCookie, 1,
-					MathUtils.random(1.0f, 1.1f));
-				timeJumping = JUMP_TIME_OFFSET_FLYING;
-				jumpState = JUMP_STATE.JUMP_RISING;
-			}
-			break;
-		}
-	};*/
+	
 	
 	//sets superCookie from assignment 6
 	public void setSuperCookie(boolean pickedUp) 
@@ -205,7 +174,32 @@ public class Pusheen extends AbstractGameObject
 		
 		// Draw Particles, from chapter 8
 		dustParticles.draw(batch);
+		finalParticle.draw(batch);
 	};
+	
+	public void startFinalParticles()
+	{
+		finalParticle.setPosition(position.x + dimension.x / 2, 
+			position.y);
+		finalParticle.start();
+	}
+	
+	public void stopFinalParticles()
+	{
+		finalParticle.allowCompletion();
+	}
+	
+	public void startDustParticles()
+	{
+		dustParticles.setPosition(position.x + dimension.x / 2,
+				position.y);
+			dustParticles.start();
+	}
+	
+	public void stopDustParticles()
+	{
+		dustParticles.allowCompletion();
+	}
 	
 	//overrides the update method to take care of jumps and superCookie status, from assignment 6
 	@Override
@@ -234,6 +228,7 @@ public class Pusheen extends AbstractGameObject
 		}
 		// added from chapter 8 to update particles
 		dustParticles.update(deltaTime);
+		finalParticle.update(deltaTime);
 	}
 	
 	//overrides the updateMotionY method to handle elevation changes, from assignment 6
@@ -249,6 +244,7 @@ public class Pusheen extends AbstractGameObject
 					dustParticles.setPosition(position.x + dimension.x / 2,
 						position.y);
 					dustParticles.start();
+					startFinalParticles();
 				}
 				break;
 			case JUMP_RISING:
