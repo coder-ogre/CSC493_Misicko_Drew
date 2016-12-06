@@ -10,10 +10,14 @@ public class AudioManager
 	// because singleton...
 	public static final AudioManager instance = new AudioManager();
 	
-	private Music playingMusic;
+	private Music playingMusic1;
+	private Music playingMusic2;
 	
 	// singleton: prevent instantiation from other lcasses
-	private AudioManager() { }
+	private AudioManager()
+	{ 
+		
+	}
 	
 	//plays
 	public void play (Sound sound)
@@ -41,10 +45,10 @@ public class AudioManager
 	}
 	
 	// plays music
-	public void play(Music music)
+	public void play1(Music music)
 	{
-		stopMusic();
-		playingMusic = music;
+		stopMusic1();
+		playingMusic1 = music;
 		if(GamePreferences.instance.music)
 		{
 			music.setLooping(true);
@@ -53,22 +57,60 @@ public class AudioManager
 		}
 	}
 	
+	// plays music
+		public void play2(Music music)
+		{
+			stopMusic2();
+			playingMusic2 = music;
+			if(GamePreferences.instance.altMusic)
+			{
+				music.setLooping(true);
+				music.setVolume(GamePreferences.instance.volMusic);
+				music.play();
+			}
+		}
+	
+		// stops the music
+		//public void stopMusic()
+		//{
+		//	if(playingMusic1 != null) playingMusic1.stop();
+		//}
+		
 	// stops the music
-	public void stopMusic()
+	public void stopMusic1()
 	{
-		if(playingMusic != null) playingMusic.stop();
+		if(playingMusic1 != null) playingMusic1.stop();
+	}
+	
+	// stops the music
+		public void stopMusic2()
+		{
+			if(playingMusic2 != null) playingMusic2.stop();
+		}
+	
+	// allows audio settings to be updated
+	public void onSettingsUpdated1()
+	{
+		if(playingMusic1 == null) return;
+		playingMusic1.setVolume(GamePreferences.instance.volMusic);
+		if(GamePreferences.instance.music)
+		{
+			if(!playingMusic1.isPlaying()) playingMusic1.play();
+		}
+		else
+			playingMusic1.pause();		
 	}
 	
 	// allows audio settings to be updated
-	public void onSettingsUpdated()
-	{
-		if(playingMusic == null) return;
-		playingMusic.setVolume(GamePreferences.instance.volMusic);
-		if(GamePreferences.instance.music)
-		{
-			if(!playingMusic.isPlaying()) playingMusic.play();
+		public void onSettingsUpdated2()
+		{			
+			if(playingMusic2 == null) return;
+			playingMusic2.setVolume(GamePreferences.instance.volMusic);
+			if(GamePreferences.instance.altMusic)
+			{
+				if(!playingMusic2.isPlaying()) playingMusic2.play();
+			}
+			else
+				playingMusic2.pause();
 		}
-		else
-			playingMusic.pause();
-	}
 }

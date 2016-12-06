@@ -42,6 +42,7 @@ public class Assets implements Disposable, AssetErrorListener
 	
 	public AssetSounds sounds;
 	public AssetMusic music;
+	public AssetMusic altMusic;
 	
 	public Animation animSuperCookie;// to animate superCookie
 	public Animation animGenericPowerup;// to animate genericPowerups
@@ -69,11 +70,15 @@ public class Assets implements Disposable, AssetErrorListener
 	public class AssetMusic
 	{
 		public final Music song01;
+		public final Music song02;
 		
 		public AssetMusic(AssetManager am)
 		{
 			song01 = am.get("music/keith303_-_brand_new_highscore.mp3",
 				Music.class);
+			song02 = am.get("music/03_Ave_Maria.mp3",
+				Music.class);
+			
 		}
 	}
 	
@@ -130,12 +135,13 @@ public class Assets implements Disposable, AssetErrorListener
 		// load music
 		assetManager.load("music/keith303_-_brand_new_highscore.mp3",
 			Music.class);
+		assetManager.load("music/03_Ave_Maria.mp3", Music.class);
+		//assetManager.load(song02);
 		// start loading assets and wait until finished
 		assetManager.finishLoading();
 		Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
 		for (String a : assetManager.getAssetNames())
 			Gdx.app.debug(TAG, "asset: " + a);
-	
 		TextureAtlas atlas = 
 				assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
 		
@@ -154,6 +160,7 @@ public class Assets implements Disposable, AssetErrorListener
 		// code added in chapter 10 to instantiate sounds and music
 		sounds = new AssetSounds(assetManager);
 		music = new AssetMusic(assetManager);
+		altMusic = new AssetMusic(assetManager);
 		animSuperCookie = new Animation(1.0f / 20.0f, atlas.findRegions("superCookie"),
 		Animation.PlayMode.LOOP_PINGPONG);
 	}

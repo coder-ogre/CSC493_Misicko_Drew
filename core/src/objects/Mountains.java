@@ -4,6 +4,7 @@
 
 package objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -49,11 +50,13 @@ public class Mountains extends AbstractGameObject
 		// mountains span the whole level
 		int mountainLength = 0;
 		//added in chapter 8 for parallax
-		mountainLength += MathUtils.ceil(
-			length / (1 * dimension.x) * (1 - parallaxSpeedX));
+		/*mountainLength += MathUtils.ceil(			length / (1 * dimension.x) * (1 - parallaxSpeedX));
 		mountainLength += MathUtils.ceil(length / (1 * dimension.x));
+		mountainLength += MathUtils.ceil(0.5f + offsetX);*/
+		mountainLength += MathUtils.ceil(length / (2*dimension.x));
 		mountainLength += MathUtils.ceil(0.5f + offsetX);
-		mountainLength += 100;
+		Gdx.app.debug("Mountains", "length: " + mountainLength);
+		//mountainLength = 370;
 		for(int i = 0; i < mountainLength; i++)
 		{
 			// mountainLeft
@@ -73,6 +76,7 @@ public class Mountains extends AbstractGameObject
 				reg.getRegionX(), reg.getRegionY(),
 				reg.getRegionWidth(), reg.getRegionHeight(),
 				false, false);
+			xRel += dimension.x;
 			
 			// mountain right
 			reg = regMountainRight;
@@ -91,6 +95,7 @@ public class Mountains extends AbstractGameObject
 				reg.getRegionX(), reg.getRegionY(),
 				reg.getRegionWidth(), reg.getRegionHeight(),
 				false, false);
+			xRel += dimension.x;
 		}
 		// reset color to white
 		batch.setColor(1, 1, 1, 1);

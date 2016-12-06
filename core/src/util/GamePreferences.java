@@ -19,6 +19,7 @@ public class GamePreferences
 	
 	public boolean sound;
 	public boolean music;
+	public boolean altMusic;
 	public float volSound;
 	public float volMusic;
 	public int charSkin;
@@ -43,6 +44,7 @@ public class GamePreferences
 	{
 		sound = prefs.getBoolean("sound", true);
 		music = prefs.getBoolean("music", true);
+		altMusic = prefs.getBoolean("altMusic", true);
 		volSound = MathUtils.clamp(prefs.getFloat("volSound", 0.5f), 0.0f, 1.0f);
 		volMusic = MathUtils.clamp(prefs.getFloat("volMusic", 0.5f),
 			0.0f, 1.0f);
@@ -58,6 +60,7 @@ public class GamePreferences
 	{
 		prefs.putBoolean("sound", sound);
 		prefs.putBoolean("music", music);
+		prefs.putBoolean("altMusic", altMusic);
 		prefs.putFloat("volSound", volSound);
 		prefs.putFloat("volMusic", volMusic);
 		prefs.putInteger("charSkin", charSkin);

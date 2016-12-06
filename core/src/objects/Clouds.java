@@ -4,6 +4,7 @@
 
 package objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -57,7 +58,7 @@ public class Clouds extends AbstractGameObject
 		regClouds.add(Assets.instance.levelDecoration.cloud03);
 		
 		int distFac = 5;
-		int numClouds = (int)(length / distFac);
+		int numClouds = 1;//(int)(length / distFac);
 		clouds = new Array<Cloud>(2 * numClouds);
 		for(int i = 0; i < numClouds; i++)
 		{
@@ -110,13 +111,15 @@ public class Clouds extends AbstractGameObject
 		{
 			Cloud cloud = clouds.get(i);
 			cloud.update(deltaTime);
+			//Gdx.app.debug("Clouds", "pos x: " + cloud.position.x + " vel x: "+cloud.velocity.x);
 			if(cloud.position.x < -10)
 			{
 				// cloud moved outside of world
 				// destroy and spawn new cloud at end of level
+				clouds.removeIndex(i);
+				clouds.add(spawnCloud());
 			}
-			clouds.removeIndex(i);
-			clouds.add(spawnCloud());
+			
 		}
 	}
 	
