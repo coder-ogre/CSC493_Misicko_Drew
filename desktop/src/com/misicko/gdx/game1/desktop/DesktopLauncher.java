@@ -25,7 +25,6 @@ public class DesktopLauncher {
 			TexturePacker.process(settings, "assetsraw/images-ui",
 				".CanyonBunny-android/assets/images-ui",
 				"canyonbunny-ui.pack");
-				
 		}
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "myGame";

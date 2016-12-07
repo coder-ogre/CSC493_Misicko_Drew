@@ -168,6 +168,11 @@ public class WorldController  extends InputAdapter implements Disposable
 		score += superCookie.getScore();
 		level.pusheen.setSuperCookie(true);
 		Gdx.app.log(TAG,  "SuperCookie collected");
+		
+		
+		Vector2 centerPosPusheen = new Vector2(level.pusheen.position);
+		centerPosPusheen.x += level.pusheen.bounds.width;
+		spawnConfetti(centerPosPusheen, Constants.CONFETTI_SPAWN_MAX, Constants.CARROTS_SPAWN_RADIUS);
 	};
 	//end of instance vars from assignment 6
 	
@@ -358,7 +363,6 @@ public class WorldController  extends InputAdapter implements Disposable
 		//updateTestObjects(deltaTime);
 		level.update(deltaTime);// added from assignment 6 to invoke level update
 		testCollisions(); //invokes assignment 6 method to test collisions
-		//myWorld.step(deltaTime, 8, 3);
 		cameraHelper.update(deltaTime);
 		if(!isGameOver() && isPlayerInLava())
 		{
