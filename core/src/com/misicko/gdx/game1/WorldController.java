@@ -72,6 +72,8 @@ public class WorldController  extends InputAdapter implements Disposable
 	public float livesVisual;
 	public int score;
 	public float scoreVisual;
+	int whichLevel = 0;
+	int scoreSavedFromLevel1 = 0;
 	
 	public float timeHeld;
 	
@@ -176,12 +178,25 @@ public class WorldController  extends InputAdapter implements Disposable
 	};
 	//end of instance vars from assignment 6
 	
-	private void initLevel()
+	private void initLevel1()
 	{
+		whichLevel = 1;
 		score = 0;
+		scoreSavedFromLevel1 = 0;
 		scoreVisual = score;// from chapter 8
 		goalReached = false;
 		level = new Level(Constants.LEVEL_01);
+		cameraHelper.setTarget(level.pusheen);//added in assignment 6 to follow Pusheen actor
+		initPhysics();
+	}
+	
+	private void initLevel2()
+	{
+		//score = 0;
+		whichLevel = 2;
+		scoreVisual = score;// from chapter 8
+		goalReached = false;
+		level = new Level(Constants.LEVEL_02);
 		cameraHelper.setTarget(level.pusheen);//added in assignment 6 to follow Pusheen actor
 		initPhysics();
 	}
@@ -285,11 +300,11 @@ public class WorldController  extends InputAdapter implements Disposable
 	
 	public WorldController (Game game) {
 		this.game = game;
-		init();
+		init1();
 	}
 	
 	// initiates control of objects
-	private void init () 
+	private void init1() 
 	{ 
 		objectsToRemove = new Array<AbstractGameObject>();
 		Gdx.input.setInputProcessor(this);
@@ -299,8 +314,22 @@ public class WorldController  extends InputAdapter implements Disposable
 		// from chapter 8, for initialization to lives GUI
 		livesVisual = lives;
 		timeLeftGameOverDelay = 0;
-		initLevel();
+		initLevel1();
 	}
+	
+	// initiates control of objects
+		private void init2() 
+		{ 
+			objectsToRemove = new Array<AbstractGameObject>();
+			Gdx.input.setInputProcessor(this);
+			cameraHelper = new CameraHelper();
+			//initTestObjects();
+			lives = Constants.LIVES_START;
+			// from chapter 8, for initialization to lives GUI
+			livesVisual = lives;
+			timeLeftGameOverDelay = 0;
+			initLevel2();
+		}
 	
 	private Pixmap createProceduralPixmap (int width, int height) {
 		Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
@@ -340,12 +369,23 @@ public class WorldController  extends InputAdapter implements Disposable
 			}
 			objectsToRemove.removeRange(0,  objectsToRemove.size - 1);
 		}
-		if(isGameOver() || goalReached)
+		if(isGameOver())
 		{
 			timeLeftGameOverDelay -= deltaTime;
 			if(timeLeftGameOverDelay < 0)
-				//backToMenu();
-				init();
+				backToMenu();
+		}
+		else if(goalReached && whichLevel == 1)
+		{
+			timeLeftGameOverDelay -= deltaTime;
+			if(timeLeftGameOverDelay < 0)
+				init2();
+		}
+		else if(goalReached && whichLevel == 2)
+		{
+			timeLeftGameOverDelay -= deltaTime;
+			if(timeLeftGameOverDelay < 0)
+				backToMenu();
 		}
 		else
 		{
@@ -371,7 +411,18 @@ public class WorldController  extends InputAdapter implements Disposable
 			if(isGameOver())
 				timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
 			else
-				initLevel();
+			{
+				if(whichLevel == 1)
+				{
+					score = 0;
+					initLevel1();
+				}
+				else if(whichLevel == 2)
+				{
+					initLevel2();
+					score = scoreSavedFromLevel1;
+				}
+			}
 		}
 		//added in chapter 8 to have parallax mountains
 		level.mountains.updateScrollPOsition(
@@ -463,7 +514,7 @@ public class WorldController  extends InputAdapter implements Disposable
 	public boolean keyUp (int keycode) {
 		// Reset game world
 		if (keycode == Keys.R) {
-			init();
+			init1();
 			Gdx.app.debug(TAG, "Game world resetted");
 		}
 		//code added to toggle the camera follow from assignment 6
