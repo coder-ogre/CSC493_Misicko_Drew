@@ -55,7 +55,7 @@ public class Mountains extends AbstractGameObject
 		mountainLength += MathUtils.ceil(0.5f + offsetX);*/
 		mountainLength += MathUtils.ceil(length / (2*dimension.x));
 		mountainLength += MathUtils.ceil(0.5f + offsetX);
-		Gdx.app.debug("Mountains", "length: " + mountainLength);
+		//Gdx.app.debug("Mountains", "length: " + mountainLength);
 		//mountainLength = 370;
 		for(int i = 0; i < mountainLength; i++)
 		{

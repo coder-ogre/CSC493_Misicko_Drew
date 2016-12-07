@@ -16,12 +16,23 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+
+import objects.Confetti;
+
 
 //imports added in assignment 6
 import com.badlogic.gdx.math.Rectangle;
 
 
 
+
+import screens.MenuScreen;
 // import added in chapter 10 for audio
 import util.AudioManager;
 import objects.Dirt;
@@ -65,53 +76,106 @@ public class WorldController  extends InputAdapter implements Disposable
 	public float timeHeld;
 	
 	//instance vars from assignment 6
-		//Rectangles for collision detection
-		private Rectangle r1 = new Rectangle();
-		private Rectangle r2 = new Rectangle();
-		private float timeLeftGameOverDelay; // time system waits after game ends
+	//Rectangles for collision detection
+	private Rectangle r1 = new Rectangle();
+	private Rectangle r2 = new Rectangle();
+	private float timeLeftGameOverDelay; // time system waits after game ends
 	//end of instance vars for assignment 6
-		
-		// box2d
-		public World myWorld;
-		public Array<AbstractGameObject> objectsToRemove;
-		public boolean canJump = true;
-		public double airTime;
-		
-		//specifies what happens when Pusheen collides with the ground, from assignment 6
-		private void onCollisionPusheenWithGround(Dirt dirt)
+	
+	private boolean goalReached;
+	
+	// box2d
+	public World myWorld;
+	public Array<AbstractGameObject> objectsToRemove;
+	public boolean canJump = true;
+	public double airTime;
+	
+	private void spawnConfetti(Vector2 pos, int numConfetti, float radius)
+	{
+		float confettiShapeScale = 0.5f;
+			// create carrots with box2d body and fixture
+		for(int i = 0; i < numConfetti; i++)
 		{
-			Pusheen pusheen = level.pusheen;
-			level.pusheen.stopFinalParticles();
-			float heightDifference = Math.abs(pusheen.position.y - ( dirt.position.y + dirt.bounds.height));
-			if ( heightDifference > 0.25f) {
-				boolean hitRightEdge = pusheen.position.x > (
-					dirt.position.x + dirt.bounds.width / 2.0f);
-				return;
-			}
+			Confetti confetti = new Confetti();
+			// calculate random spawn position
+			float x = MathUtils.random(-radius, radius);
+			float y = MathUtils.random(5.0f, 15.0f);
+			float rotation = MathUtils.random(0.0f, 360.0f) * MathUtils.degreesToRadians;
+			float confettiScale = MathUtils.random(0.5f, 1.5f);
+			confetti.scale.set(confettiScale, confettiScale);
+				// create box2d body for confetti with start position
+				// and angle of rotation
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.position.set(pos);
+			bodyDef.position.add(x, y);
+			bodyDef.angle = rotation;
+				Body body = myWorld.createBody(bodyDef);
+			body.setType(BodyType.DynamicBody);
+			confetti.body = body;
+				// create rectangular shape for confetti to allow
+				// interactions (collisions) with other objects
+			PolygonShape polygonShape = new PolygonShape();
+			float halfWidth = confetti.bounds.width / 2.0f * confettiScale;
+			float halfHeight = confetti.bounds.height / 2.0f * confettiScale;
+			polygonShape.setAsBox(halfWidth * confettiShapeScale, halfHeight * confettiShapeScale);
+				// set physics attributes
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.shape = polygonShape;
+			fixtureDef.density = 50;
+			fixtureDef.restitution = 0.5f;
+			fixtureDef.friction = 0.5f;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
+				// finally, add new carrot to list for updating/rendering
+			level.confetti.add(confetti);
 		}
-		
-		//specifies what happens when Pusheen COllides with a genericPowerup, from assignment 6
-		private void onCollisionPusheenWithGenericPowerup(GenericPowerup genericPowerup) 
-		{
-			genericPowerup.collected = true;
-			score += genericPowerup.getScore();
-			Gdx.app.log(TAG, "Generic powerup collected");
-		};
-		
-		//specifies what happens when Pusheen collides with the superCookie, from assignment 6
-		private void onCollisionPusheenWithSuperCookie(SuperCookie superCookie) 
-		{
-			superCookie.collected = true;
-			score += superCookie.getScore();
-			level.pusheen.setSuperCookie(true);
-			Gdx.app.log(TAG,  "SuperCookie collected");
-		};
+	}
+	
+	private void onCollisionPusheenWithGoal()
+	{
+		goalReached = true;
+		timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_FINISHED;
+		Vector2 centerPosPusheen = new Vector2(level.pusheen.position);
+		centerPosPusheen.x += level.pusheen.bounds.width;
+		spawnConfetti(centerPosPusheen, Constants.CONFETTI_SPAWN_MAX, Constants.CARROTS_SPAWN_RADIUS);
+	}
+	
+	//specifies what happens when Pusheen collides with the ground, from assignment 6
+	private void onCollisionPusheenWithGround(Dirt dirt)
+	{
+		Pusheen pusheen = level.pusheen;
+		level.pusheen.stopFinalParticles();
+		float heightDifference = Math.abs(pusheen.position.y - ( dirt.position.y + dirt.bounds.height));
+		if ( heightDifference > 0.25f) {
+			boolean hitRightEdge = pusheen.position.x > (
+				dirt.position.x + dirt.bounds.width / 2.0f);
+			return;
+		}
+	}
+	
+	//specifies what happens when Pusheen COllides with a genericPowerup, from assignment 6
+	private void onCollisionPusheenWithGenericPowerup(GenericPowerup genericPowerup) 
+	{
+		genericPowerup.collected = true;
+		score += genericPowerup.getScore();
+		Gdx.app.log(TAG, "Generic powerup collected");
+	};
+	
+	//specifies what happens when Pusheen collides with the superCookie, from assignment 6
+	private void onCollisionPusheenWithSuperCookie(SuperCookie superCookie) 
+	{
+		superCookie.collected = true;
+		score += superCookie.getScore();
+		level.pusheen.setSuperCookie(true);
+		Gdx.app.log(TAG,  "SuperCookie collected");
+	};
 	//end of instance vars from assignment 6
 	
 	private void initLevel()
 	{
 		score = 0;
 		scoreVisual = score;// from chapter 8
+		goalReached = false;
 		level = new Level(Constants.LEVEL_01);
 		cameraHelper.setTarget(level.pusheen);//added in assignment 6 to follow Pusheen actor
 		initPhysics();
@@ -130,8 +194,8 @@ public class WorldController  extends InputAdapter implements Disposable
 		for (Dirt dirt : level.dirts)
 		{
 			BodyDef bodyDef = new BodyDef();
-			bodyDef.position.set(dirt.position);
 			bodyDef.type = BodyType.KinematicBody;
+			bodyDef.position.set(dirt.position);
 			Body body = myWorld.createBody(bodyDef);
 			body.setUserData(dirt);
 			dirt.body = body;
@@ -271,10 +335,11 @@ public class WorldController  extends InputAdapter implements Disposable
 			}
 			objectsToRemove.removeRange(0,  objectsToRemove.size - 1);
 		}
-		if(isGameOver())
+		if(isGameOver() || goalReached)
 		{
 			timeLeftGameOverDelay -= deltaTime;
 			if(timeLeftGameOverDelay < 0)
+				//backToMenu();
 				init();
 		}
 		else
@@ -293,10 +358,11 @@ public class WorldController  extends InputAdapter implements Disposable
 		//updateTestObjects(deltaTime);
 		level.update(deltaTime);// added from assignment 6 to invoke level update
 		testCollisions(); //invokes assignment 6 method to test collisions
+		//myWorld.step(deltaTime, 8, 3);
 		cameraHelper.update(deltaTime);
 		if(!isGameOver() && isPlayerInLava())
 		{
-			AudioManager.instance.play(Assets.instance.sounds.liveLost);
+			AudioManager.instance.play(Assets.instance.sounds.liveLost);	
 			lives--;
 			if(isGameOver())
 				timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
@@ -313,6 +379,12 @@ public class WorldController  extends InputAdapter implements Disposable
 		if(scoreVisual < score)
 			scoreVisual = Math.min(scoreVisual, scoreVisual
 				+ 250 * deltaTime);
+	}
+	
+	private void backToMenu ()
+	{
+		// switch to menu screen
+		game.setScreen(new MenuScreen(game));
 	}
 	
 	private void handleDebugInput (float deltaTime) {
@@ -413,6 +485,16 @@ public class WorldController  extends InputAdapter implements Disposable
 			if(!r1.overlaps(r2)) continue;
 			onCollisionPusheenWithGround(dirt);
 			// IMPORTANT: must do all collisions for valid edge testing on dirt
+			
+			//Test collision: Pusheen <-> goal
+			if(!goalReached)
+			{
+				r2.set(level.goal.bounds);
+				r2.x += level.goal.position.x;
+				r2.y += level.goal.position.y;
+				if(r1.overlaps(r2))
+					onCollisionPusheenWithGoal();
+			}
 		}
 		
 		// Test collision: Pusheen <-> genericPowerup

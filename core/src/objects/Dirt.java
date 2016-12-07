@@ -94,7 +94,8 @@ public class Dirt extends AbstractGameObject
 		super.update(deltaTime);
 		floatCycleTimeLeft -= deltaTime;
 	
-		if (floatTargetPosition == null)
+		//if (floatTargetPosition == null)
+		
 			//used to store the next target position, as shown here
 			floatTargetPosition = new Vector2(position);
 		
@@ -102,7 +103,12 @@ public class Dirt extends AbstractGameObject
 		{
 			floatCycleTimeLeft = FLOAT_CYCLE_TIME;
 			floatingDownwards = !floatingDownwards;
-			floatTargetPosition.y += FLOAT_AMPLITUDE* (floatingDownwards ? -1 : 1);
+			//floatTargetPosition.y += FLOAT_AMPLITUDE* (floatingDownwards ? -1 : 1);
+			body.setLinearVelocity(0, FLOAT_AMPLITUDE * (floatingDownwards ? -1 : 1));
+		}
+		else
+		{
+			body.setLinearVelocity(body.getLinearVelocity().scl(0.98f));
 		}
 		position.lerp(floatTargetPosition, deltaTime);
 	}

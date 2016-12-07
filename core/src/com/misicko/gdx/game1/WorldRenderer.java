@@ -33,7 +33,7 @@ public class WorldRenderer
 	private OrthographicCamera cameraGUI;
 	
 	private static final boolean DEBUG_DRAW_BOX2D_WORLD = true;
-	private Box2DDebugRenderer b2DebugRenderer = new Box2DDebugRenderer();
+	private Box2DDebugRenderer b2DebugRenderer;
 	
 	public WorldRenderer (WorldController worldController) { 
 		this.worldController = worldController;
@@ -51,6 +51,7 @@ public class WorldRenderer
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true); // flip y-axis
 		cameraGUI.update();
+		b2DebugRenderer = new Box2DDebugRenderer();
 	}
 	
 	public void render () 
@@ -58,10 +59,6 @@ public class WorldRenderer
 		//renderTestObjects();
 		renderWorld(batch);
 		renderGui(batch);
-		if(DEBUG_DRAW_BOX2D_WORLD)
-		{
-			b2DebugRenderer.render(worldController.myWorld, camera.combined);
-		}
 	}
 	
    //passing in SpriteBatch here is optional, since it is a global variable
@@ -72,6 +69,10 @@ public class WorldRenderer
 		batch.begin();
 		worldController.level.render(batch);
 		batch.end();
+		if(DEBUG_DRAW_BOX2D_WORLD)
+		{
+			b2DebugRenderer.render(worldController.myWorld, camera.combined);
+		}
 	}
 	
 	// renders the gui

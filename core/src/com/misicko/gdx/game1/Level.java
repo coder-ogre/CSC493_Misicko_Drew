@@ -21,6 +21,9 @@ import objects.Mountains;
 import objects.Pusheen;
 import objects.SuperCookie;
 
+import objects.Confetti;
+import objects.Goal;
+
 public class Level 
 {
 	public static final String TAG = Level.class.getName();
@@ -37,7 +40,8 @@ public class Level
 		DIRT(0, 255, 0), // green
 		PLAYER_SPAWNPOINT(255, 255, 255), // white
 		ITEM_SUPERCOOKIE(255, 0, 255), // purple
-		ITEM_GENERICPOWERUP(255, 255, 0); // yellow
+		ITEM_GENERICPOWERUP(255, 255, 0), // yellow
+		GOAL(255, 0, 0); // red
 		
 		private int color;
 		
@@ -65,6 +69,9 @@ public class Level
 	public Mountains mountains;
 	public LavaOverlay lavaOverlay;
 	
+	public Array<Confetti> confetti;
+	public Goal goal;
+	
 	public Level(String filename)
 	{
 		init(filename);
@@ -80,6 +87,7 @@ public class Level
 		
 		genericPowerups = new Array<GenericPowerup>();//added from assignment 6
 		superCookies = new Array<SuperCookie>(); // added from assignment 6
+		confetti = new Array<Confetti>();
 		
 		// load image file that represents the level data
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
@@ -150,6 +158,13 @@ public class Level
 					genericPowerups.add((GenericPowerup)obj);
 					//end of code added in chapter 6
 				}
+				else if(BLOCK_TYPE.GOAL.sameColor(currentPixel))
+				{
+					obj = new Goal();
+					offsetHeight = -7.0f;
+					obj.position.set(pixelX, baseHeight + offsetHeight);
+					goal = (Goal)obj;
+				}
 				//unknown object/pixel color
 				else
 				{
@@ -202,6 +217,15 @@ public class Level
 		
 		// Draw Clouds
 		clouds.render(batch);
+		
+		// Draw Goal
+		goal.render(batch);
+		
+		// Draw Confetti
+		for(Confetti confetti : confetti)
+		{
+			confetti.render(batch);
+		}
 	}
 	
 	//updates elements in level, from assignment 6
@@ -215,5 +239,9 @@ public class Level
 		for(SuperCookie superCookie : superCookies)
 			superCookie.update(deltaTime);
 		clouds.update(deltaTime);
+		for(Confetti confetti: confetti)
+		{
+			confetti.update(deltaTime);
+		}
 	}
 }

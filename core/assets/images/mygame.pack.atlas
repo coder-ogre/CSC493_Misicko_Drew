@@ -6,140 +6,154 @@ filter: Nearest,Nearest
 repeat: none
 cloud01
   rotate: false
-  xy: 529, 433
+  xy: 329, 164
   size: 178, 78
   orig: 178, 78
   offset: 0, 0
   index: -1
 cloud02
   rotate: false
-  xy: 329, 423
+  xy: 329, 244
   size: 198, 88
   orig: 198, 88
   offset: 0, 0
   index: -1
 cloud03
   rotate: false
-  xy: 329, 336
+  xy: 531, 444
   size: 182, 85
   orig: 182, 85
   offset: 0, 0
   index: -1
+confetti
+  rotate: false
+  xy: 531, 390
+  size: 20, 52
+  orig: 20, 52
+  offset: 0, 0
+  index: -1
 dirt
   rotate: false
-  xy: 1004, 957
+  xy: 1004, 975
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 1004, 957
+  xy: 1004, 975
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 fly_cookie
   rotate: false
-  xy: 1014, 957
+  xy: 1014, 975
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 superCookie
   rotate: false
-  xy: 1014, 957
+  xy: 1014, 975
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
-  index: -1
+  index: 1
 superCookie
   rotate: false
-  xy: 1014, 957
-  size: 8, 8
-  orig: 8, 8
-  offset: 0, 0
-  index: 1
-genericPowerup
-  rotate: false
-  xy: 2, 2
+  xy: 1014, 975
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 genericPowerup
   rotate: false
-  xy: 2, 2
+  xy: 715, 521
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+genericPowerup
+  rotate: false
+  xy: 715, 521
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 1
 genericPowerup
   rotate: false
-  xy: 513, 413
+  xy: 509, 234
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 2
+goal
+  rotate: false
+  xy: 329, 334
+  size: 200, 195
+  orig: 200, 195
+  offset: 0, 0
+  index: -1
 grass
   rotate: false
-  xy: 529, 423
+  xy: 2, 20
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 instaDeathCookie
   rotate: false
-  xy: 709, 503
+  xy: 363, 154
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 lava
   rotate: false
-  xy: 329, 164
+  xy: 531, 380
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 lavaOverlay
   rotate: false
-  xy: 329, 174
+  xy: 329, 2
   size: 32, 160
   orig: 32, 160
   offset: 0, 0
   index: -1
 lava_overlay
   rotate: false
-  xy: 329, 174
+  xy: 329, 2
   size: 32, 160
   orig: 32, 160
   offset: 0, 0
   index: -1
 mountain_left
   rotate: false
-  xy: 2, 740
+  xy: 2, 758
   size: 1000, 225
   orig: 1000, 225
   offset: 0, 0
   index: -1
 mountain_right
   rotate: false
-  xy: 2, 513
+  xy: 2, 531
   size: 1000, 225
   orig: 1000, 225
   offset: 0, 0
   index: -1
 scooterPusheen
   rotate: false
-  xy: 2, 12
+  xy: 2, 30
   size: 325, 499
   orig: 325, 499
   offset: 0, 0
   index: -1
 superCookie
   rotate: false
-  xy: 363, 326
+  xy: 553, 434
   size: 8, 8
   orig: 8, 8
   offset: 0, 0

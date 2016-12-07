@@ -45,4 +45,13 @@ public class Constants {
 		"images-ui/canyonbunny-ui.json";
 	//File location for preferences
 	 public static final String PREFERENCES = "canyonbunny.prefs";
+	 
+	 // number of confetti to spawn
+	 public static final int CONFETTI_SPAWN_MAX = 100;
+	 
+	 // Spawn radius for confetti
+	 public static final float CARROTS_SPAWN_RADIUS = 3.5f;
+	 
+	 // Delay after game finished
+	 public static final float TIME_DELAY_GAME_FINISHED = 6;
 }
