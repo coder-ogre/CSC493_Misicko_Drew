@@ -5,6 +5,7 @@ f * Drew Misicko
 package com.misicko.gdx.game1;
 
 import util.Constants;
+import util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,7 +19,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 //from chapter 8 to keep lives score in GUI
 import com.badlogic.gdx.math.MathUtils;
-
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class WorldRenderer 
@@ -91,6 +91,9 @@ public class WorldRenderer
 		renderGuiFpsCounter(batch);
 		// draw game over text
 		renderGuiGameOverMessage(batch);
+		
+		renderHighScores(batch);
+		
 		batch.end();
 	}
 	
@@ -117,6 +120,47 @@ public class WorldRenderer
 		Assets.instance.fonts.defaultBig.draw(batch,
 			"" + worldController.score,
 			x + 75, y + 37);
+	}
+	
+	// render the GUI high score list
+	private void renderHighScores(SpriteBatch batch)
+	{
+		if(worldController.displayHighScores)
+		{
+			if(!worldController.highScoresUpdated)
+			{
+				GamePreferences.instance.updateHighScores(worldController.score);
+				worldController.highScoresUpdated = true;
+			}
+			
+			float verticalSpacing = 0;
+			boolean highScore = false;
+			BitmapFont fontHighScoreList = Assets.instance.fonts.defaultBig;
+			fontHighScoreList.setColor(1,0.6f,0.23f,1);
+			fontHighScoreList.draw(batch, "HIGHSCORE LIST", cameraGUI.viewportWidth/2, cameraGUI.viewportHeight/10, 0,Align.center,false);
+			verticalSpacing += 40;
+			
+			for(int i = 1; i < 11; i++)
+			{
+				String score = "";
+				if(i < 10)
+				{
+					score += " "+i+"                           ";
+				}
+				else
+				{
+					score += i+"                           ";
+				}
+				score += GamePreferences.instance.highScoreList.getInteger("" + i);
+				
+				if(!highScore && GamePreferences.instance.highScoreList.getInteger("" + i) == worldController.score)
+				{
+					highScore = true;
+				}
+				fontHighScoreList.draw(batch, score, cameraGUI.viewportWidth/2, cameraGUI.viewportHeight/10 + verticalSpacing, 0,Align.center,false);
+				verticalSpacing += 40.0f;
+			}
+		}
 	}
 	
 	// draws available extra lives, and darkens and makes see through used lives
@@ -181,10 +225,10 @@ public class WorldRenderer
 	{
 		float x = cameraGUI.viewportWidth / 2;
 		float y = cameraGUI.viewportHeight / 2;
-		if(worldController.isGameOver()) 
+		if(worldController.isGameOver() && !worldController.displayHighScores) 
 		{
 			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
-			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+			fontGameOver.setColor(1,0.6f,0.23f,1);
 			fontGameOver.draw(batch, "GAME OVER", x, y, 0,
 			Align.center, false);//this had to be changed, info found at stackoverflow, and on d2l
 			fontGameOver.setColor(1, 1, 1, 1);

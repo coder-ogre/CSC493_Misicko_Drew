@@ -73,7 +73,8 @@ public class WorldController  extends InputAdapter implements Disposable
 	public int score;
 	public float scoreVisual;
 	int whichLevel = 0;
-	int scoreSavedFromLevel1 = 0;
+	int jumpTime;
+	//int scoreSavedFromLevel1 = 0;
 	
 	public float timeHeld;
 	
@@ -91,6 +92,9 @@ public class WorldController  extends InputAdapter implements Disposable
 	public Array<AbstractGameObject> objectsToRemove;
 	public boolean canJump = true;
 	public double airTime;
+	
+	public boolean highScoresUpdated;
+	public boolean displayHighScores;
 	
 	private void spawnConfetti(Vector2 pos, int numConfetti, float radius)
 	{
@@ -145,6 +149,7 @@ public class WorldController  extends InputAdapter implements Disposable
 	//specifies what happens when Pusheen collides with the ground, from assignment 6
 	private void onCollisionPusheenWithGround(Dirt dirt)
 	{
+		jumpTime = 0;
 		Pusheen pusheen = level.pusheen;
 		level.pusheen.stopFinalParticles();
 		float heightDifference = Math.abs(pusheen.position.y - ( dirt.position.y + dirt.bounds.height));
@@ -158,8 +163,11 @@ public class WorldController  extends InputAdapter implements Disposable
 	//specifies what happens when Pusheen COllides with a genericPowerup, from assignment 6
 	private void onCollisionPusheenWithGenericPowerup(GenericPowerup genericPowerup) 
 	{
+		int tempScore = score;
+		int genericValue = 100;
 		genericPowerup.collected = true;
-		score += genericPowerup.getScore();
+		//score += genericPowerup.getScore();
+		score = tempScore + genericValue;
 		Gdx.app.log(TAG, "Generic powerup collected");
 	};
 	
@@ -181,8 +189,7 @@ public class WorldController  extends InputAdapter implements Disposable
 	private void initLevel1()
 	{
 		whichLevel = 1;
-		score = 0;
-		scoreSavedFromLevel1 = 0;
+		//scoreSavedFromLevel1 = 0;
 		scoreVisual = score;// from chapter 8
 		goalReached = false;
 		level = new Level(Constants.LEVEL_01);
@@ -235,6 +242,23 @@ public class WorldController  extends InputAdapter implements Disposable
 		// when pusheen collides with genericPowerup
 		for (GenericPowerup genericPowerup : level.genericPowerups)
 		{
+			/*
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.position.set(genericPowerup.position);
+			bodyDef.type = BodyType.KinematicBody;
+			Body body = myWorld.createBody(bodyDef);
+			body.setUserData(genericPowerup);
+			genericPowerup.body = body;
+			PolygonShape polygonShape = new PolygonShape();
+			origin.x = genericPowerup.bounds.width / 2.0f;
+			origin.y = genericPowerup.bounds.height / 2.0f;
+			polygonShape.setAsBox(genericPowerup.bounds.width / 2.0f, (genericPowerup.bounds.height-0.04f) / 4.0f, origin, 0);
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.isSensor = true;
+			fixtureDef.shape = polygonShape;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
+			*/
 			BodyDef bodyDef = new BodyDef();
 			bodyDef.position.set(genericPowerup.position);
 			bodyDef.type = BodyType.KinematicBody;
@@ -300,6 +324,12 @@ public class WorldController  extends InputAdapter implements Disposable
 	
 	public WorldController (Game game) {
 		this.game = game;
+		init();
+	}
+	
+	private void init()
+	{
+		score = 0;
 		init1();
 	}
 	
@@ -314,7 +344,10 @@ public class WorldController  extends InputAdapter implements Disposable
 		// from chapter 8, for initialization to lives GUI
 		livesVisual = lives;
 		timeLeftGameOverDelay = 0;
+		highScoresUpdated = false;
+		displayHighScores = false;
 		initLevel1();
+		
 	}
 	
 	// initiates control of objects
@@ -371,21 +404,38 @@ public class WorldController  extends InputAdapter implements Disposable
 		}
 		if(isGameOver())
 		{
+			
 			timeLeftGameOverDelay -= deltaTime;
 			if(timeLeftGameOverDelay < 0)
-				backToMenu();
+			{
+				//displayHighScores = true;
+				if(!highScoresUpdated)
+				{
+					displayHighScores = true;
+					timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER + 1;
+				}
+				if(displayHighScores)
+				{
+					timeLeftGameOverDelay -= deltaTime;
+					if(timeLeftGameOverDelay < 0 || Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE))
+					{
+						init();
+					}
+				}
+			}
 		}
 		else if(goalReached && whichLevel == 1)
 		{
 			timeLeftGameOverDelay -= deltaTime;
 			if(timeLeftGameOverDelay < 0)
 				init2();
+				//backToMenu();
 		}
 		else if(goalReached && whichLevel == 2)
 		{
 			timeLeftGameOverDelay -= deltaTime;
 			if(timeLeftGameOverDelay < 0)
-				backToMenu();
+				init1();
 		}
 		else
 		{
@@ -409,18 +459,18 @@ public class WorldController  extends InputAdapter implements Disposable
 			AudioManager.instance.play(Assets.instance.sounds.liveLost);	
 			lives--;
 			if(isGameOver())
-				timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
+				timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER - 1;
 			else
 			{
 				if(whichLevel == 1)
 				{
-					score = 0;
+					//score = 0;
 					initLevel1();
 				}
 				else if(whichLevel == 2)
 				{
 					initLevel2();
-					score = scoreSavedFromLevel1;
+					//score = scoreSavedFromLevel1;
 				}
 			}
 		}
@@ -434,10 +484,12 @@ public class WorldController  extends InputAdapter implements Disposable
 		if(scoreVisual < score)
 			scoreVisual = Math.min(scoreVisual, scoreVisual
 				+ 250 * deltaTime);
+			//scoreVisual = score;
 	}
 	
 	private void backToMenu ()
 	{
+		displayHighScores = false;
 		// switch to menu screen
 		game.setScreen(new MenuScreen(game));
 	}
@@ -523,6 +575,10 @@ public class WorldController  extends InputAdapter implements Disposable
 		{
 			cameraHelper.setTarget(cameraHelper.hasTarget() ? null: level.pusheen);
 			Gdx.app.debug(TAG, "Camera follow enabled: " + cameraHelper.hasTarget());
+		}
+		else if (keycode == Keys.ESCAPE || keycode == Keys.BACK)
+		{
+			backToMenu();
 		}
 		return false;
 	}
@@ -628,12 +684,22 @@ public class WorldController  extends InputAdapter implements Disposable
 					{		
 						if(level.pusheen.hasSuperCookie())
 						{
+							if(jumpTime == 0)
+							{
+								AudioManager.instance.play(Assets.instance.sounds.jump);
+								jumpTime++;
+							}
 							level.pusheen.body.applyLinearImpulse(0.0f, 1000.0f, level.pusheen.body.getPosition().x, level.pusheen.body.getPosition().y, true);
 							level.pusheen.body.setLinearVelocity(vec.x, level.pusheen.terminalVelocity.y);
 							level.pusheen.startFinalParticles();
 						}
 						else
 						{
+							if(jumpTime == 0)
+							{
+								AudioManager.instance.play(Assets.instance.sounds.jump);
+								jumpTime++;
+							}
 							level.pusheen.body.setLinearVelocity(vec.x, level.pusheen.terminalVelocity.y);
 							level.pusheen.startFinalParticles();
 						}
@@ -647,6 +713,10 @@ public class WorldController  extends InputAdapter implements Disposable
 				}
 			}
 		}
+		if(displayHighScores && (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)))
+		{
+			displayHighScores = false;
+		}
 	}
 	
 	// gets things ready to be removed
@@ -658,7 +728,7 @@ public class WorldController  extends InputAdapter implements Disposable
 	//decides whether the game is over or not, from assignment 6
 	public boolean isGameOver()
 	{
-		return lives < 0;
+		return lives < 1;
 	}
 	
 	//decides whether player is in water or not, from assignment 6

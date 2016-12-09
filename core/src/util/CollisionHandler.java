@@ -11,11 +11,13 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.misicko.gdx.game1.WorldController;
 import com.misicko.gdx.game1.Assets;
+
 import objects.AbstractGameObject;
 import objects.Dirt;
 import objects.Pusheen;
 import objects.GenericPowerup;
 import objects.Pusheen.JUMP_STATE;
+import objects.SuperCookie;
 
 import com.misicko.gdx.game1.Level;
 
@@ -144,12 +146,24 @@ public class CollisionHandler implements ContactListener
     	else if (objFixture.getBody().getUserData() instanceof GenericPowerup)
         {
             AudioManager.instance.play(Assets.instance.sounds.pickupGenericPowerup);
-            AudioManager.instance.play(Assets.instance.sounds.jump);
-            AudioManager.instance.play(Assets.instance.sounds.liveLost);
+            //AudioManager.instance.play(Assets.instance.sounds.pickupSuperCookie);
+            //AudioManager.instance.play(Assets.instance.sounds.jump);
+            //AudioManager.instance.play(Assets.instance.sounds.liveLost);
 
-            GenericPowerup book = (GenericPowerup) objFixture.getBody().getUserData();
-            world.score = +book.getScore();
-            world.flagForRemoval(book);
+            GenericPowerup genericPowerup = (GenericPowerup) objFixture.getBody().getUserData();
+            //world.score += genericPowerup.getScore();
+            world.flagForRemoval(genericPowerup);
+        }
+    	else if (objFixture.getBody().getUserData() instanceof SuperCookie)
+        {
+            //AudioManager.instance.play(Assets.instance.sounds.pickupGenericPowerup);
+            AudioManager.instance.play(Assets.instance.sounds.pickupSuperCookie);
+            //AudioManager.instance.play(Assets.instance.sounds.jump);
+            //AudioManager.instance.play(Assets.instance.sounds.liveLost);
+
+            SuperCookie superCookie = (SuperCookie) objFixture.getBody().getUserData();
+            //world.score += genericPowerup.getScore();
+            world.flagForRemoval(superCookie);
         }
     }
 }

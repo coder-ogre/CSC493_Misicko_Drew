@@ -26,11 +26,22 @@ public class GamePreferences
 	public boolean showFpsCounter;
 	
 	private Preferences prefs;
+	public Preferences highScoreList;
 	
 	// singleton: prevent instatniation from other classes
 	private GamePreferences()
 	{
 		prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+		highScoreList = Gdx.app.getPreferences(Constants.HIGHSCORE_LIST);
+		
+		if(highScoreList.getInteger("1") == 0)
+			
+		{
+			for(int i = 1; i < 11; i++)
+			{
+				highScoreList.putInteger(""+i, 0);
+			}
+		}
 	}
 	
 	// the load method will always try its best to find a suitable and, more importantly,
@@ -66,5 +77,42 @@ public class GamePreferences
 		prefs.putInteger("charSkin", charSkin);
 		prefs.putBoolean("showFpsCounter", showFpsCounter);
 		prefs.flush();
+	}
+	
+	public void updateHighScores(int score)
+	{
+		//Get all scores
+		int i = 0;
+		int scores[] = new int[11];
+		while(i < scores.length-1)
+		{
+			scores[i] = this.highScoreList.getInteger(""+i);
+			i++;
+		}
+		scores[10] = score;
+		
+		boolean done = false;
+		while(!done)
+		{
+			done = true;
+			for(int j = 0; j < scores.length-1; j++)
+			{
+				if(scores[j] < scores[j+1])
+				{
+					int tmp = scores[j];
+					scores[j] = scores[j+1];
+					scores[j+1] = tmp;
+					done = false;
+				}
+			}
+		}
+		//this.highScoreList.putInteger("" + 0, val)
+		
+		//Replace scores in highscores list
+		for(i = 1; i < 11; i++)
+		{
+			this.highScoreList.putInteger(""+i, scores[i-1]);
+		}
+		this.highScoreList.flush();
 	}
 }

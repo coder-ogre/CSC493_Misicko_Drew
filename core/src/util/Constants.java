@@ -50,11 +50,13 @@ public class Constants {
 	 public static final String PREFERENCES = "canyonbunny.prefs";
 	 
 	 // number of confetti to spawn
-	 public static final int CONFETTI_SPAWN_MAX = 100;
+	 public static final int CONFETTI_SPAWN_MAX = 50;
 	 
 	 // Spawn radius for confetti
 	 public static final float CARROTS_SPAWN_RADIUS = 3.5f;
 	 
 	 // Delay after game finished
 	 public static final float TIME_DELAY_GAME_FINISHED = 6;
+	 
+	 public static final String HIGHSCORE_LIST = "highScoreList.prefs";
 }
