@@ -81,37 +81,34 @@ public class GamePreferences
 	
 	public void updateHighScores(int score)
 	{
-		//Get all scores
+		boolean sorted = false;
 		int i = 0;
-		int scores[] = new int[11];
-		while(i < scores.length-1)
+		int highScores[] = new int[11];
+		while(i < highScores.length-1)
 		{
-			scores[i] = this.highScoreList.getInteger(""+i);
+			highScores[i] = this.highScoreList.getInteger(""+i);
 			i++;
 		}
-		scores[10] = score;
+		highScores[10] = score;
 		
-		boolean done = false;
-		while(!done)
+		do
 		{
-			done = true;
-			for(int j = 0; j < scores.length-1; j++)
+			sorted = true;
+			for(int j = 0; j < highScores.length-1; j++)
 			{
-				if(scores[j] < scores[j+1])
+				if(highScores[j] < highScores[j+1])
 				{
-					int tmp = scores[j];
-					scores[j] = scores[j+1];
-					scores[j+1] = tmp;
-					done = false;
+					int tmp = highScores[j];
+					highScores[j] = highScores[j+1];
+					highScores[j+1] = tmp;
+					sorted = false;
 				}
 			}
-		}
-		//this.highScoreList.putInteger("" + 0, val)
+		}while(!sorted);
 		
-		//Replace scores in highscores list
 		for(i = 1; i < 11; i++)
 		{
-			this.highScoreList.putInteger(""+i, scores[i-1]);
+			this.highScoreList.putInteger(""+i, highScores[i-1]);
 		}
 		this.highScoreList.flush();
 	}
