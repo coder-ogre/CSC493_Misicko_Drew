@@ -35,12 +35,11 @@ public class GamePreferences
 		highScoreList = Gdx.app.getPreferences(Constants.HIGHSCORE_LIST);
 		
 		if(highScoreList.getInteger("1") == 0)
-			
 		{
 			for(int i = 1; i < 11; i++)
 			{
 				highScoreList.putInteger(""+i, 0);
-			}
+			}// initializes high score list
 		}
 	}
 	
@@ -82,34 +81,33 @@ public class GamePreferences
 	public void updateHighScores(int score)
 	{
 		boolean sorted = false;
-		int i = 0;
 		int highScores[] = new int[11];
-		while(i < highScores.length-1)
+		for(int i = 0; i < highScores.length - 1; i++)
 		{
-			highScores[i] = this.highScoreList.getInteger(""+i);
+			highScores[i] = this.highScoreList.getInteger(""+i);// import existing high scores
 			i++;
 		}
-		highScores[10] = score;
+		highScores[10] = score;// assuming scores imported already sorted, the lowest score (position 10) gets knocked down.
 		
 		do
 		{
 			sorted = true;
-			for(int j = 0; j < highScores.length-1; j++)
+			for(int i = 0; i < highScores.length - 1; i++)
 			{
-				if(highScores[j] < highScores[j+1])
+				if(highScores[i] < highScores[i + 1])
 				{
-					int tmp = highScores[j];
-					highScores[j] = highScores[j+1];
-					highScores[j+1] = tmp;
+					int tmp = highScores[i];
+					highScores[i] = highScores[i + 1];
+					highScores[i + 1] = tmp;
 					sorted = false;
 				}
 			}
-		}while(!sorted);
+		}while(!sorted);// sort new high score list to reposition the new score
 		
-		for(i = 1; i < 11; i++)
+		for(int i = 1; i < 11; i++)
 		{
-			this.highScoreList.putInteger(""+i, highScores[i-1]);
-		}
+			this.highScoreList.putInteger(""+i, highScores[i - 1]);
+		}//export the new high score list to the prefs to save them
 		this.highScoreList.flush();
 	}
 }
